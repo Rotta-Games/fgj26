@@ -18,6 +18,8 @@ height = 56.0
 
 [node name="IceEnemy" type="CharacterBody2D" unique_id=934439360]
 texture_filter = 1
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_md0e3")
 stat = SubResource("Resource_22hgk")
 
@@ -30,13 +32,15 @@ texture = ExtResource("2_4ra3w")
 position = Vector2(-2.5, 16.5)
 shape = SubResource("RectangleShape2D_a3pup")
 
-[node name="Area2D2" type="Area2D" parent="." unique_id=1668721932]
+[node name="Area2D2" type="Area2D" parent="." unique_id=1668721932 groups=["Enemy"]]
+collision_layer = 2
 
 [node name="EnemyHitBox" type="CollisionShape2D" parent="Area2D2" unique_id=742033414]
 position = Vector2(-3, -10)
 shape = SubResource("CapsuleShape2D_qrh7f")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=743462244]
+collision_layer = 2
 
 [node name="PlayerDetectionCollision" type="CollisionShape2D" parent="Area2D" unique_id=1364154775]
 visible = false
