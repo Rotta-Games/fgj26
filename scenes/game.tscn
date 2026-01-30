@@ -31,6 +31,12 @@ render_target_update_mode = 4
 position = Vector2(290.83334, 135.16667)
 script = null
 
+[node name="Stage" parent="SubViewportContainer/SubViewport/Stage" unique_id=1547251690 instance=ExtResource("1_lnu2h")]
+
+[node name="Enemy" parent="SubViewportContainer/SubViewport/Stage/Stage" unique_id=1852111307 instance=ExtResource("3_iywne")]
+position = Vector2(290.83334, 135.16667)
+script = null
+
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=411557437 instance=ExtResource("2_lbhrr")]
 position = Vector2(28, 150)
 

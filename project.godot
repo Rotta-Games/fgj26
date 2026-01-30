@@ -22,6 +22,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 SignalBus="*uid://d44ujf8uuhnh"
+Types="*uid://cl5ac77vefp5e"
 
 [display]
 
