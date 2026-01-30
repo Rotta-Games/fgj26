@@ -10,6 +10,9 @@ script = ExtResource("2_gmlin")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
 size = Vector2(19.5, 9)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_gmlin"]
+radius = 5.0990195
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(20, 49)
 
@@ -24,10 +27,23 @@ texture_filter = 1
 position = Vector2(-2, -11)
 texture = ExtResource("2_qhqgy")
 
-[node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
+[node name="PersonalSpaceRigidBody" type="RigidBody2D" parent="." unique_id=25305041]
+
+[node name="PersonalSpaceCullision2D" type="CollisionShape2D" parent="PersonalSpaceRigidBody" unique_id=1900141297]
 position = Vector2(-2.75, 15.5)
 shape = SubResource("RectangleShape2D_gee14")
 
-[node name="HitBox2D" type="CollisionShape2D" parent="." unique_id=210454895]
+[node name="FistBox2D" type="Area2D" parent="." unique_id=1807308919]
+
+[node name="FistBoxCullision2D" type="CollisionShape2D" parent="FistBox2D" unique_id=1421419464]
+position = Vector2(20, -22)
+shape = SubResource("CircleShape2D_gmlin")
+disabled = true
+
+[node name="HitBox2D" type="Area2D" parent="." unique_id=1957341326]
+
+[node name="HitBoxCullision2D" type="CollisionShape2D" parent="HitBox2D" unique_id=210454895]
 position = Vector2(-3, -14.5)
 shape = SubResource("RectangleShape2D_dovo2")
+
+[connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]

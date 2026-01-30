@@ -5,6 +5,9 @@ extends CharacterBody2D
 const SPEED = 150.0
 const JUMP_VELOCITY = -400.0
 
+@onready var fist_box = $FistBox2D
+@onready var fist_collision = $FistBox2D/FistBoxCullision2D
+
 
 func _physics_process(delta: float) -> void:
 	# Handle jump.
@@ -26,3 +29,18 @@ func _physics_process(delta: float) -> void:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	move_and_slide()
+
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.is_action_pressed("p1_hit"):
+			self.fist_collision.disabled = false
+			print("PUNCH!")
+
+func _process(_delta):
+	self.fist_collision.disabled = true
+
+
+func _on_fist_hit_enemy(area: Area2D) -> void:
+	# ennemy.hurt(player_stats.attack_power_or_jotain)
+	pass
