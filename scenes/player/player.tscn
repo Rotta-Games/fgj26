@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ydjpkmtwf4u6"]
 
-[ext_resource type="Script" uid="uid://bdca5yd75k2bv" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bdca5yd75k2bv" path="res://scenes/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="2_qhqgy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
@@ -8,7 +8,6 @@ size = Vector2(19.5, 18)
 
 [node name="Player" type="CharacterBody2D" unique_id=934439360]
 texture_filter = 1
-motion_mode = 0
 script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2042695726]

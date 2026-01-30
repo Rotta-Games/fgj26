@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cp8irr7yxivaq"]
+
+[ext_resource type="Script" uid="uid://c3elvw8g3iqyp" path="res://scenes/camera/follow_camera.gd" id="1_4x4hx"]
+
+[node name="SubPixelFollowCamera" type="Camera2D" unique_id=1092510257]
+process_priority = 1
+process_physics_priority = 1
+texture_filter = 1
+script = ExtResource("1_4x4hx")

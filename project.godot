@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Smooth Camera Pixel Template"
-run/main_scene="res://scenes/splash.tscn"
+run/main_scene="uid://vmne8d3xmidj"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -25,6 +25,12 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
+
+[file_customization]
+
+folder_colors={
+"res://scenes/": "blue"
+}
 
 [physics]
 

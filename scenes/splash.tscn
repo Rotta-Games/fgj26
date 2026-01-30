@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://comw3eq41b60p"]
 
-[ext_resource type="Script" uid="uid://bhn4hhn71caw1" path="res://scripts/splash.gd" id="1_splash"]
+[ext_resource type="Script" uid="uid://bhn4hhn71caw1" path="res://scenes/splash.gd" id="1_splash"]
 [ext_resource type="Texture2D" uid="uid://cmbs3hdwj0cqc" path="res://assets/gfx/splash.png" id="2_splash"]
 [ext_resource type="AudioStream" uid="uid://f2yfd4w0m11a" path="res://assets/sfx/gamee_boom.mp3" id="3_audio"]
 
