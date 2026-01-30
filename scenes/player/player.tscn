@@ -16,7 +16,7 @@ radius = 5.0990195
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(20, 49)
 
-[node name="Player" type="CharacterBody2D" unique_id=934439360]
+[node name="Player" type="CharacterBody2D" unique_id=934439360 groups=["player"]]
 texture_filter = 1
 motion_mode = 1
 script = ExtResource("1_g2els")
