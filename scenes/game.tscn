@@ -5,8 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/ice_enemy/ice_enemy.tscn" id="3_iywne"]
 [ext_resource type="Shader" uid="uid://bp00811l4jilg" path="res://assets/shaders/Subpixel.gdshader" id="3_lbhrr"]
 [ext_resource type="Script" uid="uid://cmfev8bdfotk0" path="res://scripts/resource_definitions/stage_block.gd" id="3_p57ef"]
-[ext_resource type="Script" uid="uid://bf811hxt2q18l" path="res://scripts/resource_definitions/enemy_wave.gd" id="4_u5sy4"]
+[ext_resource type="Script" path="res://scripts/resource_definitions/enemy_wave.gd" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
+[ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
+[ext_resource type="PackedScene" uid="uid://b1ohca4ql4sso" path="res://scenes/game_ui/game_ui.tscn" id="9_0tnpc"]
+[ext_resource type="Script" uid="uid://clxrnp58j3lpu" path="res://scenes/game_ui/game_ui.gd" id="10_vtaks"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lbhrr"]
 shader = ExtResource("3_lbhrr")
@@ -49,5 +52,11 @@ position = Vector2(28, 150)
 position = Vector2(172.66667, 116.5)
 target = NodePath("../Player")
 viewport = NodePath("../..")
+
+[node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=983965778]
+script = ExtResource("8_gee14")
+
+[node name="GameUi" parent="." unique_id=764667973 instance=ExtResource("9_0tnpc")]
+script = ExtResource("10_vtaks")
 
 [connection signal="camera_limit_changed" from="SubViewportContainer/SubViewport/Stage" to="SubViewportContainer/SubViewport/SubPixelFollowCamera" method="_on_stage_camera_limit_changed"]
