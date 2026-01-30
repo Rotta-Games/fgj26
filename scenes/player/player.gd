@@ -7,6 +7,7 @@ const JUMP_VELOCITY = -400.0
 
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
+@onready var sprite = $AnimatedSprite2D
 
 
 func _physics_process(delta: float) -> void:
@@ -29,6 +30,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	move_and_slide()
+
+	if direction != 0 or y_direction != 0:
+		sprite.play("walk")
+		if direction != 0:
+			sprite.flip_h = direction < 0
+	else:
+		sprite.play("default")
 
 
 func _input(event):

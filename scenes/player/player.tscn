@@ -2,10 +2,58 @@
 
 [ext_resource type="Script" uid="uid://bdca5yd75k2bv" path="res://scenes/player/player.gd" id="1_g2els"]
 [ext_resource type="Script" uid="uid://cgqgyvbo2pmr4" path="res://scripts/resource_definitions/player.gd" id="2_gmlin"]
-[ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="2_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://n4w3odt7k2el" path="res://assets/gfx/player_sheet.png" id="3_gmlin"]
 
 [sub_resource type="Resource" id="Resource_lvxji"]
 script = ExtResource("2_gmlin")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lvxji"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p47bc"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75vfm"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0owmy"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(128, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qek5x"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dovo2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lvxji")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p47bc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_75vfm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0owmy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qek5x")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
 size = Vector2(19.5, 9)
@@ -22,10 +70,12 @@ motion_mode = 1
 script = ExtResource("1_g2els")
 player_stats = SubResource("Resource_lvxji")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2042695726]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=966925790]
 texture_filter = 1
 position = Vector2(-2, -11)
-texture = ExtResource("2_qhqgy")
+sprite_frames = SubResource("SpriteFrames_dovo2")
+animation = &"walk"
+frame_progress = 0.6646847
 
 [node name="PersonalSpaceRigidBody" type="RigidBody2D" parent="." unique_id=25305041]
 
