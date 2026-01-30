@@ -1,20 +1,33 @@
 [gd_scene format=3 uid="uid://ydjpkmtwf4u6"]
 
 [ext_resource type="Script" uid="uid://bdca5yd75k2bv" path="res://scenes/player/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://cgqgyvbo2pmr4" path="res://scripts/resource_definitions/player.gd" id="2_gmlin"]
 [ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="2_qhqgy"]
 
+[sub_resource type="Resource" id="Resource_lvxji"]
+script = ExtResource("2_gmlin")
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
-size = Vector2(19.5, 18)
+size = Vector2(19.5, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
+size = Vector2(20, 49)
 
 [node name="Player" type="CharacterBody2D" unique_id=934439360]
 texture_filter = 1
+motion_mode = 1
 script = ExtResource("1_g2els")
+player_stats = SubResource("Resource_lvxji")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2042695726]
 texture_filter = 1
 position = Vector2(-2, -11)
 texture = ExtResource("2_qhqgy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1900141297]
-position = Vector2(-2.75, 11)
+[node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
+position = Vector2(-2.75, 15.5)
 shape = SubResource("RectangleShape2D_gee14")
+
+[node name="HitBox2D" type="CollisionShape2D" parent="." unique_id=210454895]
+position = Vector2(-3, -14.5)
+shape = SubResource("RectangleShape2D_dovo2")
