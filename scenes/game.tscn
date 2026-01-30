@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://cv71lawq0occ2" path="res://scenes/stage/stage.tscn" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://ydjpkmtwf4u6" path="res://scenes/player/player.tscn" id="2_lbhrr"]
-[ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/enemy/enemy.tscn" id="3_iywne"]
 [ext_resource type="Shader" uid="uid://bp00811l4jilg" path="res://assets/shaders/Subpixel.gdshader" id="3_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/ice_enemy/ice_enemy.tscn" id="4_p57ef"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lbhrr"]
@@ -27,7 +27,7 @@ render_target_update_mode = 4
 
 [node name="Stage" parent="SubViewportContainer/SubViewport" unique_id=716734679 instance=ExtResource("1_lnu2h")]
 
-[node name="Enemy" parent="SubViewportContainer/SubViewport/Stage" unique_id=934439360 instance=ExtResource("3_iywne")]
+[node name="Enemy" parent="SubViewportContainer/SubViewport/Stage" unique_id=934439360 instance=ExtResource("4_p57ef")]
 position = Vector2(290.83334, 135.16667)
 script = null
 
@@ -36,6 +36,8 @@ script = null
 [node name="Enemy" parent="SubViewportContainer/SubViewport/Stage/Stage" unique_id=1852111307 instance=ExtResource("3_iywne")]
 position = Vector2(290.83334, 135.16667)
 script = null
+[node name="IceEnemy" parent="SubViewportContainer/SubViewport/Stage" unique_id=404135514 instance=ExtResource("4_p57ef")]
+position = Vector2(230.66666, 113.166664)
 
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=411557437 instance=ExtResource("2_lbhrr")]
 position = Vector2(28, 150)

@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://01delvve5im6"]
+
+[ext_resource type="Script" uid="uid://34gbqk7og27n" path="res://scenes/ice_enemy/ice_enemy.gd" id="1_md0e3"]
+[ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="2_4ra3w"]
+[ext_resource type="Script" uid="uid://d1h18hi41diby" path="res://scripts/resource_definitions/enemy_stats.gd" id="2_qrh7f"]
+
+[sub_resource type="Resource" id="Resource_22hgk"]
+script = ExtResource("2_qrh7f")
+metadata/_custom_type_script = "uid://d1h18hi41diby"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3pup"]
+size = Vector2(15, 9)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oitbj"]
+
+[node name="IceEnemy" type="CharacterBody2D" unique_id=934439360]
+texture_filter = 1
+script = ExtResource("1_md0e3")
+stat = SubResource("Resource_22hgk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2042695726]
+texture_filter = 1
+position = Vector2(-2, -11)
+texture = ExtResource("2_4ra3w")
+
+[node name="PlayerCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
+position = Vector2(-2.5, 16.5)
+shape = SubResource("RectangleShape2D_a3pup")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=743462244]
+
+[node name="PlayerDetectionCollision" type="CollisionShape2D" parent="Area2D" unique_id=1364154775]
+position = Vector2(-2, -10)
+scale = Vector2(6, 6)
+shape = SubResource("CircleShape2D_oitbj")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
