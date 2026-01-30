@@ -11,7 +11,7 @@ func _ready():
 func _process(delta):
 	# Generate a random float between 0.0 and 1.0
 	if randf() < TRESHOLD:
-		SignalBus.paskaperse.emit({
+		SignalBus.playerHealthState.emit({
 			"player_id": Types.Player.PLAYER_1,
 			"health": randi_range(1,100)
 		})
