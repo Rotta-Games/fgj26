@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://cv71lawq0occ2"]
 
+[ext_resource type="Script" uid="uid://bxy5l1gg3fqas" path="res://scenes/stage/stage.gd" id="1_erodg"]
 [ext_resource type="TileSet" uid="uid://hy4b6sna4kov" path="res://assets/tilesets/world.tres" id="1_nnsk1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nnsk1"]
@@ -11,6 +12,7 @@ size = Vector2(623.75, 98)
 [node name="Stage" type="Node2D" unique_id=1547251690]
 y_sort_enabled = true
 texture_filter = 1
+script = ExtResource("1_erodg")
 
 [node name="Graphics" type="Node2D" parent="." unique_id=1256938798]
 

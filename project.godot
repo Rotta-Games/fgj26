@@ -19,6 +19,10 @@ run/main_scene="uid://vmne8d3xmidj"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SignalBus="*uid://d44ujf8uuhnh"
+
 [display]
 
 window/size/viewport_width=1920
@@ -29,7 +33,8 @@ window/stretch/scale_mode="integer"
 [file_customization]
 
 folder_colors={
-"res://scenes/": "blue"
+"res://scenes/": "blue",
+"res://scripts/": "green"
 }
 
 [physics]
