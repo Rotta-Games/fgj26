@@ -64,7 +64,7 @@ radius = 5.0990195
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(20, 49)
 
-[node name="Player" type="CharacterBody2D" unique_id=934439360]
+[node name="Player" type="CharacterBody2D" unique_id=934439360 groups=["Player"]]
 texture_filter = 1
 motion_mode = 1
 script = ExtResource("1_g2els")
@@ -77,9 +77,7 @@ sprite_frames = SubResource("SpriteFrames_dovo2")
 animation = &"walk"
 frame_progress = 0.6646847
 
-[node name="PersonalSpaceRigidBody" type="RigidBody2D" parent="." unique_id=25305041]
-
-[node name="PersonalSpaceCullision2D" type="CollisionShape2D" parent="PersonalSpaceRigidBody" unique_id=1900141297]
+[node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.75, 15.5)
 shape = SubResource("RectangleShape2D_gee14")
 
