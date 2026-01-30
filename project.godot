@@ -51,6 +51,13 @@ p1_hit={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Enemy"
+2d_physics/layer_3="Environment"
+2d_physics/layer_4="PickupObject"
+
 [physics]
 
 common/physics_ticks_per_second=144

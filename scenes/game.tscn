@@ -14,6 +14,7 @@ shader_parameter/cam_offset = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_gee14"]
 script = ExtResource("3_p57ef")
+length = 400
 metadata/_custom_type_script = "uid://cmfev8bdfotk0"
 
 [node name="Node2D" type="Node2D" unique_id=50045772]
@@ -43,7 +44,6 @@ script = null
 
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=411557437 instance=ExtResource("2_lbhrr")]
 position = Vector2(28, 150)
-camera = NodePath("../SubPixelFollowCamera")
 
 [node name="SubPixelFollowCamera" parent="SubViewportContainer/SubViewport" unique_id=1092510257 node_paths=PackedStringArray("target", "viewport") instance=ExtResource("5_iywne")]
 position = Vector2(172.66667, 116.5)

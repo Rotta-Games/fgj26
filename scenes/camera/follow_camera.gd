@@ -21,4 +21,3 @@ func _process(delta: float) -> void:
 func _on_stage_camera_limit_changed(left: int, right: int) -> void:
 	limit_right = right
 	limit_left = left
-	print(limit_right)
