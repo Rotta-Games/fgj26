@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var player_stats: PlayerStats
+@export var camera: Camera2D
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -400.0

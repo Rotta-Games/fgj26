@@ -2,6 +2,73 @@
 
 [ext_resource type="Script" uid="uid://bxy5l1gg3fqas" path="res://scenes/stage/stage.gd" id="1_erodg"]
 [ext_resource type="TileSet" uid="uid://hy4b6sna4kov" path="res://assets/tilesets/world.tres" id="1_nnsk1"]
+[ext_resource type="Script" uid="uid://cmfev8bdfotk0" path="res://scripts/resource_definitions/stage_block.gd" id="2_pf3bu"]
+[ext_resource type="Script" uid="uid://bf811hxt2q18l" path="res://scripts/resource_definitions/enemy_wave.gd" id="3_d1yl1"]
+[ext_resource type="Script" uid="uid://b8nhfkr0uqoim" path="res://scripts/resource_definitions/enemy_pack.gd" id="4_ljyi0"]
+[ext_resource type="Script" uid="uid://ukh5rlfmven0" path="res://scripts/resource_definitions/enemy_definition.gd" id="5_kb6yy"]
+
+[sub_resource type="Resource" id="Resource_pf3bu"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_d1yl1"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_ljyi0"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_kb6yy"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_uutle"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_cwi0x"]
+script = ExtResource("4_ljyi0")
+enemy_pack = Array[ExtResource("5_kb6yy")]([SubResource("Resource_pf3bu"), SubResource("Resource_d1yl1"), SubResource("Resource_ljyi0"), SubResource("Resource_kb6yy"), SubResource("Resource_uutle")])
+metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
+
+[sub_resource type="Resource" id="Resource_lrsvv"]
+script = ExtResource("3_d1yl1")
+wave = Array[ExtResource("4_ljyi0")]([SubResource("Resource_cwi0x")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_gygk3"]
+script = ExtResource("2_pf3bu")
+waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_lrsvv")])
+metadata/_custom_type_script = "uid://cmfev8bdfotk0"
+
+[sub_resource type="Resource" id="Resource_gf271"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_wvhxk"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_suqj7"]
+script = ExtResource("5_kb6yy")
+metadata/_custom_type_script = "uid://ukh5rlfmven0"
+
+[sub_resource type="Resource" id="Resource_lv745"]
+script = ExtResource("4_ljyi0")
+enemy_pack = Array[ExtResource("5_kb6yy")]([SubResource("Resource_gf271"), SubResource("Resource_wvhxk"), SubResource("Resource_suqj7")])
+metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
+
+[sub_resource type="Resource" id="Resource_5b43b"]
+script = ExtResource("3_d1yl1")
+wave = Array[ExtResource("4_ljyi0")]([SubResource("Resource_lv745")])
+sides = Array[int]([1])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_y85n4"]
+script = ExtResource("2_pf3bu")
+waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_5b43b")])
+metadata/_custom_type_script = "uid://cmfev8bdfotk0"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nnsk1"]
 size = Vector2(623.5, 20)
@@ -13,6 +80,7 @@ size = Vector2(623.75, 98)
 y_sort_enabled = true
 texture_filter = 1
 script = ExtResource("1_erodg")
+blocks = Array[ExtResource("2_pf3bu")]([SubResource("Resource_gygk3"), SubResource("Resource_y85n4")])
 
 [node name="Graphics" type="Node2D" parent="." unique_id=1256938798]
 
