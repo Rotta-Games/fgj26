@@ -27,9 +27,7 @@ texture_filter = 1
 position = Vector2(-2, -11)
 texture = ExtResource("2_qhqgy")
 
-[node name="PersonalSpaceRigidBody" type="RigidBody2D" parent="." unique_id=25305041]
-
-[node name="PersonalSpaceCullision2D" type="CollisionShape2D" parent="PersonalSpaceRigidBody" unique_id=1900141297]
+[node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.75, 15.5)
 shape = SubResource("RectangleShape2D_gee14")
 
