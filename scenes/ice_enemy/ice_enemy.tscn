@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://34gbqk7og27n" path="res://scenes/ice_enemy/ice_enemy.gd" id="1_md0e3"]
 [ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="2_4ra3w"]
-[ext_resource type="Script" uid="uid://d1h18hi41diby" path="res://scripts/resource_definitions/enemy_stats.gd" id="2_qrh7f"]
+[ext_resource type="Script" path="res://scripts/resource_definitions/enemy_stats.gd" id="2_qrh7f"]
 
 [sub_resource type="Resource" id="Resource_22hgk"]
 script = ExtResource("2_qrh7f")
