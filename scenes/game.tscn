@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://vmne8d3xmidj"]
+
+[ext_resource type="PackedScene" uid="uid://cv71lawq0occ2" path="res://scenes/world.tscn" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://ydjpkmtwf4u6" path="res://scenes/player.tscn" id="2_lbhrr"]
+[ext_resource type="Shader" uid="uid://bp00811l4jilg" path="res://scripts/Subpixel.gdshader" id="3_lbhrr"]
+[ext_resource type="Script" uid="uid://c3elvw8g3iqyp" path="res://scripts/follow_camera.gd" id="4_u5sy4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lbhrr"]
+shader = ExtResource("3_lbhrr")
+shader_parameter/cam_offset = Vector2(0, 0)
+
+[node name="Node2D" type="Node2D" unique_id=50045772]
+y_sort_enabled = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1116113793]
+material = SubResource("ShaderMaterial_lbhrr")
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(6, 6)
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=873742907]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="World" parent="SubViewportContainer/SubViewport" unique_id=716734679 instance=ExtResource("1_lnu2h")]
+
+[node name="Player" parent="SubViewportContainer/SubViewport" unique_id=411557437 instance=ExtResource("2_lbhrr")]
+position = Vector2(28, 150)
+
+[node name="SubPixelFollowCamera" type="Camera2D" parent="SubViewportContainer/SubViewport" unique_id=294881390]
+process_priority = 1
+process_physics_priority = 1
+texture_filter = 1
+position = Vector2(240, 136)
+script = ExtResource("4_u5sy4")
