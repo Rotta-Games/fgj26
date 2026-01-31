@@ -594,8 +594,8 @@ bus = &"SFX"
 
 [node name="ParticleEmitter" parent="." unique_id=1828585466 instance=ExtResource("6_75vfm")]
 position = Vector2(34, -25)
-min_duration_s = 0.05
-max_duration_s = 0.08
+min_duration_s = 0.08
+max_duration_s = 0.14
 spawn_radius = 7.0
 spread_angle = 40.0
 
