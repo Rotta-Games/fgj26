@@ -65,6 +65,7 @@ var mask_stats = {
 const BASE_DAMAGE := 5
 var punch_delay: float = 0.1
 var kick_delay: float = 0.2
+const AFTER_KICK_DELAY := 0.3
 
 # actions
 var PLAYER_LEFT: String
@@ -182,7 +183,7 @@ func _input(event: InputEvent) -> void:
 		if combo_count < MAX_COMBO:
 			attack_delay_timer.wait_time = punch_delay * atk_speed_mult
 			attack_delay_timer.start()
-			play_animation("left_punch")
+			play_animation("left_punch", 1.0/atk_speed_mult)
 			_play_attack_miss_sound()
 			if player_mask == Types.PlayerMask.FIRE:
 				fire_emitter.fire(3, 1.0)
@@ -194,10 +195,6 @@ func _input(event: InputEvent) -> void:
 				fire_emitter.fire(5, 1.2)
 				play_animation("left_punch")
 
-	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
-		attack_hit = false
-		combo_timer.start()
-		combo_count += 1
 		if combo_count > MAX_COMBO:
 			
 			particle_emitter.fire(6, 1.4)
@@ -208,6 +205,11 @@ func _input(event: InputEvent) -> void:
 			particle_emitter.fire(2)
 		elif combo_count > MAX_COMBO - 2:
 			particle_emitter.fire(1)
+
+	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
+		attack_hit = false
+		combo_timer.start()
+		combo_count += 1
 
 
 func hurt(amount: int, critical_hit: bool = false) -> void:
@@ -325,8 +327,13 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 
 
 func _on_animation_finished() -> void:
-	if sprite.animation == "left_punch" or sprite.animation == "right_kick":
+	if sprite.animation == "left_punch":
 		state = Types.PlayerState.IDLE
+		self.fist_collision.disabled = true
+	elif sprite.animation == "right_kick":
+		play_animation("default")
+		state = Types.PlayerState.STUNNED
+		stunned_timer.start(AFTER_KICK_DELAY)
 		self.fist_collision.disabled = true
 
 
@@ -345,8 +352,7 @@ func _play_kick_sound():
 	kick_sound.play()
 
 
-func play_animation(anim_name: String) -> void:
-	var speed_scale = 1.0/get_attack_speed_multiplier()
+func play_animation(anim_name: String, speed_scale: float = 1.0) -> void:
 	sprite.speed_scale = speed_scale
 	sprite.play(anim_name)
 	if mask_anim_player.has_animation(anim_name):
