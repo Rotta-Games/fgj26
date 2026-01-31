@@ -9,7 +9,8 @@ const SPRITE_WIDTH : int = 32
 const MIN_Y : int = 85
 const MAX_Y : int = 150
 
-const CRIT_VOLUME = 15
+const CRIT_VOLUME : float = 10.0
+const CRIT_PITCH : float = 0.5
 
 const MAX_COMBO := 3
 
@@ -33,6 +34,7 @@ var health: int
 var direction := Vector2.ZERO
 var score: int = 0
 var default_attack_volume : float
+var default_attack_pitch: float
 var player_id = Types.PlayerId
 
 var combo_timer: Timer
@@ -85,6 +87,7 @@ func _ready() -> void:
 	sprite.animation_finished.connect(_on_animation_finished)
 	stunned_timer.timeout.connect(_on_stunned_timer_timeout)
 	default_attack_volume = attack_sound.volume_db
+	default_attack_pitch = attack_sound.pitch_scale
 	
 
 	combo_timer = Timer.new()
@@ -251,7 +254,7 @@ func die() -> void:
 	SignalBus.playerStartChange.emit(player_id, false)
 	queue_free()
 
-func _get_hit_volume(volume, combo_count) -> float:
+func _get_hit_volume(volume : float, combo_count : int) -> float:
 	if combo_count >= MAX_COMBO:
 		return volume + CRIT_VOLUME
 	if combo_count >= MAX_COMBO -1:
@@ -264,6 +267,15 @@ func _get_hit_volume(volume, combo_count) -> float:
 		return volume + 0.11 * CRIT_VOLUME
 	return volume
 
+func _get_hit_pitch(pitch : float, combo_count : int) -> float:
+	if combo_count >= MAX_COMBO:
+		return pitch + CRIT_PITCH
+	if combo_count >= MAX_COMBO -1:
+		return pitch + 0.66 * CRIT_PITCH
+	if combo_count >= MAX_COMBO -2:
+		return pitch + 0.33 * CRIT_PITCH
+	return pitch
+
 func _on_fist_hit_enemy(area: Area2D) -> void:
 	var groups = area.get_groups()
 
@@ -271,7 +283,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		var enemy = area.get_parent()
 		attack_hit = true
 		var volume = _get_hit_volume(default_attack_volume, combo_count)
-		
+		var pitch = _get_hit_pitch(default_attack_pitch, combo_count)
 
 		var dmg_mult = get_damage_multiplier()
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
@@ -281,10 +293,10 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
 			given_score = enemy.hurt(dmg, true)
-			volume *= CRIT_VOLUME
+			#volume *= CRIT_VOLUME
 			_play_kick_sound()
 		else:
-			_play_punch_sound(volume)
+			_play_punch_sound(volume, pitch)
 			given_score= enemy.hurt(dmg)
 		
 		if given_score:
@@ -306,7 +318,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			_play_kick_sound()
 		else:
 			static_object.hurt(dmg)
-			_play_punch_sound(1)
+			_play_punch_sound(default_attack_volume, default_attack_pitch)
 
 		print("Dealt %d damage to object!" % dmg)
 
@@ -321,8 +333,8 @@ func _on_stunned_timer_timeout():
 	if (health > 0):
 		state = Types.PlayerState.IDLE
 		
-func _play_punch_sound(volume: float):
-	attack_sound.pitch_scale = randf_range(0.8, 1.2)
+func _play_punch_sound(volume: float, pitch: float):
+	attack_sound.pitch_scale = pitch + randf_range(-0.1, 0.1)
 	attack_sound.volume_db = volume
 	attack_sound.play()
 
