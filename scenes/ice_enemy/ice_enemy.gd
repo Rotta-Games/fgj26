@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
 @onready var stunned_timer = $StunnedTimer
+@onready var animation_player = $AnimationPlayer
 
 signal dead
 
@@ -78,13 +79,16 @@ func hurt(amount:float) -> void:
 	health -= amount
 	
 	if (health <= 0):
-		die()
+		state = Types.EnemyState.DEAD
+		animation_player.play("dead")
 	else:
+		animation_player.play("hurt")
 		stunned_timer.start(stat.stunned_time)
 		state = Types.EnemyState.STUNNED
 
 func die() -> void:
-	pass
+	dead.emit()
+	queue_free()
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups():
