@@ -12,19 +12,15 @@ const JUMP_VELOCITY = -400.0
 
 
 func _physics_process(delta: float) -> void:
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
+	var direction := Input.get_axis("player_left", "player_right")
 	if direction:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	var y_direction := Input.get_axis("ui_up", "ui_down")
+	var y_direction := Input.get_axis("player_up", "player_down")
 	if y_direction:
 		velocity.y = y_direction * SPEED
 	else:
@@ -41,13 +37,14 @@ func _physics_process(delta: float) -> void:
 
 
 func _input(event):
-	if event is InputEventKey and event.pressed:
-		if event.is_action_pressed("p1_hit"):
+	if (event is InputEventKey or event is InputEventJoypadButton) and event.pressed:
+		if event.is_action_pressed("player_attack"):
 			self.fist_collision.disabled = false
 			print("PUNCH!")
-		if event.is_action_pressed("ui_left"):
+		if event.is_action_pressed("player_left"):
+			print("LEFT")
 			self.fist_box.position.x = -player_stats.hit_reach
-		elif event.is_action_pressed("ui_right"):
+		elif event.is_action_pressed("player_right"):
 			self.fist_box.position.x = player_stats.hit_reach
 
 func _process(_delta):
