@@ -578,6 +578,7 @@ one_shot = true
 
 [node name="AttackSound" type="AudioStreamPlayer2D" parent="." unique_id=1377558879]
 stream = ExtResource("4_lvxji")
+volume_db = 15.0
 pitch_scale = 0.9
 max_polyphony = 6
 

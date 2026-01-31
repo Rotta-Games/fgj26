@@ -9,6 +9,8 @@ const SPRITE_WIDTH : int = 32
 const MIN_Y : int = 85
 const MAX_Y : int = 150
 
+const CRIT_VOLUME = 15
+
 const MAX_COMBO := 4
 
 @onready var fist_box = $FistBox2D
@@ -28,7 +30,7 @@ var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
 var direction := Vector2.ZERO
 var score: int = 0
-
+var default_attack_volume : float
 var combo_timer: Timer
 var combo_count: int = 0
 var attack_hit: bool = false
@@ -74,6 +76,8 @@ func _ready() -> void:
 	PLAYER_ATTACK = "player%d_attack" % i
 	sprite.animation_finished.connect(_on_animation_finished)
 	stunned_timer.timeout.connect(_on_stunned_timer_timeout)
+	default_attack_volume = attack_sound.volume_db
+	
 
 	combo_timer = Timer.new()
 	combo_timer.one_shot = true
@@ -227,6 +231,18 @@ func die() -> void:
 	# await enemy_death_sound.finished
 	queue_free()
 
+func _get_hit_volume(volume, combo_count) -> float:
+	if combo_count >= MAX_COMBO:
+		return volume + CRIT_VOLUME
+	if combo_count >= MAX_COMBO -1:
+		return volume + 0.66 * CRIT_VOLUME
+	if combo_count >= MAX_COMBO -2:
+		return volume + 0.33 * CRIT_VOLUME
+	if combo_count >= MAX_COMBO -3:
+		return volume + 0.22 * CRIT_VOLUME
+	if combo_count >= MAX_COMBO -4:
+		return volume + 0.11 * CRIT_VOLUME
+	return volume
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
 	var groups = area.get_groups()
@@ -234,7 +250,8 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "EnemyHitbox" in groups:
 		var enemy = area.get_parent()
 		attack_hit = true
-		_play_punch_sound()
+		var volume = _get_hit_volume(default_attack_volume, combo_count)
+		_play_punch_sound(volume)
 
 		var dmg_mult = get_damage_multiplier()
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
@@ -244,6 +261,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
 			given_score = enemy.hurt(dmg, true)
+			volume *= CRIT_VOLUME
 		else:
 			given_score= enemy.hurt(dmg)
 		
@@ -279,8 +297,9 @@ func _on_stunned_timer_timeout():
 	if (health > 0):
 		state = Types.PlayerState.IDLE
 		
-func _play_punch_sound():
+func _play_punch_sound(volume: float):
 	attack_sound.pitch_scale = randf_range(0.8, 1.2)
+	attack_sound.volume_db = volume
 	attack_sound.play()
 
 

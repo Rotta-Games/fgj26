@@ -13,6 +13,7 @@ const MIN_SPAWN_DELAY_S : float = 0.3
 const MAX_SPAWN_DELAY_S : float = 1.5
 const CAMERA_SPAWN_OFFSET : int = 32
 
+
 signal camera_right_limit_changed(right_limit: int)
 
 
