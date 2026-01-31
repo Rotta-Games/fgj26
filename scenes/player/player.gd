@@ -17,6 +17,7 @@ const MAX_COMBO := 4
 @onready var stunned_timer: Timer = $StunnedTimer
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
+@onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var animation_player = $AnimationPlayer
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
@@ -123,7 +124,7 @@ func _input(event: InputEvent) -> void:
 			attack_delay_timer.wait_time = punch_delay
 			attack_delay_timer.start()
 			sprite.play("left_punch")
-			_play_punch_sound()
+			_play_attack_miss_sound()
 		else:
 			attack_delay_timer.wait_time = kick_delay
 			attack_delay_timer.start()
@@ -183,6 +184,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "EnemyHitbox" in groups:
 		var enemy = area.get_parent()
 		attack_hit = true
+		_play_punch_sound()
 
 		var dmg = 5 + combo_count * 2
 		if combo_count >= MAX_COMBO:
@@ -220,3 +222,7 @@ func _on_stunned_timer_timeout():
 func _play_punch_sound():
 	attack_sound.pitch_scale = randf_range(0.9, 1.1)
 	attack_sound.play()
+
+func _play_attack_miss_sound():
+	attack_woosh_sound.pitch_scale = randf_range(0.8, 1.2)
+	attack_woosh_sound.play()
