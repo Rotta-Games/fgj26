@@ -89,7 +89,11 @@ func _start_attack() -> void:
 	sprite.play("attack")
 
 func _deal_damage() -> void:
-	current_target.hurt(stat.attack_damage)
+	for area in player_hit_area.get_overlapping_areas():
+		if "PlayerHitbox" in area.get_groups():
+			var player := area.get_parent()
+			if "Player" in player.get_groups() && player.has_method("hurt"):
+				player.hurt(stat.attack_damage)
 	_damage_dealt_this_round = true
 	attack_delay_timer.wait_time = attack_delay
 	attack_delay_timer.start()
