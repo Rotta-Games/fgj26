@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://vmne8d3xmidj"]
 
 [ext_resource type="PackedScene" uid="uid://cv71lawq0occ2" path="res://scenes/stage/stage.tscn" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://b41wbktn5sxny" path="res://scenes/game_ui/arrow.tscn" id="2_iywne"]
 [ext_resource type="PackedScene" uid="uid://ydjpkmtwf4u6" path="res://scenes/player/player.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
@@ -47,14 +48,28 @@ offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
 
+[node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1400428008 instance=ExtResource("2_iywne")]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 14.0
+offset_right = 32.0
+offset_bottom = 46.0
+grow_horizontal = 2
+
 [node name="Stage" parent="." unique_id=716734679 instance=ExtResource("1_lnu2h")]
 
 [node name="Player" parent="." unique_id=411557437 instance=ExtResource("2_lbhrr")]
 position = Vector2(139, 146.33333)
+collision_mask = 6
 
 [node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("target") instance=ExtResource("5_iywne")]
 position = Vector2(171.5, 80.5)
 target = NodePath("../Player")
 
+[connection signal="camera_right_limit_changed" from="Stage" to="CanvasLayer/MarginContainer/Control/Arrow" method="_on_stage_camera_right_limit_changed"]
 [connection signal="camera_right_limit_changed" from="Stage" to="SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
 [connection signal="checkpoint_reached" from="SubPixelFollowCamera" to="Stage" method="_on_sub_pixel_follow_camera_checkpoint_reached"]

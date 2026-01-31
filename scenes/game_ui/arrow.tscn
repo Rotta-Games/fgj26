@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b41wbktn5sxny"]
+
+[ext_resource type="Texture2D" uid="uid://cgowxx36spnmh" path="res://assets/gfx/arrow.png" id="1_pssm1"]
+[ext_resource type="Script" uid="uid://dqtpy1yfct8j8" path="res://scenes/game_ui/arrow.gd" id="2_s65nu"]
+
+[node name="Arrow" type="TextureRect" unique_id=1062248268]
+offset_right = 64.0
+offset_bottom = 32.0
+texture = ExtResource("1_pssm1")
+script = ExtResource("2_s65nu")
