@@ -7,10 +7,11 @@ extends CharacterBody2D
 enum EnemyState {IDLE, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DYING}
 enum Direction {LEFT, RIGHT}
 
+
 const X_ALIGN_THRESHOLD := 30.0  # When within this many px of player's x, seek to the side
 const Y_LEVEL_THRESHOLD := 10.0  # Aim to be within this many px of player's y
 
-var state = EnemyState.IDLE
+var state = Types.EnemyState.IDLE
 var current_target: CharacterBody2D
 var is_in_hit_area: bool
 var x_target_treshold = 20
@@ -21,6 +22,7 @@ var prev_state = null
 func _physics_process(_delta: float) -> void:
 	if state != prev_state:
 		prev_state = state
+
 	if current_target && !is_in_hit_area:
 		var hitbox := current_target.get_node_or_null("HitBox2D") as Area2D
 		if hitbox:
@@ -66,7 +68,6 @@ func die() -> void:
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups():
 		current_target = area.get_parent()
-
 
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
 	if area.get_parent() == current_target:
