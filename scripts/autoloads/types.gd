@@ -12,6 +12,7 @@ enum PlayerId {
 }
 
 enum EnemyState {IDLE = 1, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DEAD}
+enum BossState {IDLE = 1, THROWING, SEEK, ATTACK, RAMPAGE, STUNNED, DEAD}
 
 enum PlayerState {
 	IDLE,
