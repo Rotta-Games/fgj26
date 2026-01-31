@@ -10,8 +10,9 @@ script = ExtResource("2_qrh7f")
 health = 50
 movement_speed = 40.0
 attack_delay = 2.0
-attack_damage = 1
+attack_damage = 10
 stunned_time = 0.5
+score = 100
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wjk1t"]
