@@ -41,6 +41,18 @@ region = Rect2(0, 0, 96, 64)
 atlas = ExtResource("3_qrh7f")
 region = Rect2(96, 0, 96, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_kqpt8"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(0, 192, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_es0yb"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(96, 192, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehtc8"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(192, 192, 96, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_oitbj"]
 animations = [{
 "frames": [{
@@ -81,6 +93,20 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kqpt8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_es0yb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehtc8")
+}],
+"loop": true,
+"name": &"stunned",
 "speed": 5.0
 }]
 
@@ -198,9 +224,9 @@ stat = SubResource("Resource_22hgk")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_oitbj")
-animation = &"attack"
+animation = &"stunned"
 autoplay = "default"
-frame_progress = 0.44775048
+frame_progress = 0.79193753
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.5, 16.5)
