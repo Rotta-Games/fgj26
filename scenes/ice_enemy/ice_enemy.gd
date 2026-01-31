@@ -101,7 +101,7 @@ func _set_nearest_player_as_target() -> void:
 	if nearest:
 		current_target = nearest as CharacterBody2D
 
-func hurt(amount: int) -> void:
+func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 	
 	if (health <= 0):
