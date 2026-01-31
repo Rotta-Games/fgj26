@@ -113,16 +113,20 @@ func _physics_process(_delta: float) -> void:
 	if state == Types.PlayerState.STUNNED:
 		return
 
+	var sped = SPEED
+	if state == Types.PlayerState.ATTACKING:
+		sped = SPEED * 0.5
+
 	direction = Input.get_vector(PLAYER_LEFT, PLAYER_RIGHT, PLAYER_UP, PLAYER_DOWN)
 	if direction.x:
-		velocity.x = direction.x * SPEED
+		velocity.x = direction.x * sped
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, sped)
 
 	if direction.y:
 		velocity.y = direction.y * SPEED
 	else:
-		velocity.y = move_toward(velocity.y, 0, SPEED)
+		velocity.y = move_toward(velocity.y, 0, sped)
 
 	_move()
 
