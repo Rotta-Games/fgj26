@@ -218,6 +218,7 @@ _data = {
 texture_filter = 1
 collision_layer = 2
 collision_mask = 23
+motion_mode = 1
 script = ExtResource("1_md0e3")
 stat = SubResource("Resource_22hgk")
 
@@ -253,12 +254,7 @@ shape = SubResource("CircleShape2D_oitbj")
 [node name="PlayerHitArea" type="Area2D" parent="." unique_id=1917836694]
 collision_layer = 2
 
-[node name="CollisionShape2DLeft" type="CollisionShape2D" parent="PlayerHitArea" unique_id=255805630]
-position = Vector2(-22.5, -13)
-scale = Vector2(3, 2)
-shape = SubResource("RectangleShape2D_qrh7f")
-
-[node name="CollisionShape2DRight" type="CollisionShape2D" parent="PlayerHitArea" unique_id=352834710]
+[node name="CollisionShape" type="CollisionShape2D" parent="PlayerHitArea" unique_id=352834710]
 position = Vector2(18, -13)
 scale = Vector2(3, 2)
 shape = SubResource("RectangleShape2D_qrh7f")

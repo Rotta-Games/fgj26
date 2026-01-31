@@ -3,19 +3,48 @@
 [ext_resource type="Script" uid="uid://bxy5l1gg3fqas" path="res://scenes/stage/stage.gd" id="1_erodg"]
 [ext_resource type="TileSet" uid="uid://hy4b6sna4kov" path="res://assets/tilesets/world.tres" id="1_nnsk1"]
 [ext_resource type="Script" uid="uid://bf811hxt2q18l" path="res://scripts/resource_definitions/enemy_wave.gd" id="3_d1yl1"]
-[ext_resource type="Script" uid="uid://b8nhfkr0uqoim" path="res://scripts/resource_definitions/enemy_pack.gd" id="4_ljyi0"]
 [ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/ice_enemy/ice_enemy.tscn" id="6_pf3bu"]
 [ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
 [ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
 
-[sub_resource type="Resource" id="Resource_pf3bu"]
-script = ExtResource("4_ljyi0")
-enemies = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
-metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
+[sub_resource type="Resource" id="Resource_0m8sx"]
+script = ExtResource("3_d1yl1")
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_kb6yy"]
+script = ExtResource("3_d1yl1")
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu")])
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_d1yl1"]
+script = ExtResource("3_d1yl1")
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu")])
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [sub_resource type="Resource" id="Resource_qard3"]
 script = ExtResource("3_d1yl1")
-enemy_packs_right = Array[ExtResource("4_ljyi0")]([SubResource("Resource_pf3bu")])
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_pf3bu"]
+script = ExtResource("3_d1yl1")
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_ljyi0"]
+script = ExtResource("3_d1yl1")
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_uutle"]
+script = ExtResource("3_d1yl1")
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [node name="Stage" type="Node2D" unique_id=1547251690]
@@ -40,11 +69,15 @@ tile_set = ExtResource("1_nnsk1")
 
 [node name="StageBlock" parent="Blocks" unique_id=600521965 instance=ExtResource("7_d1yl1")]
 position = Vector2(528, 93)
-waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
+waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_0m8sx"), SubResource("Resource_kb6yy"), SubResource("Resource_d1yl1")])
 
 [node name="StageBlock2" parent="Blocks" unique_id=1354616595 instance=ExtResource("7_d1yl1")]
 position = Vector2(947, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
+
+[node name="StageBlock3" parent="Blocks" unique_id=1003023851 instance=ExtResource("7_d1yl1")]
+position = Vector2(1739, 95)
+waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_pf3bu"), SubResource("Resource_ljyi0"), SubResource("Resource_uutle")])
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1639698908]
 
