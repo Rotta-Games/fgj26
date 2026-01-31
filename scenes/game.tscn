@@ -10,6 +10,10 @@
 shader = ExtResource("3_lbhrr")
 shader_parameter/cam_offset = Vector2(0, 0)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iywne"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p57ef"]
+
 [node name="Node2D" type="Node2D" unique_id=50045772]
 y_sort_enabled = true
 
@@ -51,14 +55,24 @@ grow_vertical = 2
 layout_mode = 2
 
 [node name="Player1UIHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1596250537]
-layout_mode = 0
+top_level = true
+material = SubResource("CanvasItemMaterial_iywne")
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Player2UIHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1139436458]
-layout_mode = 0
-offset_right = 40.0
+top_level = true
+material = SubResource("CanvasItemMaterial_p57ef")
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
 offset_bottom = 40.0
+grow_horizontal = 0
 
 [connection signal="camera_right_limit_changed" from="SubViewportContainer/SubViewport/Stage" to="SubViewportContainer/SubViewport/SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
 [connection signal="checkpoint_reached" from="SubViewportContainer/SubViewport/SubPixelFollowCamera" to="SubViewportContainer/SubViewport/Stage" method="_on_sub_pixel_follow_camera_checkpoint_reached"]
