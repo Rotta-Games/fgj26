@@ -14,9 +14,17 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_0tnpc"]
 font_size = 7
-font_color = Color(0.78, 0.015599985, 0.62712014, 1)
+font_color = Color(0.09121219, 0.38992056, 0.99999994, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p57ef"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
+font_size = 7
+font_color = Color(0.24956495, 0.53160954, 0.2235527, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Node2D" type="Node2D" unique_id=50045772]
 y_sort_enabled = true
@@ -38,26 +46,40 @@ grow_vertical = 2
 [node name="Control" type="Control" parent="CanvasLayer/MarginContainer" unique_id=2118451747]
 layout_mode = 2
 
-[node name="Player1UIHBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1069601449]
+[node name="Player1Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1069601449]
 top_level = true
 material = SubResource("CanvasItemMaterial_iywne")
 layout_mode = 1
 offset_right = 400.0
 offset_bottom = 200.0
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1UIHBoxContainer" unique_id=222743501]
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=222743501]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_0tnpc")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player1UIHBoxContainer" unique_id=485851623]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=485851623]
 layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("3_gee14")
 texture_progress = ExtResource("4_0tnpc")
 
-[node name="Player2UIHBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1153013427]
+[node name="Player1Start" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=500334320]
+visible = false
+top_level = true
+material = SubResource("CanvasItemMaterial_iywne")
+layout_mode = 1
+offset_right = 400.0
+offset_bottom = 200.0
+
+[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Start" unique_id=1859854054]
+layout_mode = 2
+text = "Player 1 Press Start"
+label_settings = SubResource("LabelSettings_0tnpc")
+
+[node name="Player2Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1153013427]
+visible = false
 top_level = true
 material = SubResource("CanvasItemMaterial_p57ef")
 layout_mode = 1
@@ -69,17 +91,34 @@ offset_right = 309.0
 offset_bottom = 200.0
 grow_horizontal = 0
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2UIHBoxContainer" unique_id=1791985038]
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=1791985038]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_0tnpc")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2UIHBoxContainer" unique_id=588482519]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=588482519]
 layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("3_gee14")
 texture_progress = ExtResource("4_0tnpc")
+
+[node name="Player2Start" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1878980805]
+top_level = true
+material = SubResource("CanvasItemMaterial_p57ef")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -91.0
+offset_right = 309.0
+offset_bottom = 200.0
+grow_horizontal = 0
+
+[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Start" unique_id=1417491991]
+layout_mode = 2
+text = "Player 2 Press Start"
+label_settings = SubResource("LabelSettings_vtaks")
 
 [node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1400428008 instance=ExtResource("2_iywne")]
 visible = false

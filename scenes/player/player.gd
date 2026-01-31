@@ -9,9 +9,10 @@ const SPRITE_WIDTH : int = 32
 const MIN_Y : int = 85
 const MAX_Y : int = 150
 
-const CRIT_VOLUME = 15
+const CRIT_VOLUME : float = 10.0
+const CRIT_PITCH : float = 0.5
 
-const MAX_COMBO := 4
+const MAX_COMBO := 3
 
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
@@ -21,16 +22,21 @@ const MAX_COMBO := 4
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var mask_timer: Timer = $MaskTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
+@onready var kick_sound: AudioStreamPlayer2D = $KickSound
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
 @onready var particle_emitter = $ParticleEmitter
+@onready var fire_emitter = $FireEmitter
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
 var direction := Vector2.ZERO
 var score: int = 0
 var default_attack_volume : float
+var default_attack_pitch: float
+var player_id = Types.PlayerId
+
 var combo_timer: Timer
 var combo_count: int = 0
 var attack_hit: bool = false
@@ -39,16 +45,19 @@ var player_mask: Types.PlayerMask = Types.PlayerMask.NONE
 var mask_stats = {
 	Types.PlayerMask.NONE: {
 		"attack_speed": 1.0,
+		"attack_range": 1.0,
 		"damage_multiplier": 1.0,
 		"mask_texture": null,
 	},
 	Types.PlayerMask.TIGER: {
 		"attack_speed": 0.7,
+		"attack_range": 0.8,
 		"damage_multiplier": 0.95,
 		"mask_texture": preload("res://assets/gfx/tiger_mask.png"),
 	},
 	Types.PlayerMask.FIRE: {
-		"attack_speed": 1.0,
+		"attack_speed": 1.3,
+		"attack_range": 2.0,
 		"damage_multiplier": 1.2,
 		"mask_texture": preload("res://assets/gfx/fire_mask.png"),
 	},
@@ -69,6 +78,7 @@ func _ready() -> void:
 	health = player_stats.health
 	# actions for player N
 	var i = player_stats.player_id
+	player_id = player_stats.player_id
 	PLAYER_LEFT = "player%d_left" % i
 	PLAYER_RIGHT = "player%d_right" % i
 	PLAYER_UP = "player%d_up" % i
@@ -77,6 +87,7 @@ func _ready() -> void:
 	sprite.animation_finished.connect(_on_animation_finished)
 	stunned_timer.timeout.connect(_on_stunned_timer_timeout)
 	default_attack_volume = attack_sound.volume_db
+	default_attack_pitch = attack_sound.pitch_scale
 	
 
 	combo_timer = Timer.new()
@@ -113,7 +124,7 @@ func _physics_process(_delta: float) -> void:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	_move()
-	
+
 	if state != Types.PlayerState.ATTACKING:
 		if direction != Vector2.ZERO:
 			state = Types.PlayerState.WALKING
@@ -123,14 +134,16 @@ func _physics_process(_delta: float) -> void:
 				sprite.scale.x = -1 if facing_left else 1
 				if facing_left:
 					particle_emitter._direction = -1 
-					#particle_emitter.scale = -1.0
 					particle_emitter.position.x = -player_stats.hit_reach - 3
-					fist_box.position.x = -player_stats.hit_reach
+					fire_emitter._direction = -1
+					fire_emitter.position.x = -player_stats.hit_reach - 3
+					fist_box.scale.x = -abs(fist_box.scale.x)
 				else:
 					particle_emitter._direction = 1
-				#	particle_emitter.scale = 1.0
 					particle_emitter.position.x = player_stats.hit_reach + 3
-					fist_box.position.x = player_stats.hit_reach
+					fire_emitter._direction = 1
+					fire_emitter.position.x = player_stats.hit_reach + 3
+					fist_box.scale.x = abs(fist_box.scale.x)
 		else:
 			state = Types.PlayerState.IDLE
 			play_animation("default")
@@ -154,6 +167,9 @@ func get_attack_speed_multiplier() -> float:
 func get_damage_multiplier() -> float:
 	return mask_stats[player_mask]["damage_multiplier"]
 
+func get_attack_range_multiplier() -> float:
+	return mask_stats[player_mask]["attack_range"]
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(PLAYER_ATTACK):
 		if state in [Types.PlayerState.STUNNED, Types.PlayerState.ATTACKING]:
@@ -167,10 +183,15 @@ func _input(event: InputEvent) -> void:
 			attack_delay_timer.start()
 			play_animation("left_punch")
 			_play_attack_miss_sound()
+			if player_mask == Types.PlayerMask.FIRE:
+				fire_emitter.fire(3, 1.0)
 		else:
 			attack_delay_timer.wait_time = kick_delay * atk_speed_mult
 			attack_delay_timer.start()
 			play_animation("right_kick")
+			if player_mask == Types.PlayerMask.FIRE:
+				fire_emitter.fire(5, 1.2)
+				play_animation("left_punch")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
 		attack_hit = false
@@ -192,7 +213,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 
 	SignalBus.playerHealthState.emit({
-		"player_id": Types.PlayerId.PLAYER_1,
+		"player_id": player_id,
 		"health": health,
 	})
 
@@ -213,25 +234,27 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		print("Player stunned!")
 
 
-func init_tiger_power() -> void:
-	head_attachment.texture = mask_stats[Types.PlayerMask.TIGER]["mask_texture"]
+func init_power(mask_type: Types.PlayerMask) -> void:
+	player_mask = mask_type
+	head_attachment.texture = mask_stats[mask_type]["mask_texture"]
 	head_attachment.visible = true
-	player_mask = Types.PlayerMask.TIGER
+	fist_box.scale.x = fist_box.scale.x * get_attack_range_multiplier()
 	mask_timer.start()
+
+func init_tiger_power() -> void:
+	init_power(Types.PlayerMask.TIGER)
 
 
 func init_fire_power() -> void:
-	head_attachment.texture = mask_stats[Types.PlayerMask.FIRE]["mask_texture"]
-	head_attachment.visible = true
-	player_mask = Types.PlayerMask.FIRE
-	mask_timer.start()
+	init_power(Types.PlayerMask.FIRE)
 
 func die() -> void:
 	# dead.emit()
 	# await enemy_death_sound.finished
+	SignalBus.playerStartChange.emit(player_id, false)
 	queue_free()
 
-func _get_hit_volume(volume, combo_count) -> float:
+func _get_hit_volume(volume : float, combo_count : int) -> float:
 	if combo_count >= MAX_COMBO:
 		return volume + CRIT_VOLUME
 	if combo_count >= MAX_COMBO -1:
@@ -244,6 +267,15 @@ func _get_hit_volume(volume, combo_count) -> float:
 		return volume + 0.11 * CRIT_VOLUME
 	return volume
 
+func _get_hit_pitch(pitch : float, combo_count : int) -> float:
+	if combo_count >= MAX_COMBO:
+		return pitch + CRIT_PITCH
+	if combo_count >= MAX_COMBO -1:
+		return pitch + 0.66 * CRIT_PITCH
+	if combo_count >= MAX_COMBO -2:
+		return pitch + 0.33 * CRIT_PITCH
+	return pitch
+
 func _on_fist_hit_enemy(area: Area2D) -> void:
 	var groups = area.get_groups()
 
@@ -251,7 +283,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		var enemy = area.get_parent()
 		attack_hit = true
 		var volume = _get_hit_volume(default_attack_volume, combo_count)
-		_play_punch_sound(volume)
+		var pitch = _get_hit_pitch(default_attack_pitch, combo_count)
 
 		var dmg_mult = get_damage_multiplier()
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
@@ -261,15 +293,17 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
 			given_score = enemy.hurt(dmg, true)
-			volume *= CRIT_VOLUME
+			#volume *= CRIT_VOLUME
+			_play_kick_sound()
 		else:
+			_play_punch_sound(volume, pitch)
 			given_score= enemy.hurt(dmg)
 		
 		if given_score:
 			score = score + given_score
 			SignalBus.playerScoreState.emit({
-			"player_id": player_stats.player_id,
-			"score": score,
+				"player_id": player_id,
+				"score": score,
 			})
 		print("Dealt %d damage!" % dmg)
 	if "StaticObjectHitbox" in groups:
@@ -281,8 +315,10 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit on object!")
 			static_object.hurt(dmg)
+			_play_kick_sound()
 		else:
 			static_object.hurt(dmg)
+			_play_punch_sound(default_attack_volume, default_attack_pitch)
 
 		print("Dealt %d damage to object!" % dmg)
 
@@ -297,10 +333,15 @@ func _on_stunned_timer_timeout():
 	if (health > 0):
 		state = Types.PlayerState.IDLE
 		
-func _play_punch_sound(volume: float):
-	attack_sound.pitch_scale = randf_range(0.8, 1.2)
+func _play_punch_sound(volume: float, pitch: float):
+	attack_sound.pitch_scale = pitch + randf_range(-0.1, 0.1)
 	attack_sound.volume_db = volume
 	attack_sound.play()
+
+func _play_kick_sound():
+	kick_sound.pitch_scale = randf_range(0.8, 1.2)
+	# kick_sound.volume_db = volume
+	kick_sound.play()
 
 
 func play_animation(anim_name: String) -> void:
@@ -318,4 +359,5 @@ func _play_attack_miss_sound():
 
 func _on_mask_timer_timeout() -> void:
 	player_mask = Types.PlayerMask.NONE
+	fist_box.scale.x = sign(fist_box.scale.x) * get_attack_range_multiplier()
 	head_attachment.visible = false
