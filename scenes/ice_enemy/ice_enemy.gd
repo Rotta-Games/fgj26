@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
 @onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
+@onready var player_collision : CollisionShape2D = $PlayerCollision
 
 signal dead
 
@@ -113,6 +114,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 	
 	if (health <= 0):
+		player_collision.set_deferred("disabled", true)
 		state = Types.EnemyState.DEAD
 		animation_player.play("dead")
 		enemy_death_sound.pitch_scale = randf_range(0.9, 1.1)
