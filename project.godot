@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 
 SignalBus="*uid://d44ujf8uuhnh"
 Types="*uid://cl5ac77vefp5e"
+AudioManager="*uid://uirturikmata"
 
 [display]
 
