@@ -76,6 +76,8 @@ func _physics_process(_delta: float) -> void:
 			move_and_slide()
 	elif current_target && _target_in_hit_area && !waiting_to_attack && state == Types.EnemyState.ATTACK:
 		_start_attack()
+	elif !current_target:
+		_set_nearest_player_as_target()
 
 	if state == Types.EnemyState.ATTACK && sprite.animation == "attack" && sprite.frame == 3 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
 		_deal_damage()
@@ -140,6 +142,7 @@ func _disable_all_collisions() -> void:
 	collision_layer = 0
 	collision_mask = 0
 	$EnemyCollision.set_deferred("disabled", true)
+	$HitBox/CollisionShape2D.set_deferred("disabled", true)
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups() && state == Types.EnemyState.IDLE:
