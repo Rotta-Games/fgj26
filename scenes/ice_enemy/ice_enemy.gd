@@ -111,6 +111,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		animation_player.play("hurt")
 		stunned_timer.start(stat.stunned_time)
 		state = Types.EnemyState.STUNNED
+		sprite.play("stunned")
 
 func die() -> void:
 	dead.emit()
@@ -135,3 +136,4 @@ func _on_player_hit_area_area_exited(area: Node2D) -> void:
 func _on_stunned_timer_timeout():
 	if (health > 0):
 		state = Types.EnemyState.SEEK
+		sprite.play("default")
