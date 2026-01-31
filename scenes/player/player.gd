@@ -83,7 +83,7 @@ func _process(_delta):
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
-	if "Enemy" in area.get_groups():
+	if "EnemyHitbox" in area.get_groups():
 		print("HIT ENEMY")
 		# ennemy.hurt(player_stats.attack_power_or_jotain)
 

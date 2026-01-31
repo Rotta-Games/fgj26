@@ -48,7 +48,7 @@ sprite_frames = SubResource("SpriteFrames_oitbj")
 position = Vector2(-2.5, 16.5)
 shape = SubResource("RectangleShape2D_a3pup")
 
-[node name="HitBox" type="Area2D" parent="." unique_id=1668721932 groups=["Enemy"]]
+[node name="HitBox" type="Area2D" parent="." unique_id=1668721932 groups=["EnemyHitbox"]]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=742033414]
