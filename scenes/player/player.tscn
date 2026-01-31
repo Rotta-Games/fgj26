@@ -545,7 +545,7 @@ autoplay = "default"
 
 [node name="HeadAttachment" type="Sprite2D" parent="AnimatedSprite2D" unique_id=277029135]
 visible = false
-position = Vector2(4, -25)
+position = Vector2(5, -27)
 texture = ExtResource("5_mask")
 
 [node name="MaskAnimationPlayer" type="AnimationPlayer" parent="." unique_id=182350020]
