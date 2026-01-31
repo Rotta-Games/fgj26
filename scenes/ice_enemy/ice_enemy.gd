@@ -17,6 +17,8 @@ var x_target_treshold = 20
 
 
 var prev_state = null
+
+signal dead
 	
 func _physics_process(_delta: float) -> void:
 	if state != prev_state:
