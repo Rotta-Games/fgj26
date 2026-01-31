@@ -45,6 +45,10 @@ func _input(event):
 		if event.is_action_pressed("p1_hit"):
 			self.fist_collision.disabled = false
 			print("PUNCH!")
+		if event.is_action_pressed("ui_left"):
+			self.fist_box.position.x = -player_stats.hit_reach
+		elif event.is_action_pressed("ui_right"):
+			self.fist_box.position.x = player_stats.hit_reach
 
 func _process(_delta):
 	self.fist_collision.disabled = true
