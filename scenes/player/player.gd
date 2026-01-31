@@ -17,6 +17,7 @@ const MAX_COMBO := 4
 @onready var stunned_timer: Timer = $StunnedTimer
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
+@onready var animation_player = $AnimationPlayer
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -153,7 +154,8 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	if (health <= 0):
 		print("Player dead!")
 		state = Types.PlayerState.DEAD
-		# sprite.play("dead")
+		sprite.play("stunned")
+		animation_player.play("dead")
 	else:
 		sprite.play("stunned")
 		stunned_timer.start(player_stats.stunned_time)
@@ -164,6 +166,12 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		combo_count = 0
 		attack_hit = false
 		print("Player stunned!")
+
+
+func die() -> void:
+	# dead.emit()
+	# await enemy_death_sound.finished
+	queue_free()
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
