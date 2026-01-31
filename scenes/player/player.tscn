@@ -191,7 +191,7 @@ animations = [{
 size = Vector2(31, 9)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gmlin"]
-size = Vector2(31, 8)
+size = Vector2(31, 35)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(33, 53.5)
@@ -289,7 +289,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D" unique_id=934439360 groups=["Player"]]
 texture_filter = 1
-collision_mask = 22
+collision_mask = 23
 motion_mode = 1
 script = ExtResource("1_g2els")
 player_stats = SubResource("Resource_lvxji")
@@ -311,6 +311,7 @@ position = Vector2(23, -29)
 collision_mask = 18
 
 [node name="FistBoxCullision2D" type="CollisionShape2D" parent="FistBox2D" unique_id=1421419464]
+position = Vector2(0, 13.5)
 shape = SubResource("RectangleShape2D_gmlin")
 disabled = true
 
