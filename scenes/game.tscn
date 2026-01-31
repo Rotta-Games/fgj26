@@ -52,10 +52,9 @@ grow_horizontal = 0
 [node name="Player" parent="." unique_id=411557437 instance=ExtResource("2_lbhrr")]
 position = Vector2(139, 146.33333)
 
-[node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("target", "viewport") instance=ExtResource("5_iywne")]
+[node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("target") instance=ExtResource("5_iywne")]
 position = Vector2(171.5, 80.5)
 target = NodePath("../Player")
-viewport = NodePath("")
 
 [connection signal="camera_right_limit_changed" from="Stage" to="SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
 [connection signal="checkpoint_reached" from="SubPixelFollowCamera" to="Stage" method="_on_sub_pixel_follow_camera_checkpoint_reached"]
