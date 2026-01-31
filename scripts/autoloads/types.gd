@@ -12,3 +12,11 @@ enum PlayerId {
 }
 
 enum EnemyState {IDLE, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DEAD}
+
+enum PlayerState {
+	IDLE,
+	WALKING,
+	PUNCHING,
+	STUNNED,
+	DEAD,
+}

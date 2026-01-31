@@ -5,16 +5,20 @@ extends CharacterBody2D
 @onready var sprite = $AnimatedSprite2D
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
+@onready var player_hit_area: Area2D = $PlayerHitArea
 
 signal dead
 
 enum Direction {LEFT, RIGHT}
 const X_ALIGN_THRESHOLD := 30.0  # When within this many px of player's x, seek to the side
-const Y_LEVEL_THRESHOLD := 10.0  # Aim to be within this many px of player's y
+const Y_LEVEL_THRESHOLD := 20.0  # Aim to be within this many px of player's y
+var rng = RandomNumberGenerator.new()
 
 var state = Types.EnemyState.IDLE
 var health: int
 var current_target: CharacterBody2D
+var waiting_to_attack: bool = false
+var _dealt_damage_this_attack: bool = false
 
 func _ready() -> void:
 	health = stat.health
@@ -35,9 +39,9 @@ func _physics_process(_delta: float) -> void:
 			# Seek Y
 			var desired_y: float
 			if to_player.y >= 0 && abs(to_player.y) >= Y_LEVEL_THRESHOLD:
-				desired_y = 1
+				desired_y = 1 + rng.randf_range(0, 2)
 			elif to_player.y <= 0 && abs(to_player.y) >= Y_LEVEL_THRESHOLD:
-				desired_y = -1
+				desired_y = -1 - rng.randf_range(0, 2)
 
 			var move_dir := Vector2(desired_x, desired_y)
 			if move_dir.length_squared() < 0.01:
@@ -54,6 +58,30 @@ func _physics_process(_delta: float) -> void:
 				direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
 			sprite.flip_h = direction != Direction.RIGHT
 			move_and_slide()
+	elif current_target && state == Types.EnemyState.ATTACK && !waiting_to_attack:
+		_start_attack()
+
+	# On attack frame 3, hurt any player in hit area (once per attack)
+	if state == Types.EnemyState.ATTACK && sprite.animation == "attack" && sprite.frame == 3 && !_dealt_damage_this_attack:
+		_try_hurt_players_in_hit_area()
+
+
+func _start_attack() -> void:
+	waiting_to_attack = true
+	_dealt_damage_this_attack = false
+	sprite.play("attack")
+	await get_tree().create_timer(stat.attack_speed).timeout
+	sprite.play("default")
+	waiting_to_attack = false
+
+func _try_hurt_players_in_hit_area() -> void:
+	for area in player_hit_area.get_overlapping_areas():
+		if "PlayerHitbox" in area.get_groups():
+			var asd = area as Area2D
+			var player := asd.get_parent()
+			player.hurt(stat.attack_damage)
+			_dealt_damage_this_attack = true
+			break
 
 func init_spawn(spawn_position: Vector2) -> void:
 	global_position = spawn_position
@@ -73,7 +101,7 @@ func _set_nearest_player_as_target() -> void:
 	if nearest:
 		current_target = nearest as CharacterBody2D
 
-func hurt(amount: int) -> void:
+func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 	
 	if (health <= 0):
@@ -93,11 +121,13 @@ func _on_player_detection_area_area_entered(area: Node2D) -> void:
 		current_target = area.get_parent()
 
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
-	if area.get_parent() == current_target && state == Types.EnemyState.SEEK:
-		state = Types.EnemyState.ATTACK
+	if "PlayerHitbox" in area.get_groups():
+		if area.get_parent() == current_target && state == Types.EnemyState.SEEK:
+			state = Types.EnemyState.ATTACK
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
+	if "PlayerHitbox" in area.get_groups():
 		if area.get_parent() == current_target && state == Types.EnemyState.ATTACK:
 			state = Types.EnemyState.SEEK
 
