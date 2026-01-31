@@ -115,6 +115,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	if (health <= 0):
 		state = Types.EnemyState.DEAD
 		animation_player.play("dead")
+		enemy_death_sound.pitch_scale = randf_range(0.9, 1.1)
 		enemy_death_sound.play()
 	else:
 		animation_player.play("hurt")
