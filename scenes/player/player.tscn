@@ -590,4 +590,10 @@ libraries/ = SubResource("AnimationLibrary_lvxji")
 stream = ExtResource("6_p47bc")
 bus = &"SFX"
 
+[node name="MaskTimer" type="Timer" parent="." unique_id=2064387442]
+wait_time = 10.0
+one_shot = true
+ignore_time_scale = true
+
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]
+[connection signal="timeout" from="MaskTimer" to="." method="_on_mask_timer_timeout"]

@@ -9,6 +9,7 @@ extends CharacterBody2D
 @onready var enemy_hitbox: Area2D = $HitBox
 @onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
 @onready var player_collision : CollisionShape2D = $PlayerCollision
+@onready var attack_delay_timer: Timer = $AttackDelayTimer
 
 signal dead
 
@@ -19,12 +20,19 @@ var rng = RandomNumberGenerator.new()
 
 var state = Types.EnemyState.IDLE
 var health: int
+var attack_delay: float
 var current_target: CharacterBody2D
 var waiting_to_attack: bool = false
 var _target_in_hit_area: bool = false
+var _damage_dealt_this_round = false
 
 func _ready() -> void:
 	health = stat.health
+	attack_delay = stat.attack_delay
+	
+	attack_delay_timer.timeout.connect(func():
+		waiting_to_attack = false
+	)
 
 func _physics_process(_delta: float) -> void:
 	if current_target && state == Types.EnemyState.SEEK:
@@ -70,18 +78,20 @@ func _physics_process(_delta: float) -> void:
 	elif current_target && _target_in_hit_area && !waiting_to_attack && state == Types.EnemyState.ATTACK:
 		_start_attack()
 
-	if sprite.animation == "attack" && sprite.frame == 3 && _target_in_hit_area:
+	if state == Types.EnemyState.ATTACK && sprite.animation == "attack" && sprite.frame == 3 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
 		_deal_damage()
 
 
 func _start_attack() -> void:
 	waiting_to_attack = true
+	_damage_dealt_this_round = false
 	sprite.play("attack")
-	await get_tree().create_timer(stat.attack_speed).timeout 
-	waiting_to_attack = false
 
 func _deal_damage() -> void:
 	current_target.hurt(stat.attack_damage)
+	_damage_dealt_this_round = true
+	attack_delay_timer.wait_time = attack_delay
+	attack_delay_timer.start()
 
 func init_spawn(spawn_position: Vector2) -> void:
 	global_position = spawn_position
@@ -145,19 +155,24 @@ func _on_player_hit_area_area_entered(area: Node2D) -> void:
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
-	if "PlayerHitbox" in area.get_groups():
+	if state == Types.EnemyState.ATTACK && "PlayerHitbox" in area.get_groups():
 		if area.get_parent() == current_target:
 			_target_in_hit_area = false
-			if state == Types.EnemyState.ATTACK:
-				state = Types.EnemyState.SEEK
+			state = Types.EnemyState.SEEK
 
 
 func _on_stunned_timer_timeout():
-	if (health > 0):
-		for area in player_hit_area.get_overlapping_areas():
-			if "PlayerHitbox" in area.get_groups():
-				current_target = area.get_parent()
-				state = Types.EnemyState.ATTACK
-			else:
-				state = Types.EnemyState.SEEK
+	if (health > 0 && state == Types.EnemyState.STUNNED):
 		sprite.play("default")
+		state = Types.EnemyState.SEEK
+		
+		for area in player_hit_area.get_overlapping_areas():
+			if current_target == area.get_parent():
+				state = Types.EnemyState.ATTACK
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if sprite.animation == "attack":
+		_damage_dealt_this_round = false
+		waiting_to_attack = false
+		
