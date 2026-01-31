@@ -13,6 +13,7 @@ const MAX_Y : int = 150
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
 
+var health: int
 var direction := Vector2.ZERO
 var is_punching := false
 
@@ -29,6 +30,7 @@ var PLAYER_ATTACK: String
 
 
 func _ready() -> void:
+	health = player_stats.health
 	# actions for player N
 	var i = player_stats.player_id
 	PLAYER_LEFT = "player%d_left" % i
@@ -110,6 +112,15 @@ func _process(_delta):
 	pass
 
 
+func hurt(amount: int) -> void:
+	health -= amount
+
+	SignalBus.playerHealthState.emit({
+		"player_id": Types.PlayerId.PLAYER_1,
+		"health": health,
+	})
+
+
 func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "EnemyHitbox" in area.get_groups():
 		var enemy = area.get_parent()
@@ -122,6 +133,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 
 		enemy.hurt(dmg)
 		print("Dealt %d damage!" % dmg)
+
 
 func _on_animation_finished() -> void:
 	if sprite.animation == "left_punch":
