@@ -17,5 +17,6 @@ enum PlayerState {
 	IDLE,
 	WALKING,
 	PUNCHING,
+	STUNNED,
 	DEAD,
 }

@@ -12,6 +12,7 @@ const MAX_Y : int = 150
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
+@onready var stunned_timer = $StunnedTimer
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -54,6 +55,10 @@ func combo_timer_reset() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if state == Types.PlayerState.STUNNED or state == Types.PlayerState.DEAD:
+		_move()
+		return
+
 	direction = Input.get_vector(PLAYER_LEFT, PLAYER_RIGHT, PLAYER_UP, PLAYER_DOWN)
 	if direction.x:
 		velocity.x = direction.x * SPEED
@@ -114,13 +119,21 @@ func _process(_delta):
 	pass
 
 
-func hurt(amount: int) -> void:
+func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 
 	SignalBus.playerHealthState.emit({
 		"player_id": Types.PlayerId.PLAYER_1,
 		"health": health,
 	})
+
+	if (health <= 0):
+		state = Types.PlayerState.DEAD
+		# sprite.play("dead")
+	else:
+		#sprite.play("hurt")
+		stunned_timer.start(player_stats.stunned_time)
+		state = Types.PlayerState.STUNNED
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
@@ -132,8 +145,9 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		if combo_count >= 4:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
-
-		enemy.hurt(dmg)
+			enemy.hurt(dmg) #, critical_hit=true)
+		else:
+			enemy.hurt(dmg)
 		print("Dealt %d damage!" % dmg)
 
 
@@ -141,3 +155,8 @@ func _on_animation_finished() -> void:
 	if sprite.animation == "left_punch":
 		state = Types.PlayerState.IDLE
 		self.fist_collision.disabled = true
+
+
+func _on_stunned_timer_timeout():
+	if (health > 0):
+		state = Types.PlayerState.IDLE
