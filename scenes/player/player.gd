@@ -11,31 +11,47 @@ const SPRITE_WIDTH : int = 32
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
 
+var direction := Vector2.ZERO
+
+# actions
+var PLAYER_LEFT: String
+var PLAYER_RIGHT: String
+var PLAYER_UP: String
+var PLAYER_DOWN: String
+var PLAYER_ATTACK: String
 
 
-func _physics_process(delta: float) -> void:
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("player_left", "player_right")
-	if direction:
-		velocity.x = direction * SPEED
+func _ready() -> void:
+	# actions for player N
+	var i = player_stats.player_id
+	PLAYER_LEFT = "player%d_left" % i
+	PLAYER_RIGHT = "player%d_right" % i
+	PLAYER_UP = "player%d_up" % i
+	PLAYER_DOWN = "player%d_down" % i
+	PLAYER_ATTACK = "player%d_attack" % i
+
+
+func _physics_process(_delta: float) -> void:
+	direction = Input.get_vector(PLAYER_LEFT, PLAYER_RIGHT, PLAYER_UP, PLAYER_DOWN)
+	if direction.x:
+		velocity.x = direction.x * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	var y_direction := Input.get_axis("player_up", "player_down")
-	if y_direction:
-		velocity.y = y_direction * SPEED
+	if direction.y:
+		velocity.y = direction.y * SPEED
 	else:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	_move()
 	
-	if direction != 0 or y_direction != 0:
+	if direction != Vector2.ZERO:
 		sprite.play("walk")
-		if direction != 0:
-			sprite.flip_h = direction < 0
+		if direction.x != 0:
+			sprite.flip_h = direction.x < 0
 	else:
 		sprite.play("default")
+
 
 func _move():
 	
@@ -49,13 +65,12 @@ func _move():
 
 func _input(event):
 	if (event is InputEventKey or event is InputEventJoypadButton) and event.pressed:
-		if event.is_action_pressed("player_attack"):
+		if event.is_action_pressed(PLAYER_ATTACK):
 			self.fist_collision.disabled = false
 			print("PUNCH!")
-		if event.is_action_pressed("player_left"):
-			print("LEFT")
+		if event.is_action_pressed(PLAYER_LEFT):
 			self.fist_box.position.x = -player_stats.hit_reach
-		elif event.is_action_pressed("player_right"):
+		elif event.is_action_pressed(PLAYER_RIGHT):
 			self.fist_box.position.x = player_stats.hit_reach
 
 func _process(_delta):

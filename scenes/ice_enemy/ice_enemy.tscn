@@ -7,8 +7,19 @@
 [sub_resource type="Resource" id="Resource_22hgk"]
 script = ExtResource("2_qrh7f")
 health = 100
-speed = 20.0
+movement_speed = 40.0
 metadata/_custom_type_script = "uid://d1h18hi41diby"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oitbj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4ra3w")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a3pup"]
 size = Vector2(15, 9)
@@ -28,10 +39,10 @@ collision_mask = 7
 script = ExtResource("1_md0e3")
 stat = SubResource("Resource_22hgk")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2042695726]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=447994210]
 texture_filter = 1
 position = Vector2(-2, -11)
-texture = ExtResource("2_4ra3w")
+sprite_frames = SubResource("SpriteFrames_oitbj")
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.5, 16.5)
@@ -45,27 +56,27 @@ position = Vector2(-3, -10)
 shape = SubResource("CapsuleShape2D_qrh7f")
 
 [node name="PlayerDetectionArea" type="Area2D" parent="." unique_id=743462244]
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectionArea" unique_id=1364154775]
+visible = false
 position = Vector2(-2, -10)
 scale = Vector2(6, 6)
 shape = SubResource("CircleShape2D_oitbj")
 
 [node name="PlayerHitArea" type="Area2D" parent="." unique_id=1917836694]
+collision_layer = 2
 
 [node name="CollisionShape2DLeft" type="CollisionShape2D" parent="PlayerHitArea" unique_id=255805630]
 position = Vector2(-22.5, -13)
-scale = Vector2(3, 3)
+scale = Vector2(3, 2)
 shape = SubResource("RectangleShape2D_qrh7f")
 
 [node name="CollisionShape2DRight" type="CollisionShape2D" parent="PlayerHitArea" unique_id=352834710]
 position = Vector2(18, -13)
-scale = Vector2(3, 3)
+scale = Vector2(3, 2)
 shape = SubResource("RectangleShape2D_qrh7f")
 
 [connection signal="area_entered" from="PlayerDetectionArea" to="." method="_on_player_detection_area_area_entered"]
-[connection signal="area_exited" from="PlayerDetectionArea" to="." method="_on_player_detection_area_area_exited"]
-[connection signal="body_entered" from="PlayerHitArea" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_entered" from="PlayerHitArea" to="." method="_on_player_detection_area_body_entered"]
-[connection signal="body_entered" from="PlayerHitArea" to="." method="_on_player_hit_area_body_entered"]
-[connection signal="body_exited" from="PlayerHitArea" to="." method="_on_player_hit_area_body_exited"]
+[connection signal="area_entered" from="PlayerHitArea" to="." method="_on_player_hit_area_area_entered"]
+[connection signal="area_exited" from="PlayerHitArea" to="." method="_on_player_hit_area_area_exited"]
