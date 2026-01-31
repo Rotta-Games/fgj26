@@ -51,7 +51,12 @@ func _physics_process(_delta: float) -> void:
 		if direction != Vector2.ZERO:
 			sprite.play("walk")
 			if direction.x != 0:
-				sprite.flip_h = direction.x < 0
+				var flib := direction.x < 0
+				sprite.flip_h = flib
+				if flib:
+					fist_box.position.x = -player_stats.hit_reach
+				else:
+					fist_box.position.x = player_stats.hit_reach
 		else:
 			sprite.play("default")
 
@@ -73,10 +78,6 @@ func _input(event):
 			self.fist_collision.disabled = false
 			is_punching = true
 			sprite.play("left_punch")
-		if event.is_action_pressed(PLAYER_LEFT):
-			self.fist_box.position.x = -player_stats.hit_reach
-		elif event.is_action_pressed(PLAYER_RIGHT):
-			self.fist_box.position.x = player_stats.hit_reach
 
 func _process(_delta):
 	self.fist_collision.disabled = true
@@ -85,7 +86,8 @@ func _process(_delta):
 func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "EnemyHitbox" in area.get_groups():
 		print("HIT ENEMY")
-		# ennemy.hurt(player_stats.attack_power_or_jotain)
+		var enemy = area.get_parent()
+		# enemy.hurt(1)
 
 
 func _on_animation_finished() -> void:
