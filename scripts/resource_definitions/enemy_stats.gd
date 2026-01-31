@@ -6,3 +6,4 @@ extends Resource
 @export var attack_delay: float
 @export var attack_damage: int
 @export var stunned_time: float
+@export var score: int

@@ -22,10 +22,12 @@ const MAX_COMBO := 4
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
+@onready var particle_emitter = $ParticleEmitter
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
 var direction := Vector2.ZERO
+var score: int = 0
 
 var combo_timer: Timer
 var combo_count: int = 0
@@ -116,8 +118,14 @@ func _physics_process(_delta: float) -> void:
 				var facing_left := direction.x < 0
 				sprite.scale.x = -1 if facing_left else 1
 				if facing_left:
+					particle_emitter._direction = -1 
+					#particle_emitter.scale = -1.0
+					particle_emitter.position.x = -player_stats.hit_reach - 3
 					fist_box.position.x = -player_stats.hit_reach
 				else:
+					particle_emitter._direction = 1
+				#	particle_emitter.scale = 1.0
+					particle_emitter.position.x = player_stats.hit_reach + 3
 					fist_box.position.x = player_stats.hit_reach
 		else:
 			state = Types.PlayerState.IDLE
@@ -165,9 +173,15 @@ func _input(event: InputEvent) -> void:
 		combo_timer.start()
 		combo_count += 1
 		if combo_count > MAX_COMBO:
+			
+			particle_emitter.fire(6, 1.4)
 			print("combo reset")
 			combo_count = 0
 			combo_timer.stop()
+		elif combo_count > MAX_COMBO - 1:
+			particle_emitter.fire(2)
+		elif combo_count > MAX_COMBO - 2:
+			particle_emitter.fire(1)
 
 
 func hurt(amount: int, critical_hit: bool = false) -> void:
@@ -208,7 +222,6 @@ func init_fire_power() -> void:
 	player_mask = Types.PlayerMask.FIRE
 	mask_timer.start()
 
-
 func die() -> void:
 	# dead.emit()
 	# await enemy_death_sound.finished
@@ -225,12 +238,21 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 
 		var dmg_mult = get_damage_multiplier()
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
+		var given_score
+
 		if combo_count >= MAX_COMBO:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
-			enemy.hurt(dmg, true)
+			given_score = enemy.hurt(dmg, true)
 		else:
-			enemy.hurt(dmg)
+			given_score= enemy.hurt(dmg)
+		
+		if given_score:
+			score = score + given_score
+			SignalBus.playerScoreState.emit({
+			"player_id": player_stats.player_id,
+			"score": score,
+			})
 		print("Dealt %d damage!" % dmg)
 	if "StaticObjectHitbox" in groups:
 		var static_object = area.get_parent()
