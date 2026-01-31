@@ -90,8 +90,7 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == Key.KEY_ESCAPE:
 			get_tree().quit()
 
-
-func _on_sub_pixel_follow_camera_right_limit_reached() -> void:
+func _on_sub_pixel_follow_camera_checkpoint_reached() -> void:
 	if _has_more_waves():
 		var wave = _current_block.waves.pop_front()
 		_spawn_wave(wave)

@@ -4,15 +4,16 @@ extends Camera2D
 @export var viewport : SubViewportContainer
 
 var _actual_cam_pos: Vector2
-var _right_limit_reached : bool = false
+var _checkpoint_reached : bool = false
+var _checkpoint_limit: int = 999999999
 
 const CAMERA_MOVE_THRESHOLD: int = 100
+const CHECKPOINT_THRESHOLD_PERCENTAGE: float = 0.75
 
-signal right_limit_reached
+signal checkpoint_reached
 
 func _ready() -> void:
 	_init_camera()
-	pass
 	
 func _init_camera() -> void:
 	if not target:
@@ -38,10 +39,12 @@ func _process(delta: float) -> void:
 	if target_screen_left >= CAMERA_MOVE_THRESHOLD:
 		global_position.x = target.global_position.x 
 
-	if not _right_limit_reached and (global_screen_left + get_viewport().get_visible_rect().size.x) >= limit_right - 5:
-		_right_limit_reached = true
-		right_limit_reached.emit()
+	if not _checkpoint_reached and (global_screen_left + get_viewport().get_visible_rect().size.x) >= _checkpoint_limit:
+		_checkpoint_reached = true
+		checkpoint_reached.emit()
 
-func _on_stage_camera_right_limit_changed(right_limit: int) -> void:
-	limit_right = right_limit
-	_right_limit_reached = false
+func _on_stage_camera_right_limit_changed(new_right_limit: int) -> void:
+	var delta = new_right_limit - limit_right
+	_checkpoint_limit = new_right_limit - int((1.0 - CHECKPOINT_THRESHOLD_PERCENTAGE) * new_right_limit)
+	limit_right = new_right_limit
+	_checkpoint_reached = false
