@@ -540,12 +540,12 @@ player_stats = SubResource("Resource_lvxji")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
-animation = &"walk"
+animation = &"stunned"
 autoplay = "default"
 
 [node name="HeadAttachment" type="Sprite2D" parent="AnimatedSprite2D" unique_id=277029135]
 visible = false
-position = Vector2(5, -27)
+position = Vector2(2, -24)
 texture = ExtResource("5_mask")
 
 [node name="MaskAnimationPlayer" type="AnimationPlayer" parent="." unique_id=182350020]

@@ -95,8 +95,10 @@ position = Vector2(0, 138)
 position = Vector2(0, 158)
 
 [node name="StaticObjects" type="Node2D" parent="." unique_id=1091333678]
+y_sort_enabled = true
 
 [node name="Trashcan" parent="StaticObjects" unique_id=2095307770 instance=ExtResource("7_ljyi0")]
 position = Vector2(128, 102)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1780131126]
+y_sort_enabled = true
