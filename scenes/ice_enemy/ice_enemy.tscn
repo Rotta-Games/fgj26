@@ -12,6 +12,18 @@ attack_speed = 2.0
 stunned_time = 0.5
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjk1t"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(0, 128, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6c5jp"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(96, 128, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88ws4"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(192, 128, 96, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_22hgk"]
 atlas = ExtResource("3_qrh7f")
 region = Rect2(0, 0, 96, 64)
@@ -30,6 +42,29 @@ region = Rect2(96, 0, 96, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_oitbj"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjk1t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjk1t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjk1t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6c5jp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88ws4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88ws4")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 7.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_22hgk")
@@ -161,7 +196,9 @@ stat = SubResource("Resource_22hgk")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_oitbj")
+animation = &"attack"
 autoplay = "default"
+frame_progress = 0.7509426
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.5, 16.5)
