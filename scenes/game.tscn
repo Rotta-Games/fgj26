@@ -41,7 +41,6 @@ layout_mode = 2
 [node name="Player1UIHBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1069601449]
 top_level = true
 material = SubResource("CanvasItemMaterial_iywne")
-custom_minimum_size = Vector2(400, 200)
 layout_mode = 1
 offset_right = 400.0
 offset_bottom = 200.0
@@ -58,17 +57,29 @@ rounded = true
 texture_under = ExtResource("3_gee14")
 texture_progress = ExtResource("4_0tnpc")
 
-[node name="Player2UIHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1139436458]
+[node name="Player2UIHBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1153013427]
 top_level = true
 material = SubResource("CanvasItemMaterial_p57ef")
-custom_minimum_size = Vector2(400, 200)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
+offset_left = -91.0
+offset_right = 309.0
+offset_bottom = 200.0
 grow_horizontal = 0
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2UIHBoxContainer" unique_id=1791985038]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_0tnpc")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2UIHBoxContainer" unique_id=588482519]
+layout_mode = 2
+value = 100.0
+rounded = true
+texture_under = ExtResource("3_gee14")
+texture_progress = ExtResource("4_0tnpc")
 
 [node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1400428008 instance=ExtResource("2_iywne")]
 visible = false
