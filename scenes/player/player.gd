@@ -32,8 +32,8 @@ var combo_count: int = 0
 var attack_hit: bool = false
 
 var player_mask: Types.PlayerMask = Types.PlayerMask.NONE
-var attack_stats = {
-	Types.PlayerMask.NONE: {"attack_speed": 1.0},
+var mask_stats = {
+	Types.PlayerMask.NONE: {"attack_speed": 1.0, "damage_multiplier": 1.0},
 	Types.PlayerMask.TIGER: {"attack_speed": 0.7, "damage_multiplier": 0.95},
 	Types.PlayerMask.FIRE: {"attack_speed": 1.0, "damage_multiplier": 1.2},
 }
@@ -125,8 +125,10 @@ func _move():
 
 
 func get_attack_speed_multiplier() -> float:
-	return attack_stats[player_mask]["attack_speed"]
+	return mask_stats[player_mask]["attack_speed"]
 
+func get_damage_multiplier() -> float:
+	return mask_stats[player_mask]["damage_multiplier"]
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(PLAYER_ATTACK):
@@ -201,7 +203,8 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		attack_hit = true
 		_play_punch_sound()
 
-		var dmg = BASE_DAMAGE + combo_count * 2
+		var dmg_mult = get_damage_multiplier()
+		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
 		if combo_count >= MAX_COMBO:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
