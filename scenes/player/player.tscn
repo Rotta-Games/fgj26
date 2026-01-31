@@ -40,6 +40,22 @@ region = Rect2(192, 128, 96, 64)
 atlas = ExtResource("3_gmlin")
 region = Rect2(288, 128, 96, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcs02"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(0, 192, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myrg7"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(96, 192, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvlxm"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(192, 192, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uf5tr"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(288, 192, 96, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_0owmy"]
 atlas = ExtResource("3_gmlin")
 region = Rect2(0, 64, 96, 64)
@@ -97,6 +113,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_fcs02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myrg7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvlxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvlxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uf5tr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uf5tr")
+}],
+"loop": true,
+"name": &"right_kick",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_0owmy")
 }, {
 "duration": 1.0,
@@ -133,15 +172,16 @@ player_stats = SubResource("Resource_lvxji")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
-animation = &"left_punch"
-frame = 4
-frame_progress = 1.0
+animation = &"right_kick"
+frame_progress = 0.7309954
 
 [node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
+visible = false
 position = Vector2(-0.5, 16)
 shape = SubResource("RectangleShape2D_gee14")
 
 [node name="FistBox2D" type="Area2D" parent="." unique_id=1807308919]
+visible = false
 position = Vector2(23, -29)
 collision_mask = 2
 
@@ -150,6 +190,7 @@ shape = SubResource("RectangleShape2D_gmlin")
 disabled = true
 
 [node name="HitBox2D" type="Area2D" parent="." unique_id=1957341326 groups=["PlayerHitbox"]]
+visible = false
 collision_mask = 2
 
 [node name="HitBoxCullision2D" type="CollisionShape2D" parent="HitBox2D" unique_id=210454895]
