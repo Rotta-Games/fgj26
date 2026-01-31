@@ -5,8 +5,6 @@
 [ext_resource type="Shader" uid="uid://bp00811l4jilg" path="res://assets/shaders/Subpixel.gdshader" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
-[ext_resource type="PackedScene" uid="uid://b1ohca4ql4sso" path="res://scenes/game_ui/game_ui.tscn" id="9_0tnpc"]
-[ext_resource type="Script" uid="uid://clxrnp58j3lpu" path="res://scenes/game_ui/game_ui.gd" id="10_vtaks"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lbhrr"]
 shader = ExtResource("3_lbhrr")
@@ -40,8 +38,27 @@ viewport = NodePath("../..")
 [node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=983965778]
 script = ExtResource("8_gee14")
 
-[node name="GameUi" parent="." unique_id=764667973 instance=ExtResource("9_0tnpc")]
-script = ExtResource("10_vtaks")
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=252661915]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=529509391]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer" unique_id=2118451747]
+layout_mode = 2
+
+[node name="Player1UIHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1596250537]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Player2UIHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1139436458]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="camera_right_limit_changed" from="SubViewportContainer/SubViewport/Stage" to="SubViewportContainer/SubViewport/SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
 [connection signal="right_limit_reached" from="SubViewportContainer/SubViewport/SubPixelFollowCamera" to="SubViewportContainer/SubViewport/Stage" method="_on_sub_pixel_follow_camera_right_limit_reached"]
