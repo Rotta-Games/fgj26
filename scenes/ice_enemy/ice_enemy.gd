@@ -111,7 +111,7 @@ func _set_nearest_player_as_target() -> void:
 	if nearest:
 		current_target = nearest as CharacterBody2D
 
-func hurt(amount: int, critical_hit: bool = false) -> void:
+func hurt(amount: int, critical_hit: bool = false, player: Types.PlayerId = Types.PlayerId.PLAYER_1) -> Variant:
 	if state == Types.EnemyState.DEAD:
 		return
 	
@@ -124,12 +124,14 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		animation_player.play("dead")
 		enemy_death_sound.pitch_scale = randf_range(0.9, 1.1)
 		enemy_death_sound.play()
+		return stat.score
 
 	else:
 		animation_player.play("hurt")
 		stunned_timer.start(stat.stunned_time)
 		state = Types.EnemyState.STUNNED
 		sprite.play("stunned")
+		return
 
 func die() -> void:
 	dead.emit()

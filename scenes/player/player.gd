@@ -26,6 +26,7 @@ const MAX_COMBO := 4
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
 var direction := Vector2.ZERO
+var score: int = 0
 
 var combo_timer: Timer
 var combo_count: int = 0
@@ -208,7 +209,6 @@ func init_fire_power() -> void:
 	player_mask = Types.PlayerMask.FIRE
 	mask_timer.start()
 
-
 func die() -> void:
 	# dead.emit()
 	# await enemy_death_sound.finished
@@ -225,12 +225,21 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 
 		var dmg_mult = get_damage_multiplier()
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
+		var given_score
+
 		if combo_count >= MAX_COMBO:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
-			enemy.hurt(dmg, true)
+			given_score = enemy.hurt(dmg, true)
 		else:
-			enemy.hurt(dmg)
+			given_score= enemy.hurt(dmg)
+		
+		if given_score:
+			score = score + given_score
+			SignalBus.playerScoreState.emit({
+			"player_id": player_stats.player_id,
+			"score": score,
+			})
 		print("Dealt %d damage!" % dmg)
 	if "StaticObjectHitbox" in groups:
 		var static_object = area.get_parent()
