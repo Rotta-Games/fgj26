@@ -69,9 +69,9 @@ y_sort_enabled = true
 position = Vector2(139, 146.33333)
 collision_mask = 6
 
-[node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("target") instance=ExtResource("5_iywne")]
+[node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("targets") instance=ExtResource("5_iywne")]
 position = Vector2(171.5, 80.5)
-target = NodePath("../Player")
+targets = [NodePath("../Player")]
 
 [connection signal="camera_right_limit_changed" from="Stage" to="CanvasLayer/MarginContainer/Control/Arrow" method="_on_stage_camera_right_limit_changed"]
 [connection signal="camera_right_limit_changed" from="Stage" to="SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]

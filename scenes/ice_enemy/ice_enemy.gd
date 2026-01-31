@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
+@onready var enemy_hitbox: Area2D = $HitBox
 @onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
 @onready var player_collision : CollisionShape2D = $PlayerCollision
 
@@ -20,7 +21,7 @@ var state = Types.EnemyState.IDLE
 var health: int
 var current_target: CharacterBody2D
 var waiting_to_attack: bool = false
-var _dealt_damage_this_attack: bool = false
+var _target_in_hit_area: bool = false
 
 func _ready() -> void:
 	health = stat.health
@@ -65,32 +66,22 @@ func _physics_process(_delta: float) -> void:
 				player_hit_area.position.x = -40
 			else:
 				player_hit_area.position.x = 0
-			
 			move_and_slide()
-	elif current_target && state == Types.EnemyState.ATTACK && !waiting_to_attack:
+	elif current_target && _target_in_hit_area && !waiting_to_attack && state == Types.EnemyState.ATTACK:
 		_start_attack()
 
-	# On attack frame 3, hurt any player in hit area (once per attack)
-	if state == Types.EnemyState.ATTACK && sprite.animation == "attack" && sprite.frame == 3 && !_dealt_damage_this_attack:
-		_try_hurt_players_in_hit_area()
+	if sprite.animation == "attack" && sprite.frame == 3 && _target_in_hit_area:
+		_deal_damage()
 
 
 func _start_attack() -> void:
 	waiting_to_attack = true
-	_dealt_damage_this_attack = false
 	sprite.play("attack")
-	await get_tree().create_timer(stat.attack_speed).timeout
-	sprite.play("default")
+	await get_tree().create_timer(stat.attack_speed).timeout 
 	waiting_to_attack = false
 
-func _try_hurt_players_in_hit_area() -> void:
-	for area in player_hit_area.get_overlapping_areas():
-		if "PlayerHitbox" in area.get_groups():
-			var asd = area as Area2D
-			var player := asd.get_parent()
-			player.hurt(stat.attack_damage)
-			_dealt_damage_this_attack = true
-			break
+func _deal_damage() -> void:
+	current_target.hurt(stat.attack_damage)
 
 func init_spawn(spawn_position: Vector2) -> void:
 	global_position = spawn_position
@@ -111,14 +102,19 @@ func _set_nearest_player_as_target() -> void:
 		current_target = nearest as CharacterBody2D
 
 func hurt(amount: int, critical_hit: bool = false) -> void:
+	if state == Types.EnemyState.DEAD:
+		return
+	
+	waiting_to_attack = false
 	health -= amount
 	
 	if (health <= 0):
-		player_collision.set_deferred("disabled", true)
+		_disable_all_collisions()
 		state = Types.EnemyState.DEAD
 		animation_player.play("dead")
 		enemy_death_sound.pitch_scale = randf_range(0.9, 1.1)
 		enemy_death_sound.play()
+
 	else:
 		animation_player.play("hurt")
 		stunned_timer.start(stat.stunned_time)
@@ -129,6 +125,12 @@ func die() -> void:
 	dead.emit()
 	await enemy_death_sound.finished
 	queue_free()
+
+func _disable_all_collisions() -> void:
+	# Disable CharacterBody2D collision
+	collision_layer = 0
+	collision_mask = 0
+	$EnemyCollision.disabled = true
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups() && state == Types.EnemyState.IDLE:
@@ -136,14 +138,18 @@ func _on_player_detection_area_area_entered(area: Node2D) -> void:
 
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups():
-		if area.get_parent() == current_target && state == Types.EnemyState.SEEK:
-			state = Types.EnemyState.ATTACK
+		if area.get_parent() == current_target:
+			_target_in_hit_area = true
+			if state == Types.EnemyState.SEEK:
+				state = Types.EnemyState.ATTACK
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups():
-		if area.get_parent() == current_target && state == Types.EnemyState.ATTACK:
-			state = Types.EnemyState.SEEK
+		if area.get_parent() == current_target:
+			_target_in_hit_area = false
+			if state == Types.EnemyState.ATTACK:
+				state = Types.EnemyState.SEEK
 
 
 func _on_stunned_timer_timeout():

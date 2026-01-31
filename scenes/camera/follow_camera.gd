@@ -1,7 +1,6 @@
 extends Camera2D
 
-@export var target: Node2D
-
+@export var targets: Array[Node2D] = []
 var _checkpoint_reached : bool = false
 var _checkpoint_limit: int = 999999999
 var _target_limit_right: int 
@@ -12,37 +11,63 @@ const LIMIT_RIGHT_LERP : int = 1
 
 signal checkpoint_reached
 
+
 func _ready() -> void:
 	_init_camera()
 	limit_right = 320
-	
-func _init_camera() -> void:
-	if not target:
-		printerr("Target missing from camera")
-		return
-	global_position.x = target.global_position.x 
+	_update_targets()
 
-func _physics_process(delta: float) -> void:
+
+func _update_targets() -> void:
+	targets.clear()
+	for node in get_tree().get_nodes_in_group("Player"):
+		if node is Node2D:
+			targets.append(node)
+
+
+func _init_camera() -> void:
+	_update_targets()
+	if targets.is_empty():
+		printerr("No targets found in group 'Player'")
+		return
+	global_position.x = _get_targets_average_x()
+
+
+func _physics_process(_delta: float) -> void:
+	if limit_right < _target_limit_right:
+		limit_right += LIMIT_RIGHT_LERP
 	if limit_right < _target_limit_right:
 		limit_right += LIMIT_RIGHT_LERP
 
-func _process(delta: float) -> void:
-	if not target:
+
+func _process(_delta: float) -> void:
+	_update_targets()
+	if targets.is_empty():
 		return
 
 	var canvas_transform = get_viewport().get_canvas_transform()
 	var global_screen_left = -canvas_transform.origin.x
 	limit_left = global_screen_left
-	var target_screen_left = target.global_position.x - global_screen_left
+	var avg_x = _get_targets_average_x()
+	var target_screen_left = avg_x - global_screen_left
 	if target_screen_left >= CAMERA_MOVE_THRESHOLD:
-		global_position.x = target.global_position.x 
-
+		global_position.x = avg_x
 	if not _checkpoint_reached and (global_screen_left + get_viewport().get_visible_rect().size.x) >= _checkpoint_limit:
 		_checkpoint_reached = true
 		checkpoint_reached.emit()
+
 
 func _on_stage_camera_right_limit_changed(new_right_limit: int) -> void:
 	var delta = new_right_limit - limit_right
 	_checkpoint_limit = new_right_limit - int((1.0 - CHECKPOINT_THRESHOLD_PERCENTAGE) * new_right_limit)
 	_target_limit_right = new_right_limit
 	_checkpoint_reached = false
+
+
+func _get_targets_average_x() -> float:
+	if targets.is_empty():
+		return global_position.x
+	var sum = 0.0
+	for t in targets:
+		sum += t.global_position.x
+	return sum / targets.size()
