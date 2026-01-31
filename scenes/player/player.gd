@@ -87,7 +87,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "EnemyHitbox" in area.get_groups():
 		print("HIT ENEMY")
 		var enemy = area.get_parent()
-		# enemy.hurt(1)
+		enemy.hurt(10)
 
 
 func _on_animation_finished() -> void:
