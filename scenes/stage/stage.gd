@@ -2,13 +2,15 @@ extends Node2D
 
 @onready var _block_container : Node2D = $Blocks
 @onready var _spawn_point_container : Node2D = $SpawnPoints
+@onready var _enemy_container : Node2D = $Enemies
 
 var _current_camera_limit : int = 0
 var _current_block : StageBlock
 var _enemies_alive : int = 0
+var _spawn_in_progress : bool = false
 
-const MIN_SPAWN_DELAY_S : float = 0.5
-const MAX_SPAWN_DELAY_S : float = 2.5
+const MIN_SPAWN_DELAY_S : float = 0.3
+const MAX_SPAWN_DELAY_S : float = 1.5
 const CAMERA_SPAWN_OFFSET : int = 32
 
 signal camera_right_limit_changed(right_limit: int)
@@ -27,25 +29,35 @@ func _set_block(block: StageBlock) -> void:
 	camera_right_limit_changed.emit(_current_camera_limit)
 		
 func _spawn_wave(wave: EnemyWave) -> void:
-	if not wave.enemy_packs_left.is_empty():
-		var pack = wave.enemy_packs_left.pop_front()
-		_spawn_pack(pack, Types.Side.LEFT)
-	if not wave.enemy_packs_right.is_empty():
-		var pack = wave.enemy_packs_right.pop_front()
-		_spawn_pack(pack, Types.Side.RIGHT)
-			
-func _spawn_pack(pack: EnemyPack, side: Types.Side) -> void:
-	for enemy in pack.enemies:
-		_spawn_enemy(enemy, side)
+	var coinflip = randi_range(0, 1)
+	var first_wave = wave.enemies_left
+	var first_side = Types.Side.LEFT
+	var second_wave = wave.enemies_right
+	var second_side = Types.Side.RIGHT
+	if coinflip == 0:
+		first_wave = wave.enemies_right
+		first_side = Types.Side.RIGHT
+		second_wave = wave.enemies_left
+		second_side = Types.Side.LEFT
+		
+	_spawn_in_progress = true
+	for enemy in first_wave:
 		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
 		await get_tree().create_timer(delay).timeout
-			
+		_spawn_enemy(enemy, first_side)
+	for enemy in second_wave:
+		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
+		await get_tree().create_timer(delay).timeout
+		_spawn_enemy(enemy, second_side)
+	_spawn_in_progress = false
+
 func _spawn_enemy(enemy_scene: PackedScene, side: Types.Side) -> void:
 	var enemy = enemy_scene.instantiate()
-	_current_block.add_child(enemy)
+	_enemy_container.add_child(enemy)
 	var spawn_point = _get_random_spawn_point(side)
 	enemy.init_spawn(spawn_point)
 	_enemies_alive += 1
+	print("enemies alive " + str(_enemies_alive))
 	enemy.dead.connect(_on_enemy_killed)
 
 func _get_random_spawn_point(side: Types.Side) -> Vector2i:
@@ -64,13 +76,18 @@ func _get_random_spawn_point(side: Types.Side) -> Vector2i:
 	
 func _on_enemy_killed() -> void:
 	_enemies_alive -= 1
-	print("ENEMY DEAD: enemies remaining " + str(_enemies_alive))
+	print("ENEMY DEAD: enemies remaining " + str(_enemies_alive) + ", spawn in progress? " + str(_spawn_in_progress))
+	if _spawn_in_progress:
+		return
 	if _enemies_alive == 0:
 		if _has_more_waves():
+			print("MORE WAVES!")
 			var wave = _current_block.waves.pop_front()
 			_spawn_wave(wave)
 			return
+		print("NEXT BLOCK")
 		_block_container.remove_child(_current_block)
+		_current_block.queue_free()
 		_current_block = null
 		if _block_container.get_children().is_empty():
 			_finish_stage()

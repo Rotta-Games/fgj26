@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctp0vnisuq2ce"
-path="res://.godot/imported/tiger_mask.png-5d3f8556b83f55e4364dfa9d342f6a8b.ctex"
+uid="uid://cgowxx36spnmh"
+path="res://.godot/imported/arrow.png-4cca2b917a434debb50d6556ca48300a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/tiger_mask.png"
-dest_files=["res://.godot/imported/tiger_mask.png-5d3f8556b83f55e4364dfa9d342f6a8b.ctex"]
+source_file="res://assets/gfx/arrow.png"
+dest_files=["res://.godot/imported/arrow.png-4cca2b917a434debb50d6556ca48300a.ctex"]
 
 [params]
 

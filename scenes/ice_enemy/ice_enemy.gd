@@ -6,6 +6,8 @@ extends CharacterBody2D
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
+@onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
+@onready var player_collision : CollisionShape2D = $PlayerCollision
 
 signal dead
 
@@ -51,12 +53,19 @@ func _physics_process(_delta: float) -> void:
 			
 			# Ugly way to determine direction
 			if (desired_x == 0 && global_position.x < hitbox.global_position.x):
-				direction = Direction.LEFT
+				direction = Direction.RIGHT
 			elif (desired_x == 0 && global_position.x > hitbox.global_position.x):
-				direction = Direction.LEFT
+				direction = Direction.RIGHT
 			else:
 				direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
-			sprite.flip_h = direction != Direction.RIGHT
+			
+			var flib = direction != Direction.RIGHT
+			sprite.flip_h = flib
+			if flib:
+				player_hit_area.position.x = -40
+			else:
+				player_hit_area.position.x = 0
+			
 			move_and_slide()
 	elif current_target && state == Types.EnemyState.ATTACK && !waiting_to_attack:
 		_start_attack()
@@ -105,8 +114,11 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 	
 	if (health <= 0):
+		player_collision.set_deferred("disabled", true)
 		state = Types.EnemyState.DEAD
 		animation_player.play("dead")
+		enemy_death_sound.pitch_scale = randf_range(0.9, 1.1)
+		enemy_death_sound.play()
 	else:
 		animation_player.play("hurt")
 		stunned_timer.start(stat.stunned_time)
@@ -115,6 +127,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 
 func die() -> void:
 	dead.emit()
+	await enemy_death_sound.finished
 	queue_free()
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
@@ -135,5 +148,10 @@ func _on_player_hit_area_area_exited(area: Node2D) -> void:
 
 func _on_stunned_timer_timeout():
 	if (health > 0):
-		state = Types.EnemyState.SEEK
+		for area in player_hit_area.get_overlapping_areas():
+			if "PlayerHitbox" in area.get_groups():
+				current_target = area.get_parent()
+				state = Types.EnemyState.ATTACK
+			else:
+				state = Types.EnemyState.SEEK
 		sprite.play("default")

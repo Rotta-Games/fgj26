@@ -14,9 +14,12 @@ const MAX_COMBO := 4
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
-@onready var stunned_timer = $StunnedTimer
+@onready var stunned_timer: Timer = $StunnedTimer
+@onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
+@onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
+@onready var animation_player = $AnimationPlayer
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -25,6 +28,9 @@ var direction := Vector2.ZERO
 var combo_timer: Timer
 var combo_count: int = 0
 var attack_hit: bool = false
+
+var punch_delay: float = 0.1
+var kick_delay: float = 0.2
 
 # actions
 var PLAYER_LEFT: String
@@ -51,6 +57,11 @@ func _ready() -> void:
 	combo_timer.wait_time = 0.7
 	combo_timer.timeout.connect(combo_timer_reset)
 	add_child(combo_timer)
+
+	# the tiny delay after button press before attack actually hits
+	attack_delay_timer.timeout.connect(func():
+		self.fist_collision.disabled = false
+	)
 
 
 func combo_timer_reset() -> void:
@@ -108,14 +119,16 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(PLAYER_ATTACK):
 		if state in [Types.PlayerState.STUNNED, Types.PlayerState.ATTACKING]:
 			return
-		self.fist_collision.disabled = false
 
 		state = Types.PlayerState.ATTACKING
 		if combo_count < MAX_COMBO:
+			attack_delay_timer.wait_time = punch_delay
+			attack_delay_timer.start()
 			play_animation("left_punch")
-			_play_punch_sound()
+			_play_attack_miss_sound()
 		else:
-			print("KICK")
+			attack_delay_timer.wait_time = kick_delay
+			attack_delay_timer.start()
 			play_animation("right_kick")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
@@ -139,21 +152,36 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	if (health <= 0):
 		print("Player dead!")
 		state = Types.PlayerState.DEAD
-		# sprite.play("dead")
+		sprite.play("stunned")
+		animation_player.play("dead")
 	else:
-		return
-		#sprite.play("hurt")
+		sprite.play("stunned")
 		stunned_timer.start(player_stats.stunned_time)
 		velocity = Vector2.ZERO
 		state = Types.PlayerState.STUNNED
 		self.fist_collision.disabled = true
+		combo_timer.stop()
+		combo_count = 0
+		attack_hit = false
 		print("Player stunned!")
+
+func init_tiger_power() -> void:
+	print("TIIKERI")
+
+
+func die() -> void:
+	# dead.emit()
+	# await enemy_death_sound.finished
+	queue_free()
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
-	if "EnemyHitbox" in area.get_groups():
+	var groups = area.get_groups()
+
+	if "EnemyHitbox" in groups:
 		var enemy = area.get_parent()
 		attack_hit = true
+		_play_punch_sound()
 
 		var dmg = 5 + combo_count * 2
 		if combo_count >= MAX_COMBO:
@@ -163,6 +191,19 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		else:
 			enemy.hurt(dmg)
 		print("Dealt %d damage!" % dmg)
+	if "StaticObjectHitbox" in groups:
+		var static_object = area.get_parent()
+		attack_hit = true
+		
+		var dmg = 10 + combo_count * 2
+		if combo_count >= 4:
+			dmg += 10  # bonus damage for 4 hit combo
+			print("Critical Hit on object!")
+			static_object.hurt(dmg)
+		else:
+			static_object.hurt(dmg)
+
+		print("Dealt %d damage to object!" % dmg)
 
 
 func _on_animation_finished() -> void:
@@ -184,3 +225,7 @@ func play_animation(anim_name: String) -> void:
 	sprite.play(anim_name)
 	if mask_anim_player.has_animation(anim_name):
 		mask_anim_player.play(anim_name)
+
+func _play_attack_miss_sound():
+	attack_woosh_sound.pitch_scale = randf_range(0.8, 1.2)
+	attack_woosh_sound.play()

@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://n4w3odt7k2el" path="res://assets/gfx/player_sheet.png" id="3_gmlin"]
 [ext_resource type="AudioStream" uid="uid://cd8e5iqvsj4dj" path="res://assets/sfx/fgj26-punch-01.ogg" id="4_lvxji"]
 [ext_resource type="Texture2D" uid="uid://c2nfrjs1wi0dv" path="res://assets/gfx/tiger_mask.png" id="5_mask"]
+[ext_resource type="AudioStream" uid="uid://bybtc1x2l7x6h" path="res://assets/sfx/fgj26-hit-woosh-classic-vel-630ms.mp3" id="6_p47bc"]
 
 [sub_resource type="Resource" id="Resource_lvxji"]
 script = ExtResource("2_gmlin")
@@ -150,7 +151,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"right_kick",
-"speed": 10.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -432,14 +433,105 @@ _data = {
 size = Vector2(31, 9)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gmlin"]
-size = Vector2(31, 8)
+size = Vector2(31, 35)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(33, 53.5)
 
+[sub_resource type="Animation" id="Animation_qrh7f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_22hgk"]
+resource_name = "dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.5934856]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.93333334),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"die"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_gh66w"]
+resource_name = "hurt"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(2.6211514, 2.6211514, 2.6211514, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lvxji"]
+_data = {
+&"RESET": SubResource("Animation_qrh7f"),
+&"dead": SubResource("Animation_22hgk"),
+&"hurt": SubResource("Animation_gh66w")
+}
+
 [node name="Player" type="CharacterBody2D" unique_id=934439360 groups=["Player"]]
 texture_filter = 1
-collision_mask = 6
+collision_mask = 23
 motion_mode = 1
 script = ExtResource("1_g2els")
 player_stats = SubResource("Resource_lvxji")
@@ -459,21 +551,19 @@ texture = ExtResource("5_mask")
 libraries/ = SubResource("AnimationLibrary_mask")
 
 [node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
-visible = false
 position = Vector2(-0.5, 16)
 shape = SubResource("RectangleShape2D_gee14")
 
 [node name="FistBox2D" type="Area2D" parent="." unique_id=1807308919]
-visible = false
 position = Vector2(23, -29)
-collision_mask = 2
+collision_mask = 18
 
 [node name="FistBoxCullision2D" type="CollisionShape2D" parent="FistBox2D" unique_id=1421419464]
+position = Vector2(0, 13.5)
 shape = SubResource("RectangleShape2D_gmlin")
 disabled = true
 
 [node name="HitBox2D" type="Area2D" parent="." unique_id=1957341326 groups=["PlayerHitbox"]]
-visible = false
 collision_mask = 2
 
 [node name="HitBoxCullision2D" type="CollisionShape2D" parent="HitBox2D" unique_id=210454895]
@@ -481,10 +571,22 @@ position = Vector2(-0.5, -15.75)
 shape = SubResource("RectangleShape2D_dovo2")
 
 [node name="StunnedTimer" type="Timer" parent="." unique_id=721411037]
+one_shot = true
 
 [node name="AttackSound" type="AudioStreamPlayer2D" parent="." unique_id=1377558879]
 stream = ExtResource("4_lvxji")
 pitch_scale = 0.9
 max_polyphony = 6
+
+[node name="AttackDelayTimer" type="Timer" parent="." unique_id=1269603258]
+wait_time = 0.1
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1415091878]
+libraries/ = SubResource("AnimationLibrary_lvxji")
+
+[node name="AttackWooshSound" type="AudioStreamPlayer2D" parent="." unique_id=1637861273]
+stream = ExtResource("6_p47bc")
+bus = &"SFX"
 
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]

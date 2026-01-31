@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dj6iyxeowfvht"]
+
+[ext_resource type="Script" uid="uid://nqox4cu6unon" path="res://scenes/static_objects/trashcan/trashcan.gd" id="1_m6xt5"]
+[ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="1_v1c3e"]
+[ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="2_bws4p"]
+[ext_resource type="PackedScene" uid="uid://dhg0wm7qgbw0r" path="res://scenes/drops/mask_of_tiger/mask_of_tiger.tscn" id="2_lskl7"]
+
+[sub_resource type="Resource" id="Resource_lskl7"]
+script = ExtResource("2_bws4p")
+health = 40
+drop = ExtResource("2_lskl7")
+metadata/_custom_type_script = "uid://dfog41bqdj34f"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m6xt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bws4p"]
+size = Vector2(20, 35)
+
+[node name="Trashcan" type="StaticBody2D" unique_id=596318278 groups=["StaticObject"]]
+collision_layer = 16
+collision_mask = 3
+script = ExtResource("1_m6xt5")
+data = SubResource("Resource_lskl7")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1226795684]
+y_sort_enabled = true
+texture = ExtResource("1_v1c3e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1364103392]
+position = Vector2(0, 27)
+scale = Vector2(1, 0.3)
+shape = SubResource("CapsuleShape2D_m6xt5")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=2001398542 groups=["StaticObjectHitbox"]]
+collision_layer = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=842205749]
+position = Vector2(0, 12.5)
+shape = SubResource("RectangleShape2D_bws4p")
