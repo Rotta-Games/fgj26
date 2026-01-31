@@ -5,10 +5,12 @@ extends CharacterBody2D
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -400.0
+const SPRITE_WIDTH : int = 32
 
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
+
 
 
 func _physics_process(delta: float) -> void:
@@ -26,14 +28,23 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
-	move_and_slide()
-
+	_move()
+	
 	if direction != 0 or y_direction != 0:
 		sprite.play("walk")
 		if direction != 0:
 			sprite.flip_h = direction < 0
 	else:
 		sprite.play("default")
+
+func _move():
+	
+	move_and_slide()
+
+	var canvas_transform = get_viewport().get_canvas_transform()
+	var global_screen_left = -canvas_transform.origin.x
+	var global_screen_right = global_screen_left + get_viewport_rect().size.x
+	position.x = clamp(position.x, global_screen_left + SPRITE_WIDTH / 2, global_screen_right - SPRITE_WIDTH / 2)
 
 
 func _input(event):

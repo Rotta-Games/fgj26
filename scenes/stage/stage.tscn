@@ -73,9 +73,6 @@ metadata/_custom_type_script = "uid://cmfev8bdfotk0"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nnsk1"]
 size = Vector2(623.5, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pf3bu"]
-size = Vector2(10, 300)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rwgxs"]
 size = Vector2(623.75, 98)
 
@@ -101,24 +98,8 @@ tile_set = ExtResource("1_nnsk1")
 [node name="Ground" type="StaticBody2D" parent="." unique_id=925694503]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=92572296]
-position = Vector2(312.25, 176)
+position = Vector2(313, 176)
 shape = SubResource("RectangleShape2D_nnsk1")
-
-[node name="LeftBoundary" type="StaticBody2D" parent="." unique_id=2035440574]
-position = Vector2(0, 6)
-collision_layer = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBoundary" unique_id=1716013080]
-position = Vector2(0, 116)
-shape = SubResource("RectangleShape2D_pf3bu")
-
-[node name="RightBoundary" type="StaticBody2D" parent="." unique_id=647417617]
-position = Vector2(625, 0)
-collision_layer = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBoundary" unique_id=1291658641]
-position = Vector2(0, 116)
-shape = SubResource("RectangleShape2D_pf3bu")
 
 [node name="Ceiling" type="StaticBody2D" parent="." unique_id=819167054]
 

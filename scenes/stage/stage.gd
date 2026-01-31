@@ -4,7 +4,7 @@ extends Node2D
 
 var _current_camera_limit : int = 0
 
-signal camera_limit_changed(x: int)
+signal camera_right_limit_changed(right_limit: int)
 
 var _current_block : StageBlock
 
@@ -13,10 +13,9 @@ func _ready() -> void:
 	
 func _set_block(block: StageBlock) -> void:
 	_current_block = block
-	var prev_camera_limit = _current_camera_limit
+	# TODO pistä blockeille suoraan x
 	_current_camera_limit += block.length
-	camera_limit_changed.emit(prev_camera_limit, _current_camera_limit)
-	
+	camera_right_limit_changed.emit(_current_camera_limit)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
