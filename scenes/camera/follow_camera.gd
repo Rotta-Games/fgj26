@@ -7,7 +7,7 @@ var _checkpoint_limit: int = 999999999
 var _target_limit_right: int 
 
 const CAMERA_MOVE_THRESHOLD: int = 100
-const CHECKPOINT_THRESHOLD_PERCENTAGE: float = 0.75
+const CHECKPOINT_THRESHOLD_PERCENTAGE: float = 0.66
 const LIMIT_RIGHT_LERP : int = 1
 
 signal checkpoint_reached

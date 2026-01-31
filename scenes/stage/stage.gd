@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var _block_container : Node2D = $Blocks
 @onready var _spawn_point_container : Node2D = $SpawnPoints
+@onready var _enemy_container : Node2D = $Enemies
 
 var _current_camera_limit : int = 0
 var _current_block : StageBlock
@@ -41,21 +42,22 @@ func _spawn_wave(wave: EnemyWave) -> void:
 		
 	_spawn_in_progress = true
 	for enemy in first_wave:
+		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
+		await get_tree().create_timer(delay).timeout
 		_spawn_enemy(enemy, first_side)
-		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
-		await get_tree().create_timer(delay).timeout
 	for enemy in second_wave:
-		_spawn_enemy(enemy, second_side)
 		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
 		await get_tree().create_timer(delay).timeout
+		_spawn_enemy(enemy, second_side)
 	_spawn_in_progress = false
 
 func _spawn_enemy(enemy_scene: PackedScene, side: Types.Side) -> void:
 	var enemy = enemy_scene.instantiate()
-	_current_block.add_child(enemy)
+	_enemy_container.add_child(enemy)
 	var spawn_point = _get_random_spawn_point(side)
 	enemy.init_spawn(spawn_point)
 	_enemies_alive += 1
+	print("enemies alive " + str(_enemies_alive))
 	enemy.dead.connect(_on_enemy_killed)
 
 func _get_random_spawn_point(side: Types.Side) -> Vector2i:
@@ -85,6 +87,7 @@ func _on_enemy_killed() -> void:
 			return
 		print("NEXT BLOCK")
 		_block_container.remove_child(_current_block)
+		_current_block.queue_free()
 		_current_block = null
 		if _block_container.get_children().is_empty():
 			_finish_stage()
