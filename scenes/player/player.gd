@@ -33,9 +33,21 @@ var attack_hit: bool = false
 
 var player_mask: Types.PlayerMask = Types.PlayerMask.NONE
 var mask_stats = {
-	Types.PlayerMask.NONE: {"attack_speed": 1.0, "damage_multiplier": 1.0},
-	Types.PlayerMask.TIGER: {"attack_speed": 0.7, "damage_multiplier": 0.95},
-	Types.PlayerMask.FIRE: {"attack_speed": 1.0, "damage_multiplier": 1.2},
+	Types.PlayerMask.NONE: {
+		"attack_speed": 1.0,
+		"damage_multiplier": 1.0,
+		"mask_texture": null,
+	},
+	Types.PlayerMask.TIGER: {
+		"attack_speed": 0.7,
+		"damage_multiplier": 0.95,
+		"mask_texture": preload("res://assets/gfx/tiger_mask.png"),
+	},
+	Types.PlayerMask.FIRE: {
+		"attack_speed": 1.0,
+		"damage_multiplier": 1.2,
+		"mask_texture": preload("res://assets/gfx/fire_mask.png"),
+	},
 }
 const BASE_DAMAGE := 5
 var punch_delay: float = 0.1
@@ -184,6 +196,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 
 
 func init_tiger_power() -> void:
+	head_attachment.texture = mask_stats[Types.PlayerMask.TIGER]["mask_texture"]
 	head_attachment.visible = true
 	player_mask = Types.PlayerMask.TIGER
 	mask_timer.start()
