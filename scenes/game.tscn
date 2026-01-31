@@ -32,6 +32,7 @@ render_target_update_mode = 4
 
 [node name="IceEnemy" parent="SubViewportContainer/SubViewport/Stage" unique_id=934439360 instance=ExtResource("3_iywne")]
 position = Vector2(290.83334, 135.16667)
+direction = 0
 
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=411557437 instance=ExtResource("2_lbhrr")]
 position = Vector2(139, 146.33333)

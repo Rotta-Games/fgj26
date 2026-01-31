@@ -3,28 +3,25 @@ extends CharacterBody2D
 @export var direction = Direction.LEFT
 
 @onready var sprite = $AnimatedSprite2D
+@onready var stunned_timer = $StunnedTimer
+
+signal dead
 
 enum Direction {LEFT, RIGHT}
-
-
 const X_ALIGN_THRESHOLD := 30.0  # When within this many px of player's x, seek to the side
 const Y_LEVEL_THRESHOLD := 10.0  # Aim to be within this many px of player's y
 
 var state = Types.EnemyState.IDLE
+var health: int
 var current_target: CharacterBody2D
 var is_in_hit_area: bool
 var x_target_treshold = 20
 
+func _ready() -> void:
+	health = stat.health
 
-var prev_state = null
-
-signal dead
-	
 func _physics_process(_delta: float) -> void:
-	if state != prev_state:
-		prev_state = state
-
-	if current_target && !is_in_hit_area:
+	if current_target && !is_in_hit_area && state == Types.EnemyState.SEEK:
 		var hitbox := current_target.get_node_or_null("HitBox2D") as Area2D
 		if hitbox:
 			var to_player := hitbox.global_position - global_position
@@ -48,8 +45,14 @@ func _physics_process(_delta: float) -> void:
 				velocity = Vector2.ZERO
 			else:
 				velocity = move_dir.normalized() * stat.movement_speed
-
-			direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
+			
+			# Ugly way to determine direction
+			if (desired_x == 0 && global_position.x < hitbox.global_position.x):
+				direction = Direction.LEFT
+			elif (desired_x == 0 && global_position.x > hitbox.global_position.x):
+				direction = Direction.LEFT
+			else:
+				direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
 			sprite.flip_h = direction != Direction.RIGHT
 			move_and_slide()
 
@@ -58,10 +61,13 @@ func init_spawn(spawn_position: Vector2) -> void:
 	state = Types.EnemyState.SEEK
 
 func hurt(amount:float) -> void:
-	stat.health -= amount
+	health -= amount
 	
-	if (stat.healt <= 0):
+	if (health <= 0):
 		die()
+	else:
+		stunned_timer.start(stat.stunned_time)
+		state = Types.EnemyState.STUNNED
 
 func die() -> void:
 	pass
@@ -80,3 +86,8 @@ func _on_player_hit_area_area_exited(area: Node2D) -> void:
 		if area.get_parent() == current_target:
 			state = Types.EnemyState.SEEK
 			is_in_hit_area = false
+
+
+func _on_stunned_timer_timeout():
+	if (health > 0):
+		state = Types.EnemyState.SEEK

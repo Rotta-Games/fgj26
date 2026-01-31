@@ -8,6 +8,8 @@
 script = ExtResource("2_qrh7f")
 health = 100
 movement_speed = 40.0
+attack_speed = 2.0
+stunned_time = 10.0
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_oitbj"]
@@ -77,6 +79,16 @@ position = Vector2(18, -13)
 scale = Vector2(3, 2)
 shape = SubResource("RectangleShape2D_qrh7f")
 
+[node name="StunnedTimer" type="Timer" parent="." unique_id=1358064073]
+process_callback = 0
+
+[node name="DebugState" type="Label" parent="." unique_id=863047750]
+offset_left = -21.0
+offset_top = -65.0
+offset_right = 19.0
+offset_bottom = -42.0
+
 [connection signal="area_entered" from="PlayerDetectionArea" to="." method="_on_player_detection_area_area_entered"]
 [connection signal="area_entered" from="PlayerHitArea" to="." method="_on_player_hit_area_area_entered"]
 [connection signal="area_exited" from="PlayerHitArea" to="." method="_on_player_hit_area_area_exited"]
+[connection signal="timeout" from="StunnedTimer" to="." method="_on_stunned_timer_timeout"]
