@@ -111,9 +111,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_22hgk"]
-radius = 6.5
-height = 13.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_22hgk"]
+size = Vector2(13, 16.42857)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qrh7f"]
 height = 56.0
@@ -231,9 +230,9 @@ animation = &"attack"
 autoplay = "default"
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
-position = Vector2(-2.5, 16.5)
+position = Vector2(-1, 15.25)
 scale = Vector2(2, 0.7)
-shape = SubResource("CapsuleShape2D_22hgk")
+shape = SubResource("RectangleShape2D_22hgk")
 
 [node name="HitBox" type="Area2D" parent="." unique_id=1668721932 groups=["EnemyHitbox"]]
 collision_layer = 2
