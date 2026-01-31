@@ -12,6 +12,7 @@ const SPRITE_WIDTH : int = 32
 @onready var sprite = $AnimatedSprite2D
 
 var direction := Vector2.ZERO
+var is_punching := false
 
 # actions
 var PLAYER_LEFT: String
@@ -29,6 +30,7 @@ func _ready() -> void:
 	PLAYER_UP = "player%d_up" % i
 	PLAYER_DOWN = "player%d_down" % i
 	PLAYER_ATTACK = "player%d_attack" % i
+	sprite.animation_finished.connect(_on_animation_finished)
 
 
 func _physics_process(_delta: float) -> void:
@@ -45,12 +47,13 @@ func _physics_process(_delta: float) -> void:
 
 	_move()
 	
-	if direction != Vector2.ZERO:
-		sprite.play("walk")
-		if direction.x != 0:
-			sprite.flip_h = direction.x < 0
-	else:
-		sprite.play("default")
+	if not is_punching:
+		if direction != Vector2.ZERO:
+			sprite.play("walk")
+			if direction.x != 0:
+				sprite.flip_h = direction.x < 0
+		else:
+			sprite.play("default")
 
 
 func _move():
@@ -67,7 +70,8 @@ func _input(event):
 	if (event is InputEventKey or event is InputEventJoypadButton) and event.pressed:
 		if event.is_action_pressed(PLAYER_ATTACK):
 			self.fist_collision.disabled = false
-			print("PUNCH!")
+			is_punching = true
+			sprite.play("left_punch")
 		if event.is_action_pressed(PLAYER_LEFT):
 			self.fist_box.position.x = -player_stats.hit_reach
 		elif event.is_action_pressed(PLAYER_RIGHT):
@@ -81,3 +85,8 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "Enemy" in area.get_groups():
 		print("HIT ENEMY")
 		# ennemy.hurt(player_stats.attack_power_or_jotain)
+
+
+func _on_animation_finished() -> void:
+	if sprite.animation == "left_punch":
+		is_punching = false
