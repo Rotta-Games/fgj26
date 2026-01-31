@@ -167,6 +167,9 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		attack_hit = false
 		print("Player stunned!")
 
+func init_tiger_power() -> void:
+	print("TIIKERI")
+
 
 func die() -> void:
 	# dead.emit()
