@@ -13,9 +13,9 @@ const MAX_Y : int = 150
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
 
+var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
 var direction := Vector2.ZERO
-var is_punching := false
 
 var combo_timer: Timer
 var combo_count: int = 0
@@ -67,8 +67,9 @@ func _physics_process(_delta: float) -> void:
 
 	_move()
 	
-	if not is_punching:
+	if state != Types.PlayerState.PUNCHING:
 		if direction != Vector2.ZERO:
+			state = Types.PlayerState.WALKING
 			sprite.play("walk")
 			if direction.x != 0:
 				var flib := direction.x < 0
@@ -78,6 +79,7 @@ func _physics_process(_delta: float) -> void:
 				else:
 					fist_box.position.x = player_stats.hit_reach
 		else:
+			state = Types.PlayerState.IDLE
 			sprite.play("default")
 
 
@@ -95,7 +97,7 @@ func _move():
 func _input(event):
 	if event.is_action_pressed(PLAYER_ATTACK):
 		self.fist_collision.disabled = false
-		is_punching = true
+		state = Types.PlayerState.PUNCHING
 		sprite.play("left_punch")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
@@ -137,5 +139,5 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 
 func _on_animation_finished() -> void:
 	if sprite.animation == "left_punch":
-		is_punching = false
+		state = Types.PlayerState.IDLE
 		self.fist_collision.disabled = true
