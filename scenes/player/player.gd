@@ -11,7 +11,7 @@ const MAX_Y : int = 150
 
 const CRIT_VOLUME = 15
 
-const MAX_COMBO := 4
+const MAX_COMBO := 3
 
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
