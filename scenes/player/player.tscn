@@ -149,7 +149,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"right_kick",
-"speed": 10.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -206,7 +206,8 @@ player_stats = SubResource("Resource_lvxji")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
-animation = &"stunned"
+animation = &"right_kick"
+frame = 5
 frame_progress = 1.0
 
 [node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
@@ -236,5 +237,9 @@ stream = ExtResource("4_lvxji")
 pitch_scale = 0.9
 max_polyphony = 6
 bus = &"SFX"
+
+[node name="AttackDelayTimer" type="Timer" parent="." unique_id=1269603258]
+wait_time = 0.1
+one_shot = true
 
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]

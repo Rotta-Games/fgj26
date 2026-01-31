@@ -14,7 +14,8 @@ const MAX_COMBO := 4
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
-@onready var stunned_timer = $StunnedTimer
+@onready var stunned_timer: Timer = $StunnedTimer
+@onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
@@ -24,6 +25,9 @@ var direction := Vector2.ZERO
 var combo_timer: Timer
 var combo_count: int = 0
 var attack_hit: bool = false
+
+var punch_delay: float = 0.1
+var kick_delay: float = 0.2
 
 # actions
 var PLAYER_LEFT: String
@@ -50,6 +54,11 @@ func _ready() -> void:
 	combo_timer.wait_time = 0.7
 	combo_timer.timeout.connect(combo_timer_reset)
 	add_child(combo_timer)
+
+	# the tiny delay after button press before attack actually hits
+	attack_delay_timer.timeout.connect(func():
+		self.fist_collision.disabled = false
+	)
 
 
 func combo_timer_reset() -> void:
@@ -107,13 +116,16 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(PLAYER_ATTACK):
 		if state in [Types.PlayerState.STUNNED, Types.PlayerState.ATTACKING]:
 			return
-		self.fist_collision.disabled = false
 
 		state = Types.PlayerState.ATTACKING
 		if combo_count < MAX_COMBO:
+			attack_delay_timer.wait_time = punch_delay
+			attack_delay_timer.start()
 			sprite.play("left_punch")
 			_play_punch_sound()
 		else:
+			attack_delay_timer.wait_time = kick_delay
+			attack_delay_timer.start()
 			sprite.play("right_kick")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
