@@ -5,7 +5,9 @@
 [ext_resource type="Script" uid="uid://bf811hxt2q18l" path="res://scripts/resource_definitions/enemy_wave.gd" id="3_d1yl1"]
 [ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/ice_enemy/ice_enemy.tscn" id="6_pf3bu"]
 [ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
+[ext_resource type="PackedScene" uid="uid://chrgj2y5ap2ns" path="res://scenes/drops/mask_of_fire/mask_of_fire.tscn" id="7_kb6yy"]
 [ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
+[ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
 
 [sub_resource type="Resource" id="Resource_0m8sx"]
 script = ExtResource("3_d1yl1")
@@ -47,6 +49,11 @@ script = ExtResource("3_d1yl1")
 enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
+
+[sub_resource type="Resource" id="Resource_cwi0x"]
+script = ExtResource("8_uutle")
+health = 40
+drop = ExtResource("7_kb6yy")
 
 [node name="Stage" type="Node2D" unique_id=1547251690]
 y_sort_enabled = true
@@ -99,6 +106,10 @@ y_sort_enabled = true
 
 [node name="Trashcan" parent="StaticObjects" unique_id=2095307770 instance=ExtResource("7_ljyi0")]
 position = Vector2(128, 102)
+
+[node name="Trashcan2" parent="StaticObjects" unique_id=596318278 instance=ExtResource("7_ljyi0")]
+position = Vector2(448, 107)
+data = SubResource("Resource_cwi0x")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1780131126]
 y_sort_enabled = true

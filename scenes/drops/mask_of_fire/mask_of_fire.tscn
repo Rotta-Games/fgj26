@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://chrgj2y5ap2ns"]
+
+[ext_resource type="Script" uid="uid://bvjlbnll3bwav" path="res://scenes/drops/mask_of_fire/mask_of_fire.gd" id="1_ib336"]
+[ext_resource type="Texture2D" uid="uid://bcuwl8eqylho" path="res://assets/gfx/fire_mask.png" id="2_kp0vi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_15a3m"]
+
+[node name="MaskOfFire" type="Area2D" unique_id=236227455]
+collision_layer = 8
+script = ExtResource("1_ib336")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=954969201]
+texture = ExtResource("2_kp0vi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2107170959]
+shape = SubResource("CircleShape2D_15a3m")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
