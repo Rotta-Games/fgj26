@@ -16,6 +16,7 @@ const MAX_COMBO := 4
 @onready var sprite = $AnimatedSprite2D
 @onready var stunned_timer = $StunnedTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
+@onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -78,17 +79,17 @@ func _physics_process(_delta: float) -> void:
 	if state != Types.PlayerState.ATTACKING:
 		if direction != Vector2.ZERO:
 			state = Types.PlayerState.WALKING
-			sprite.play("walk")
+			play_animation("walk")
 			if direction.x != 0:
-				var flib := direction.x < 0
-				sprite.flip_h = flib
-				if flib:
+				var facing_left := direction.x < 0
+				sprite.scale.x = -1 if facing_left else 1
+				if facing_left:
 					fist_box.position.x = -player_stats.hit_reach
 				else:
 					fist_box.position.x = player_stats.hit_reach
 		else:
 			state = Types.PlayerState.IDLE
-			sprite.play("default")
+			play_animation("default")
 
 
 func _move():
@@ -111,11 +112,11 @@ func _input(event: InputEvent) -> void:
 
 		state = Types.PlayerState.ATTACKING
 		if combo_count < MAX_COMBO:
-			sprite.play("left_punch")
+			play_animation("left_punch")
 			_play_punch_sound()
 		else:
 			print("KICK")
-			sprite.play("right_kick")
+			play_animation("right_kick")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
 		attack_hit = false
@@ -125,10 +126,6 @@ func _input(event: InputEvent) -> void:
 			print("combo reset")
 			combo_count = 0
 			combo_timer.stop()
-
-
-func _process(_delta):
-	pass
 
 
 func hurt(amount: int, critical_hit: bool = false) -> void:
@@ -181,3 +178,9 @@ func _on_stunned_timer_timeout():
 func _play_punch_sound():
 	attack_sound.pitch_scale = randf_range(0.9, 1.1)
 	attack_sound.play()
+
+
+func play_animation(anim_name: String) -> void:
+	sprite.play(anim_name)
+	if mask_anim_player.has_animation(anim_name):
+		mask_anim_player.play(anim_name)
