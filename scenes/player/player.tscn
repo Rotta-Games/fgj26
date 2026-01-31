@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://n4w3odt7k2el" path="res://assets/gfx/player_sheet.png" id="3_gmlin"]
 [ext_resource type="AudioStream" uid="uid://cd8e5iqvsj4dj" path="res://assets/sfx/fgj26-punch-01.ogg" id="4_lvxji"]
 [ext_resource type="Texture2D" uid="uid://ctp0vnisuq2ce" path="res://assets/gfx/tiger_mask.png" id="5_mask"]
-[ext_resource type="PackedScene" uid="uid://ck6l2fj0111f0" path="res://scenes/player/particle_emitter.tscn" id="6_75vfm"]
+[ext_resource type="PackedScene" path="res://scenes/player/particle_emitter.tscn" id="6_75vfm"]
 [ext_resource type="AudioStream" uid="uid://bybtc1x2l7x6h" path="res://assets/sfx/fgj26-hit-woosh-classic-vel-630ms.mp3" id="6_p47bc"]
 
 [sub_resource type="Resource" id="Resource_75vfm"]
@@ -435,7 +435,7 @@ _data = {
 size = Vector2(31, 9)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gmlin"]
-size = Vector2(31, 35)
+size = Vector2(37.5, 35)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(33, 53.5)
@@ -542,7 +542,7 @@ player_stats = SubResource("Resource_75vfm")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
-animation = &"stunned"
+animation = &"left_punch"
 autoplay = "default"
 
 [node name="HeadAttachment" type="Sprite2D" parent="AnimatedSprite2D" unique_id=277029135]
@@ -558,11 +558,11 @@ position = Vector2(-0.5, 16)
 shape = SubResource("RectangleShape2D_gee14")
 
 [node name="FistBox2D" type="Area2D" parent="." unique_id=1807308919]
-position = Vector2(23, -29)
+position = Vector2(0, -16)
 collision_mask = 18
 
 [node name="FistBoxCullision2D" type="CollisionShape2D" parent="FistBox2D" unique_id=1421419464]
-position = Vector2(0, 13.5)
+position = Vector2(19.25, 0)
 shape = SubResource("RectangleShape2D_gmlin")
 disabled = true
 

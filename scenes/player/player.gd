@@ -41,16 +41,19 @@ var player_mask: Types.PlayerMask = Types.PlayerMask.NONE
 var mask_stats = {
 	Types.PlayerMask.NONE: {
 		"attack_speed": 1.0,
+		"attack_range": 1.0,
 		"damage_multiplier": 1.0,
 		"mask_texture": null,
 	},
 	Types.PlayerMask.TIGER: {
 		"attack_speed": 0.7,
+		"attack_range": 0.8,
 		"damage_multiplier": 0.95,
 		"mask_texture": preload("res://assets/gfx/tiger_mask.png"),
 	},
 	Types.PlayerMask.FIRE: {
-		"attack_speed": 1.0,
+		"attack_speed": 1.1,
+		"attack_range": 2.0,
 		"damage_multiplier": 1.2,
 		"mask_texture": preload("res://assets/gfx/fire_mask.png"),
 	},
@@ -116,7 +119,7 @@ func _physics_process(_delta: float) -> void:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	_move()
-	
+
 	if state != Types.PlayerState.ATTACKING:
 		if direction != Vector2.ZERO:
 			state = Types.PlayerState.WALKING
@@ -128,12 +131,12 @@ func _physics_process(_delta: float) -> void:
 					particle_emitter._direction = -1 
 					#particle_emitter.scale = -1.0
 					particle_emitter.position.x = -player_stats.hit_reach - 3
-					fist_box.position.x = -player_stats.hit_reach
+					fist_box.scale.x = -abs(fist_box.scale.x)
 				else:
 					particle_emitter._direction = 1
-				#	particle_emitter.scale = 1.0
+					#particle_emitter.scale = 1.0
 					particle_emitter.position.x = player_stats.hit_reach + 3
-					fist_box.position.x = player_stats.hit_reach
+					fist_box.scale.x = abs(fist_box.scale.x)
 		else:
 			state = Types.PlayerState.IDLE
 			play_animation("default")
@@ -156,6 +159,9 @@ func get_attack_speed_multiplier() -> float:
 
 func get_damage_multiplier() -> float:
 	return mask_stats[player_mask]["damage_multiplier"]
+
+func get_attack_range_multiplier() -> float:
+	return mask_stats[player_mask]["attack_range"]
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(PLAYER_ATTACK):
@@ -216,18 +222,19 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		print("Player stunned!")
 
 
-func init_tiger_power() -> void:
-	head_attachment.texture = mask_stats[Types.PlayerMask.TIGER]["mask_texture"]
+func init_power(mask_type: Types.PlayerMask) -> void:
+	player_mask = mask_type
+	head_attachment.texture = mask_stats[mask_type]["mask_texture"]
 	head_attachment.visible = true
-	player_mask = Types.PlayerMask.TIGER
+	fist_box.scale.x = fist_box.scale.x * get_attack_range_multiplier()
 	mask_timer.start()
+
+func init_tiger_power() -> void:
+	init_power(Types.PlayerMask.TIGER)
 
 
 func init_fire_power() -> void:
-	head_attachment.texture = mask_stats[Types.PlayerMask.FIRE]["mask_texture"]
-	head_attachment.visible = true
-	player_mask = Types.PlayerMask.FIRE
-	mask_timer.start()
+	init_power(Types.PlayerMask.FIRE)
 
 func die() -> void:
 	# dead.emit()
@@ -320,5 +327,6 @@ func _play_attack_miss_sound():
 
 
 func _on_mask_timer_timeout() -> void:
+	fist_box.scale.x = get_attack_range_multiplier()
 	player_mask = Types.PlayerMask.NONE
 	head_attachment.visible = false
