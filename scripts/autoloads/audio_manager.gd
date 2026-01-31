@@ -1,6 +1,6 @@
 extends Node
 
-var menu_music = preload("res://assets/music/ggj26-145-sid-main-loop-01.mp3")
+var menu_music = preload("res://assets/music/ggj26-140bpm-d-minor-main-loop-1.mp3")
 @onready var music_player: AudioStreamPlayer = AudioStreamPlayer.new()
 
 func _ready():
