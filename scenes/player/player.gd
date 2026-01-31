@@ -22,6 +22,7 @@ const MAX_COMBO := 4
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
+@onready var particle_emitter = $ParticleEmitter
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -117,8 +118,14 @@ func _physics_process(_delta: float) -> void:
 				var facing_left := direction.x < 0
 				sprite.scale.x = -1 if facing_left else 1
 				if facing_left:
+					particle_emitter._direction = -1 
+					#particle_emitter.scale = -1.0
+					particle_emitter.position.x = -player_stats.hit_reach + 1
 					fist_box.position.x = -player_stats.hit_reach
 				else:
+					particle_emitter._direction = 1
+				#	particle_emitter.scale = 1.0
+					particle_emitter.position.x = player_stats.hit_reach - 1
 					fist_box.position.x = player_stats.hit_reach
 		else:
 			state = Types.PlayerState.IDLE
@@ -166,9 +173,15 @@ func _input(event: InputEvent) -> void:
 		combo_timer.start()
 		combo_count += 1
 		if combo_count > MAX_COMBO:
+			
+			particle_emitter.fire(5, 1.5)
 			print("combo reset")
 			combo_count = 0
 			combo_timer.stop()
+		elif combo_count > MAX_COMBO - 1:
+			particle_emitter.fire(2, 1.2)
+		elif combo_count > MAX_COMBO - 2:
+			particle_emitter.fire(1)
 
 
 func hurt(amount: int, critical_hit: bool = false) -> void:

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ck6l2fj0111f0"]
+
+[ext_resource type="Script" uid="uid://5y7lr4ceixyu" path="res://scenes/player/particle_emitter.gd" id="1_obyqs"]
+[ext_resource type="Texture2D" uid="uid://bas6yv3rrti7r" path="res://assets/gfx/enemy_sheet.png" id="2_obyqs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nngi5"]
+atlas = ExtResource("2_obyqs")
+region = Rect2(229, 194, 3, 3)
+
+[node name="ParticleEmitter" type="Node2D" unique_id=1020986476]
+script = ExtResource("1_obyqs")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=490832860]
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_nngi5")
