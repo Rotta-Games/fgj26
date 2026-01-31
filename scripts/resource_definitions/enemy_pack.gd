@@ -1,4 +1,4 @@
 extends Resource
 class_name EnemyPack
 
-@export var enemy_pack : Array[PackedScene]
+@export var enemies : Array[PackedScene]

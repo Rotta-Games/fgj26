@@ -1,5 +1,5 @@
 extends Resource
 class_name EnemyWave
 
-@export var wave : Array[EnemyPack]
-@export var sides : Array[Types.Side] 
+@export var enemy_packs_left : Array[EnemyPack]
+@export var enemy_packs_right : Array[EnemyPack]

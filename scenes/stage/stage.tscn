@@ -4,6 +4,7 @@
 [ext_resource type="TileSet" uid="uid://hy4b6sna4kov" path="res://assets/tilesets/world.tres" id="1_nnsk1"]
 [ext_resource type="Script" uid="uid://bf811hxt2q18l" path="res://scripts/resource_definitions/enemy_wave.gd" id="3_d1yl1"]
 [ext_resource type="Script" uid="uid://b8nhfkr0uqoim" path="res://scripts/resource_definitions/enemy_pack.gd" id="4_ljyi0"]
+[ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/ice_enemy/ice_enemy.tscn" id="6_pf3bu"]
 [ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nnsk1"]
@@ -12,13 +13,14 @@ size = Vector2(623.5, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rwgxs"]
 size = Vector2(623.75, 98)
 
-[sub_resource type="Resource" id="Resource_0sb5g"]
+[sub_resource type="Resource" id="Resource_pf3bu"]
 script = ExtResource("4_ljyi0")
+enemies = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
 
 [sub_resource type="Resource" id="Resource_qard3"]
 script = ExtResource("3_d1yl1")
-wave = Array[ExtResource("4_ljyi0")]([SubResource("Resource_0sb5g")])
+enemy_packs_right = Array[ExtResource("4_ljyi0")]([SubResource("Resource_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [node name="Stage" type="Node2D" unique_id=1547251690]
@@ -56,3 +58,17 @@ shape = SubResource("RectangleShape2D_rwgxs")
 [node name="StageBlock" parent="Blocks" unique_id=600521965 instance=ExtResource("7_d1yl1")]
 position = Vector2(402, 94)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1639698908]
+
+[node name="Spawn" type="Node2D" parent="SpawnPoints" unique_id=1526453552]
+position = Vector2(0, 102)
+
+[node name="Spawn2" type="Node2D" parent="SpawnPoints" unique_id=751905586]
+position = Vector2(0, 118)
+
+[node name="Spawn3" type="Node2D" parent="SpawnPoints" unique_id=1692178920]
+position = Vector2(0, 138)
+
+[node name="Spawn4" type="Node2D" parent="SpawnPoints" unique_id=205390155]
+position = Vector2(0, 158)

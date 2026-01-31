@@ -4,7 +4,11 @@ extends Camera2D
 @export var viewport : SubViewportContainer
 
 var _actual_cam_pos: Vector2
-var _camera_move_theshold: int = 100
+var _right_limit_reached : bool = false
+
+const CAMERA_MOVE_THRESHOLD: int = 100
+
+signal right_limit_reached
 
 func _ready() -> void:
 	_init_camera()
@@ -14,7 +18,6 @@ func _init_camera() -> void:
 	if not target:
 		printerr("Target missing from camera")
 		return
-		
 	global_position.x = target.global_position.x 
 	
 
@@ -32,9 +35,13 @@ func _process(delta: float) -> void:
 	var global_screen_left = -canvas_transform.origin.x
 	limit_left = global_screen_left
 	var target_screen_left = target.global_position.x - global_screen_left
-	if target_screen_left >= _camera_move_theshold:
+	if target_screen_left >= CAMERA_MOVE_THRESHOLD:
 		global_position.x = target.global_position.x 
 
+	if not _right_limit_reached and (global_screen_left + get_viewport().get_visible_rect().size.x) >= limit_right - 5:
+		_right_limit_reached = true
+		right_limit_reached.emit()
 
 func _on_stage_camera_right_limit_changed(right_limit: int) -> void:
 	limit_right = right_limit
+	_right_limit_reached = false
