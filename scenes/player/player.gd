@@ -14,6 +14,7 @@ const MAX_COMBO := 4
 @onready var fist_box = $FistBox2D
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
+@onready var head_attachment: Sprite2D = sprite.get_node("HeadAttachment")
 @onready var stunned_timer: Timer = $StunnedTimer
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
@@ -165,7 +166,9 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		attack_hit = false
 		print("Player stunned!")
 
+
 func init_tiger_power() -> void:
+	head_attachment.visible = true
 	print("TIIKERI")
 
 
