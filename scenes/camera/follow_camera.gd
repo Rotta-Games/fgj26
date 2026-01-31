@@ -1,25 +1,30 @@
 extends Camera2D
 
 @export var target: Node2D
-@export var viewport : SubViewportContainer
 
 var _checkpoint_reached : bool = false
 var _checkpoint_limit: int = 999999999
+var _target_limit_right: int 
 
 const CAMERA_MOVE_THRESHOLD: int = 100
 const CHECKPOINT_THRESHOLD_PERCENTAGE: float = 0.75
+const LIMIT_RIGHT_LERP : int = 1
 
 signal checkpoint_reached
 
 func _ready() -> void:
 	_init_camera()
+	limit_right = 320
 	
 func _init_camera() -> void:
 	if not target:
 		printerr("Target missing from camera")
 		return
 	global_position.x = target.global_position.x 
-	
+
+func _physics_process(delta: float) -> void:
+	if limit_right < _target_limit_right:
+		limit_right += LIMIT_RIGHT_LERP
 
 func _process(delta: float) -> void:
 	if not target:
@@ -39,5 +44,5 @@ func _process(delta: float) -> void:
 func _on_stage_camera_right_limit_changed(new_right_limit: int) -> void:
 	var delta = new_right_limit - limit_right
 	_checkpoint_limit = new_right_limit - int((1.0 - CHECKPOINT_THRESHOLD_PERCENTAGE) * new_right_limit)
-	limit_right = new_right_limit
+	_target_limit_right = new_right_limit
 	_checkpoint_reached = false
