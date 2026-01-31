@@ -146,7 +146,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_uf5tr")
 }],
-"loop": true,
+"loop": false,
 "name": &"right_kick",
 "speed": 10.0
 }, {
@@ -207,6 +207,7 @@ position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
 animation = &"stunned"
 frame_progress = 0.66245776
+frame_progress = 1.0
 
 [node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
 visible = false
