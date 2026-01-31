@@ -59,6 +59,20 @@ func _physics_process(_delta: float) -> void:
 func init_spawn(spawn_position: Vector2) -> void:
 	position = spawn_position
 	state = Types.EnemyState.SEEK
+	_set_nearest_player_as_target()
+
+func _set_nearest_player_as_target() -> void:
+	var players := get_tree().get_nodes_in_group("Player")
+	var nearest: Node2D = null
+	var nearest_dist_sq := INF
+	for node in players:
+		if node is CharacterBody2D:
+			var d_sq := global_position.distance_squared_to(node.global_position)
+			if d_sq < nearest_dist_sq:
+				nearest_dist_sq = d_sq
+				nearest = node
+	if nearest:
+		current_target = nearest as CharacterBody2D
 
 func hurt(amount:float) -> void:
 	health -= amount
