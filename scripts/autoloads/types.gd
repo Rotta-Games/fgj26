@@ -11,7 +11,7 @@ enum PlayerId {
 	PLAYER_2 = 2
 }
 
-enum EnemyState {IDLE, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DEAD}
+enum EnemyState {IDLE = 1, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DEAD}
 
 enum PlayerState {
 	IDLE,

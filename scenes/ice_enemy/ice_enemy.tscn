@@ -9,7 +9,7 @@
 script = ExtResource("2_qrh7f")
 health = 50
 movement_speed = 40.0
-attack_speed = 1.0
+attack_delay = 2.0
 attack_damage = 1
 stunned_time = 0.5
 metadata/_custom_type_script = "uid://d1h18hi41diby"
@@ -273,6 +273,9 @@ libraries/ = SubResource("AnimationLibrary_pp7cr")
 [node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=2139732667]
 stream = ExtResource("4_22hgk")
 
+[node name="AttackDelayTimer" type="Timer" parent="." unique_id=639037329]
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="PlayerDetectionArea" to="." method="_on_player_detection_area_area_entered"]
 [connection signal="area_entered" from="PlayerHitArea" to="." method="_on_player_hit_area_area_entered"]
 [connection signal="area_exited" from="PlayerHitArea" to="." method="_on_player_hit_area_area_exited"]
