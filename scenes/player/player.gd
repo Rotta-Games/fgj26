@@ -162,7 +162,8 @@ func _move():
 
 
 func get_attack_speed_multiplier() -> float:
-	return mask_stats[player_mask]["attack_speed"]
+	var combo_mult = 0.6 ** combo_count
+	return mask_stats[player_mask]["attack_speed"] * combo_mult
 
 func get_damage_multiplier() -> float:
 	return mask_stats[player_mask]["damage_multiplier"]
