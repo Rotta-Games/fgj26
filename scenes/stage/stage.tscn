@@ -2,88 +2,29 @@
 
 [ext_resource type="Script" uid="uid://bxy5l1gg3fqas" path="res://scenes/stage/stage.gd" id="1_erodg"]
 [ext_resource type="TileSet" uid="uid://hy4b6sna4kov" path="res://assets/tilesets/world.tres" id="1_nnsk1"]
-[ext_resource type="Script" uid="uid://cmfev8bdfotk0" path="res://scripts/resource_definitions/stage_block.gd" id="2_pf3bu"]
 [ext_resource type="Script" uid="uid://bf811hxt2q18l" path="res://scripts/resource_definitions/enemy_wave.gd" id="3_d1yl1"]
 [ext_resource type="Script" uid="uid://b8nhfkr0uqoim" path="res://scripts/resource_definitions/enemy_pack.gd" id="4_ljyi0"]
-[ext_resource type="Script" uid="uid://ukh5rlfmven0" path="res://scripts/resource_definitions/enemy_definition.gd" id="5_kb6yy"]
-
-[sub_resource type="Resource" id="Resource_pf3bu"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_d1yl1"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_ljyi0"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_kb6yy"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_uutle"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_cwi0x"]
-script = ExtResource("4_ljyi0")
-enemy_pack = Array[ExtResource("5_kb6yy")]([SubResource("Resource_pf3bu"), SubResource("Resource_d1yl1"), SubResource("Resource_ljyi0"), SubResource("Resource_kb6yy"), SubResource("Resource_uutle")])
-metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
-
-[sub_resource type="Resource" id="Resource_lrsvv"]
-script = ExtResource("3_d1yl1")
-wave = Array[ExtResource("4_ljyi0")]([SubResource("Resource_cwi0x")])
-metadata/_custom_type_script = "uid://bf811hxt2q18l"
-
-[sub_resource type="Resource" id="Resource_gygk3"]
-script = ExtResource("2_pf3bu")
-waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_lrsvv")])
-metadata/_custom_type_script = "uid://cmfev8bdfotk0"
-
-[sub_resource type="Resource" id="Resource_gf271"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_wvhxk"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_suqj7"]
-script = ExtResource("5_kb6yy")
-metadata/_custom_type_script = "uid://ukh5rlfmven0"
-
-[sub_resource type="Resource" id="Resource_lv745"]
-script = ExtResource("4_ljyi0")
-enemy_pack = Array[ExtResource("5_kb6yy")]([SubResource("Resource_gf271"), SubResource("Resource_wvhxk"), SubResource("Resource_suqj7")])
-metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
-
-[sub_resource type="Resource" id="Resource_5b43b"]
-script = ExtResource("3_d1yl1")
-wave = Array[ExtResource("4_ljyi0")]([SubResource("Resource_lv745")])
-sides = Array[int]([1])
-metadata/_custom_type_script = "uid://bf811hxt2q18l"
-
-[sub_resource type="Resource" id="Resource_y85n4"]
-script = ExtResource("2_pf3bu")
-waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_5b43b")])
-metadata/_custom_type_script = "uid://cmfev8bdfotk0"
+[ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nnsk1"]
 size = Vector2(623.5, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pf3bu"]
-size = Vector2(10, 300)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rwgxs"]
 size = Vector2(623.75, 98)
+
+[sub_resource type="Resource" id="Resource_0sb5g"]
+script = ExtResource("4_ljyi0")
+metadata/_custom_type_script = "uid://b8nhfkr0uqoim"
+
+[sub_resource type="Resource" id="Resource_qard3"]
+script = ExtResource("3_d1yl1")
+wave = Array[ExtResource("4_ljyi0")]([SubResource("Resource_0sb5g")])
+metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [node name="Stage" type="Node2D" unique_id=1547251690]
 y_sort_enabled = true
 texture_filter = 1
 script = ExtResource("1_erodg")
-blocks = Array[ExtResource("2_pf3bu")]([SubResource("Resource_gygk3"), SubResource("Resource_y85n4")])
 
 [node name="Graphics" type="Node2D" parent="." unique_id=1256938798]
 
@@ -101,27 +42,17 @@ tile_set = ExtResource("1_nnsk1")
 [node name="Ground" type="StaticBody2D" parent="." unique_id=925694503]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=92572296]
-position = Vector2(312.25, 176)
+position = Vector2(313, 176)
 shape = SubResource("RectangleShape2D_nnsk1")
-
-[node name="LeftBoundary" type="StaticBody2D" parent="." unique_id=2035440574]
-position = Vector2(0, 6)
-collision_layer = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBoundary" unique_id=1716013080]
-position = Vector2(0, 116)
-shape = SubResource("RectangleShape2D_pf3bu")
-
-[node name="RightBoundary" type="StaticBody2D" parent="." unique_id=647417617]
-position = Vector2(625, 0)
-collision_layer = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBoundary" unique_id=1291658641]
-position = Vector2(0, 116)
-shape = SubResource("RectangleShape2D_pf3bu")
 
 [node name="Ceiling" type="StaticBody2D" parent="." unique_id=819167054]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling" unique_id=1345575361]
 position = Vector2(312.125, 44)
 shape = SubResource("RectangleShape2D_rwgxs")
+
+[node name="Blocks" type="Node2D" parent="." unique_id=726953032]
+
+[node name="StageBlock" parent="Blocks" unique_id=600521965 instance=ExtResource("7_d1yl1")]
+position = Vector2(402, 94)
+waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])

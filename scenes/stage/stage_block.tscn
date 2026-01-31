@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bww7jgfwhug06"]
+
+[ext_resource type="Script" uid="uid://dwc3prmhjes0f" path="res://scenes/stage/stage_block.gd" id="1_htwgn"]
+
+[node name="StageBlock" type="Node2D" unique_id=600521965]
+script = ExtResource("1_htwgn")
