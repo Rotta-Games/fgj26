@@ -51,12 +51,19 @@ func _physics_process(_delta: float) -> void:
 			
 			# Ugly way to determine direction
 			if (desired_x == 0 && global_position.x < hitbox.global_position.x):
-				direction = Direction.LEFT
+				direction = Direction.RIGHT
 			elif (desired_x == 0 && global_position.x > hitbox.global_position.x):
-				direction = Direction.LEFT
+				direction = Direction.RIGHT
 			else:
 				direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
-			sprite.flip_h = direction != Direction.RIGHT
+			
+			var flib = direction != Direction.RIGHT
+			sprite.flip_h = flib
+			if flib:
+				player_hit_area.position.x = -40
+			else:
+				player_hit_area.position.x = 0
+			
 			move_and_slide()
 	elif current_target && state == Types.EnemyState.ATTACK && !waiting_to_attack:
 		_start_attack()
