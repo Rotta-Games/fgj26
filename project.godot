@@ -42,6 +42,7 @@ folder_colors={
 
 Enemy=""
 Player=""
+PlayerHitbox=""
 
 [input]
 
