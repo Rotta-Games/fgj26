@@ -20,3 +20,9 @@ enum PlayerState {
 	STUNNED,
 	DEAD,
 }
+
+enum PlayerMask {
+	NONE,
+	TIGER,
+	FIRE,
+}

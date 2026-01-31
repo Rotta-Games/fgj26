@@ -30,6 +30,13 @@ var combo_timer: Timer
 var combo_count: int = 0
 var attack_hit: bool = false
 
+var player_mask: Types.PlayerMask = Types.PlayerMask.NONE
+var attack_stats = {
+	Types.PlayerMask.NONE: {"attack_speed": 1.0},
+	Types.PlayerMask.TIGER: {"attack_speed": 0.7, "damage_multiplier": 0.95},
+	Types.PlayerMask.FIRE: {"attack_speed": 1.0, "damage_multiplier": 1.2},
+}
+const BASE_DAMAGE := 5
 var punch_delay: float = 0.1
 var kick_delay: float = 0.2
 
@@ -116,19 +123,25 @@ func _move():
 	position.y = clamp(position.y, MIN_Y, MAX_Y)
 
 
+func get_attack_speed_multiplier() -> float:
+	return attack_stats[player_mask]["attack_speed"]
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(PLAYER_ATTACK):
 		if state in [Types.PlayerState.STUNNED, Types.PlayerState.ATTACKING]:
 			return
 
+		var atk_speed_mult = get_attack_speed_multiplier()
+
 		state = Types.PlayerState.ATTACKING
 		if combo_count < MAX_COMBO:
-			attack_delay_timer.wait_time = punch_delay
+			attack_delay_timer.wait_time = punch_delay * atk_speed_mult
 			attack_delay_timer.start()
 			play_animation("left_punch")
 			_play_attack_miss_sound()
 		else:
-			attack_delay_timer.wait_time = kick_delay
+			attack_delay_timer.wait_time = kick_delay * atk_speed_mult
 			attack_delay_timer.start()
 			play_animation("right_kick")
 
@@ -169,7 +182,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 
 func init_tiger_power() -> void:
 	head_attachment.visible = true
-	print("TIIKERI")
+	player_mask = Types.PlayerMask.TIGER
 
 
 func die() -> void:
@@ -186,7 +199,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		attack_hit = true
 		_play_punch_sound()
 
-		var dmg = 5 + combo_count * 2
+		var dmg = BASE_DAMAGE + combo_count * 2
 		if combo_count >= MAX_COMBO:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
@@ -225,8 +238,11 @@ func _play_punch_sound():
 
 
 func play_animation(anim_name: String) -> void:
+	var speed_scale = 1.0/get_attack_speed_multiplier()
+	sprite.speed_scale = speed_scale
 	sprite.play(anim_name)
 	if mask_anim_player.has_animation(anim_name):
+		mask_anim_player.speed_scale = speed_scale
 		mask_anim_player.play(anim_name)
 
 func _play_attack_miss_sound():
