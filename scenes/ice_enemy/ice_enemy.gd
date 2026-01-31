@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
 
-enum EnemyState {IDLE, DISABLED, SEEK, ATTACK, WAIT_FOR_ATTACK, JUMP, FLY, DYING}
+enum EnemyState {IDLE, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DYING}
 enum Direction {LEFT, RIGHT}
 
 const X_ALIGN_THRESHOLD := 30.0  # When within this many px of player's x, seek to the side
@@ -44,7 +44,7 @@ func _physics_process(_delta: float) -> void:
 			if move_dir.length_squared() < 0.01:
 				velocity = Vector2.ZERO
 			else:
-				velocity = move_dir.normalized() * stat.speed
+				velocity = move_dir.normalized() * stat.movement_speed
 
 			direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
 			sprite.flip_h = direction != Direction.RIGHT
@@ -54,6 +54,15 @@ func init_spawn(spawn_position: Vector2) -> void:
 	position = spawn_position
 	state = EnemyState.SEEK
 
+func hurt(amount:float) -> void:
+	stat.health -= amount
+	
+	if (stat.healt <= 0):
+		die()
+
+func die() -> void:
+	pass
+	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups():
 		current_target = area.get_parent()
