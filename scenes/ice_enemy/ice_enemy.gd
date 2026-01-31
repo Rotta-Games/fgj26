@@ -112,7 +112,7 @@ func _set_nearest_player_as_target() -> void:
 	if nearest:
 		current_target = nearest as CharacterBody2D
 
-func hurt(amount: int, critical_hit: bool = false) -> void:
+func hurt(amount: int, critical_hit: bool = false, combo_count: int = 0) -> void:
 	if state == Types.EnemyState.DEAD:
 		return
 	
@@ -120,11 +120,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 	
 	if (health <= 0):
-		_disable_all_collisions()
-		state = Types.EnemyState.DEAD
-		animation_player.play("dead")
-		enemy_death_sound.pitch_scale = randf_range(0.5, 1.2)
-		enemy_death_sound.play()
+		_die()
 
 	else:
 		animation_player.play("hurt")
@@ -132,10 +128,21 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		state = Types.EnemyState.STUNNED
 		sprite.play("stunned")
 
-func die() -> void:
+func _die() -> void:
+	_disable_all_collisions()
+	state = Types.EnemyState.DEAD
+	sprite.play("default")
+	sprite.stop()
+	animation_player.play("dead")
+	enemy_death_sound.pitch_scale = randf_range(0.5, 1.2)
+	enemy_death_sound.play()
+
+func remove_enemy() -> void:
 	dead.emit()
 	await enemy_death_sound.finished
 	queue_free()
+
+
 
 func _disable_all_collisions() -> void:
 	# Disable CharacterBody2D collision

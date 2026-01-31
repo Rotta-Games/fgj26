@@ -12,6 +12,7 @@ func _input(event: InputEvent) -> void:
 		player2_instance = player_scene.instantiate()
 		player2_instance.player_stats.player_id = Types.PlayerId.PLAYER_2
 		get_tree().get_current_scene().add_child(player2_instance)
+		SignalBus.playerStartChange.emit(Types.PlayerId.PLAYER_2, true)
 	elif event.is_action_pressed("player2_start") and player2_instance != null:
 		player2_instance.queue_free()
 		player2_instance = null
@@ -21,3 +22,4 @@ func _input(event: InputEvent) -> void:
 		player1_instance = player_scene.instantiate()
 		player1_instance.player_stats.player_id = Types.PlayerId.PLAYER_1
 		get_tree().get_current_scene().add_child(player1_instance)
+		SignalBus.playerStartChange.emit(Types.PlayerId.PLAYER_1, true)

@@ -248,6 +248,7 @@ func init_fire_power() -> void:
 func die() -> void:
 	# dead.emit()
 	# await enemy_death_sound.finished
+	SignalBus.playerStartChange.emit(player_id, false)
 	queue_free()
 
 func _get_hit_volume(volume, combo_count) -> float:
