@@ -9,6 +9,7 @@ script = ExtResource("2_qrh7f")
 health = 50
 movement_speed = 40.0
 attack_speed = 1.0
+attack_damage = 1
 stunned_time = 0.5
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
@@ -83,8 +84,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3pup"]
-size = Vector2(15, 9)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_22hgk"]
+radius = 6.5
+height = 13.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qrh7f"]
 height = 56.0
@@ -198,11 +200,12 @@ position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_oitbj")
 animation = &"attack"
 autoplay = "default"
-frame_progress = 0.7509426
+frame_progress = 0.44775048
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.5, 16.5)
-shape = SubResource("RectangleShape2D_a3pup")
+scale = Vector2(2, 0.7)
+shape = SubResource("CapsuleShape2D_22hgk")
 
 [node name="HitBox" type="Area2D" parent="." unique_id=1668721932 groups=["EnemyHitbox"]]
 collision_layer = 2
