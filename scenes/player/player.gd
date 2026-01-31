@@ -16,6 +16,10 @@ const MAX_Y : int = 150
 var direction := Vector2.ZERO
 var is_punching := false
 
+var combo_timer: Timer
+var combo_count: int = 0
+var attack_hit: bool = false
+
 # actions
 var PLAYER_LEFT: String
 var PLAYER_RIGHT: String
@@ -33,6 +37,18 @@ func _ready() -> void:
 	PLAYER_DOWN = "player%d_down" % i
 	PLAYER_ATTACK = "player%d_attack" % i
 	sprite.animation_finished.connect(_on_animation_finished)
+
+	combo_timer = Timer.new()
+	combo_timer.one_shot = true
+	combo_timer.wait_time = 0.5
+	combo_timer.timeout.connect(combo_timer_reset)
+	add_child(combo_timer)
+
+
+func combo_timer_reset() -> void:
+	combo_count = 0
+	attack_hit = false
+	print("combo timer reset")
 
 
 func _physics_process(_delta: float) -> void:
@@ -75,23 +91,39 @@ func _move():
 	position.y = clamp(position.y, MIN_Y, MAX_Y)
 
 func _input(event):
-	if (event is InputEventKey or event is InputEventJoypadButton) and event.pressed:
-		if event.is_action_pressed(PLAYER_ATTACK):
-			self.fist_collision.disabled = false
-			is_punching = true
-			sprite.play("left_punch")
+	if event.is_action_pressed(PLAYER_ATTACK):
+		self.fist_collision.disabled = false
+		is_punching = true
+		sprite.play("left_punch")
+
+	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
+		attack_hit = false
+		combo_timer.start()
+		combo_count += 1
+		if combo_count > 4:
+			print("combo reset")
+			combo_count = 0
+			combo_timer.stop()
+
 
 func _process(_delta):
-	self.fist_collision.disabled = true
+	pass
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
 	if "EnemyHitbox" in area.get_groups():
-		print("HIT ENEMY")
 		var enemy = area.get_parent()
-		enemy.hurt(10)
+		attack_hit = true
 
+		var dmg = 10 + combo_count * 2
+		if combo_count >= 4:
+			dmg += 10  # bonus damage for 4 hit combo
+			print("Critical Hit!")
+
+		enemy.hurt(dmg)
+		print("Dealt %d damage!" % dmg)
 
 func _on_animation_finished() -> void:
 	if sprite.animation == "left_punch":
 		is_punching = false
+		self.fist_collision.disabled = true
