@@ -5,17 +5,16 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nxf4l"]
 atlas = ExtResource("2_8tbgg")
-region = Rect2(0, 0, 32, 32)
+region = Rect2(0, 0, 16, 16)
 
 [node name="FireEmitter" type="Node2D" unique_id=354487658]
 script = ExtResource("1_8xyhn")
 horizontal_min = 60.0
 horizontal_max = 80.0
 spread_angle = 5.0
-scale_min = 0.2
-scale_max = 0.3
+scale_min = 0.5
+scale_max = 2.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=310476228]
 position = Vector2(2, 0)
-scale = Vector2(0.25, 0.25)
 texture = SubResource("AtlasTexture_nxf4l")
