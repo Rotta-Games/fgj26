@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var player_stats: PlayerStats
+@export var camera: Camera2D
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -400.0
@@ -44,11 +45,16 @@ func _input(event):
 		if event.is_action_pressed("p1_hit"):
 			self.fist_collision.disabled = false
 			print("PUNCH!")
+		if event.is_action_pressed("ui_left"):
+			self.fist_box.position.x = -player_stats.hit_reach
+		elif event.is_action_pressed("ui_right"):
+			self.fist_box.position.x = player_stats.hit_reach
 
 func _process(_delta):
 	self.fist_collision.disabled = true
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
-	# ennemy.hurt(player_stats.attack_power_or_jotain)
-	pass
+	if "Enemy" in area.get_groups():
+		print("HIT ENEMY")
+		# ennemy.hurt(player_stats.attack_power_or_jotain)

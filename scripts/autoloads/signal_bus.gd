@@ -1,3 +1,3 @@
 extends Node
 
-signal paskaperse
+signal playerHealthState(data: Dictionary)

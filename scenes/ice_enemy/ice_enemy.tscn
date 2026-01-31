@@ -6,6 +6,8 @@
 
 [sub_resource type="Resource" id="Resource_22hgk"]
 script = ExtResource("2_qrh7f")
+health = 100
+speed = 20.0
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a3pup"]
@@ -16,8 +18,12 @@ height = 56.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oitbj"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrh7f"]
+
 [node name="IceEnemy" type="CharacterBody2D" unique_id=934439360]
 texture_filter = 1
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_md0e3")
 stat = SubResource("Resource_22hgk")
 
@@ -30,18 +36,31 @@ texture = ExtResource("2_4ra3w")
 position = Vector2(-2.5, 16.5)
 shape = SubResource("RectangleShape2D_a3pup")
 
-[node name="Area2D2" type="Area2D" parent="." unique_id=1668721932]
+[node name="EnemyArea" type="Area2D" parent="." unique_id=1668721932 groups=["Enemy"]]
+collision_layer = 2
 
-[node name="EnemyHitBox" type="CollisionShape2D" parent="Area2D2" unique_id=742033414]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyArea" unique_id=742033414]
 position = Vector2(-3, -10)
 shape = SubResource("CapsuleShape2D_qrh7f")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=743462244]
+[node name="PlayerDetectionArea" type="Area2D" parent="." unique_id=743462244]
 
-[node name="PlayerDetectionCollision" type="CollisionShape2D" parent="Area2D" unique_id=1364154775]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectionArea" unique_id=1364154775]
 visible = false
 position = Vector2(-2, -10)
 scale = Vector2(6, 6)
 shape = SubResource("CircleShape2D_oitbj")
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[node name="PlayerHitArea" type="Area2D" parent="." unique_id=1917836694]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHitArea" unique_id=255805630]
+position = Vector2(-2, -10)
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_qrh7f")
+
+[connection signal="body_entered" from="PlayerDetectionArea" to="." method="_on_player_detection_area_body_entered"]
+[connection signal="body_entered" from="PlayerDetectionArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="PlayerHitArea" to="." method="_on_player_hit_area_body_entered"]
+[connection signal="body_entered" from="PlayerHitArea" to="." method="_on_player_detection_area_body_entered"]
+[connection signal="body_entered" from="PlayerHitArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="PlayerHitArea" to="." method="_on_player_hit_area_body_exited"]
