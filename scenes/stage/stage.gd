@@ -1,20 +1,24 @@
 extends Node2D
 
-@export var blocks : Array[StageBlock]
+@onready var _block_container : Node2D = $Blocks
 
 var _current_camera_limit : int = 0
+
 
 signal camera_right_limit_changed(right_limit: int)
 
 var _current_block : StageBlock
 
 func _ready() -> void:
-	_set_block(blocks.pop_front())
+	if _block_container.get_children().is_empty():
+		printerr("No blocks defined in Stage")
+		return
+	var first_block = _block_container.get_children()[0]
+	_set_block(first_block)
 	
 func _set_block(block: StageBlock) -> void:
 	_current_block = block
-	# TODO pistä blockeille suoraan x
-	_current_camera_limit += block.length
+	_current_camera_limit = block.global_position.x
 	camera_right_limit_changed.emit(_current_camera_limit)
 
 func _input(event: InputEvent) -> void:
