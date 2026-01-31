@@ -57,7 +57,7 @@ func _physics_process(_delta: float) -> void:
 			move_and_slide()
 
 func init_spawn(spawn_position: Vector2) -> void:
-	position = spawn_position
+	global_position = spawn_position
 	state = Types.EnemyState.SEEK
 	_set_nearest_player_as_target()
 

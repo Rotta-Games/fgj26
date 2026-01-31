@@ -43,8 +43,7 @@ func _spawn_enemy(enemy_scene: PackedScene, side: Types.Side) -> void:
 	var enemy = enemy_scene.instantiate()
 	_current_block.add_child(enemy)
 	var spawn_point = _get_random_spawn_point(side)
-	enemy.global_position = spawn_point
-	enemy.state = Types.EnemyState.SEEK
+	enemy.init_spawn(spawn_point)
 	enemy.dead.connect(_on_enemy_killed)
 
 func _get_random_spawn_point(side: Types.Side) -> Vector2i:
