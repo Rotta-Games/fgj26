@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://01delvve5im6"]
 
 [ext_resource type="Script" uid="uid://34gbqk7og27n" path="res://scenes/ice_enemy/ice_enemy.gd" id="1_md0e3"]
-[ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="2_4ra3w"]
 [ext_resource type="Script" uid="uid://d1h18hi41diby" path="res://scripts/resource_definitions/enemy_stats.gd" id="2_qrh7f"]
+[ext_resource type="Texture2D" uid="uid://bas6yv3rrti7r" path="res://assets/gfx/enemy_sheet.png" id="3_qrh7f"]
 
 [sub_resource type="Resource" id="Resource_22hgk"]
 script = ExtResource("2_qrh7f")
@@ -12,11 +12,36 @@ attack_speed = 2.0
 stunned_time = 10.0
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_22hgk"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gh66w"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrh7f"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pp7cr"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(96, 0, 96, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_oitbj"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_4ra3w")
+"texture": SubResource("AtlasTexture_22hgk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gh66w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qrh7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pp7cr")
 }],
 "loop": true,
 "name": &"default",
@@ -136,6 +161,7 @@ stat = SubResource("Resource_22hgk")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_oitbj")
+autoplay = "default"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
 position = Vector2(-2.5, 16.5)
