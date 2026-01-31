@@ -21,6 +21,7 @@ const MAX_COMBO := 4
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var mask_timer: Timer = $MaskTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
+@onready var kick_sound: AudioStreamPlayer2D = $KickSound
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
@@ -254,7 +255,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		var enemy = area.get_parent()
 		attack_hit = true
 		var volume = _get_hit_volume(default_attack_volume, combo_count)
-		_play_punch_sound(volume)
+		
 
 		var dmg_mult = get_damage_multiplier()
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
@@ -265,7 +266,9 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			print("Critical Hit!")
 			given_score = enemy.hurt(dmg, true)
 			volume *= CRIT_VOLUME
+			_play_kick_sound()
 		else:
+			_play_punch_sound(volume)
 			given_score= enemy.hurt(dmg)
 		
 		if given_score:
@@ -284,8 +287,10 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit on object!")
 			static_object.hurt(dmg)
+			_play_kick_sound()
 		else:
 			static_object.hurt(dmg)
+			_play_punch_sound(1)
 
 		print("Dealt %d damage to object!" % dmg)
 
@@ -304,6 +309,11 @@ func _play_punch_sound(volume: float):
 	attack_sound.pitch_scale = randf_range(0.8, 1.2)
 	attack_sound.volume_db = volume
 	attack_sound.play()
+
+func _play_kick_sound():
+	kick_sound.pitch_scale = randf_range(0.8, 1.2)
+	# kick_sound.volume_db = volume
+	kick_sound.play()
 
 
 func play_animation(anim_name: String) -> void:

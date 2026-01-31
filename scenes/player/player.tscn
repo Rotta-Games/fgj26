@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ctp0vnisuq2ce" path="res://assets/gfx/tiger_mask.png" id="5_mask"]
 [ext_resource type="PackedScene" uid="uid://ck6l2fj0111f0" path="res://scenes/player/particle_emitter.tscn" id="6_75vfm"]
 [ext_resource type="AudioStream" uid="uid://bybtc1x2l7x6h" path="res://assets/sfx/fgj26-hit-woosh-classic-vel-630ms.mp3" id="6_p47bc"]
+[ext_resource type="AudioStream" uid="uid://wf03drcpkv6y" path="res://assets/sfx/fgj26-kick-01.mp3" id="8_qek5x"]
 
 [sub_resource type="Resource" id="Resource_75vfm"]
 script = ExtResource("2_gmlin")
@@ -604,6 +605,10 @@ spread_angle = 40.0
 wait_time = 10.0
 one_shot = true
 ignore_time_scale = true
+
+[node name="KickSound" type="AudioStreamPlayer2D" parent="." unique_id=524789282]
+stream = ExtResource("8_qek5x")
+bus = &"SFX"
 
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]
 [connection signal="timeout" from="MaskTimer" to="." method="_on_mask_timer_timeout"]
