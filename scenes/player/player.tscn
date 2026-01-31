@@ -435,7 +435,7 @@ _data = {
 size = Vector2(31, 9)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gmlin"]
-size = Vector2(37.5, 35)
+size = Vector2(37.5, 24.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(33, 53.5)
@@ -562,7 +562,7 @@ position = Vector2(0, -16)
 collision_mask = 18
 
 [node name="FistBoxCullision2D" type="CollisionShape2D" parent="FistBox2D" unique_id=1421419464]
-position = Vector2(19.25, 0)
+position = Vector2(19, -6.125)
 shape = SubResource("RectangleShape2D_gmlin")
 disabled = true
 
