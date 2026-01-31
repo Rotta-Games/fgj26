@@ -4,7 +4,6 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
 
-enum EnemyState {IDLE, DISABLED, SEEK, ATTACK, STUNNED, WAIT_FOR_ATTACK, JUMP, FLY, DYING}
 enum Direction {LEFT, RIGHT}
 
 
@@ -54,7 +53,7 @@ func _physics_process(_delta: float) -> void:
 
 func init_spawn(spawn_position: Vector2) -> void:
 	position = spawn_position
-	state = EnemyState.SEEK
+	state = Types.EnemyState.SEEK
 
 func hurt(amount:float) -> void:
 	stat.health -= amount
@@ -71,11 +70,11 @@ func _on_player_detection_area_area_entered(area: Node2D) -> void:
 
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
 	if area.get_parent() == current_target:
-		state = EnemyState.ATTACK
+		state = Types.EnemyState.ATTACK
 		is_in_hit_area = true
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
 		if area.get_parent() == current_target:
-			state = EnemyState.SEEK
+			state = Types.EnemyState.SEEK
 			is_in_hit_area = false
