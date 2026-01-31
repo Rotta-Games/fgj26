@@ -327,6 +327,6 @@ func _play_attack_miss_sound():
 
 
 func _on_mask_timer_timeout() -> void:
-	fist_box.scale.x = get_attack_range_multiplier()
 	player_mask = Types.PlayerMask.NONE
+	fist_box.scale.x = sign(fist_box.scale.x) * get_attack_range_multiplier()
 	head_attachment.visible = false
