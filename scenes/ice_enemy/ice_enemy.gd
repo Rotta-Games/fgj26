@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
+@onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
 
 signal dead
 
@@ -107,6 +108,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	if (health <= 0):
 		state = Types.EnemyState.DEAD
 		animation_player.play("dead")
+		enemy_death_sound.play()
 	else:
 		animation_player.play("hurt")
 		stunned_timer.start(stat.stunned_time)
@@ -115,6 +117,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 
 func die() -> void:
 	dead.emit()
+	await enemy_death_sound.finished
 	queue_free()
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
