@@ -8,7 +8,6 @@ extends CharacterBody2D
 @onready var player_hit_area: Area2D = $PlayerHitArea
 @onready var enemy_hitbox: Area2D = $HitBox
 @onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
-@onready var player_collision : CollisionShape2D = $PlayerCollision
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 
 signal dead

@@ -31,6 +31,8 @@ var health: int
 var direction := Vector2.ZERO
 var score: int = 0
 var default_attack_volume : float
+var player_id = Types.PlayerId
+
 var combo_timer: Timer
 var combo_count: int = 0
 var attack_hit: bool = false
@@ -69,6 +71,7 @@ func _ready() -> void:
 	health = player_stats.health
 	# actions for player N
 	var i = player_stats.player_id
+	player_id = player_stats.player_id
 	PLAYER_LEFT = "player%d_left" % i
 	PLAYER_RIGHT = "player%d_right" % i
 	PLAYER_UP = "player%d_up" % i
@@ -192,7 +195,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 
 	SignalBus.playerHealthState.emit({
-		"player_id": Types.PlayerId.PLAYER_1,
+		"player_id": player_id,
 		"health": health,
 	})
 
@@ -268,8 +271,8 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		if given_score:
 			score = score + given_score
 			SignalBus.playerScoreState.emit({
-			"player_id": player_stats.player_id,
-			"score": score,
+				"player_id": player_id,
+				"score": score,
 			})
 		print("Dealt %d damage!" % dmg)
 	if "StaticObjectHitbox" in groups:
