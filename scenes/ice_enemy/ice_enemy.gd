@@ -109,7 +109,6 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	health -= amount
 	
 	if (health <= 0):
-		player_collision.set_deferred("disabled", true)
 		_disable_all_collisions()
 		state = Types.EnemyState.DEAD
 		animation_player.play("dead")

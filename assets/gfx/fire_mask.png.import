@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bcuwl8eqylho"
-path="res://.godot/imported/fire_maskt.png-f59fd79f822145c4862756fc492e0099.ctex"
+path="res://.godot/imported/fire_mask.png-334c7771b626852194cf9506db596265.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/fire_maskt.png"
-dest_files=["res://.godot/imported/fire_maskt.png-f59fd79f822145c4862756fc492e0099.ctex"]
+source_file="res://assets/gfx/fire_mask.png"
+dest_files=["res://.godot/imported/fire_mask.png-334c7771b626852194cf9506db596265.ctex"]
 
 [params]
 
