@@ -5,6 +5,7 @@ extends Node2D
 
 var _current_camera_limit : int = 0
 var _current_block : StageBlock
+var _enemies_alive : int = 0
 
 const MIN_SPAWN_DELAY_S : float = 0.5
 const MAX_SPAWN_DELAY_S : float = 2.5
@@ -17,7 +18,7 @@ func _ready() -> void:
 	if _block_container.get_children().is_empty():
 		printerr("No blocks defined in Stage")
 		return
-	var first_block = _block_container.get_children()[0]
+	var first_block = _block_container.get_child(0)
 	_set_block(first_block)
 	
 func _set_block(block: StageBlock) -> void:
@@ -44,6 +45,7 @@ func _spawn_enemy(enemy_scene: PackedScene, side: Types.Side) -> void:
 	_current_block.add_child(enemy)
 	var spawn_point = _get_random_spawn_point(side)
 	enemy.init_spawn(spawn_point)
+	_enemies_alive += 1
 	enemy.dead.connect(_on_enemy_killed)
 
 func _get_random_spawn_point(side: Types.Side) -> Vector2i:
@@ -61,7 +63,27 @@ func _get_random_spawn_point(side: Types.Side) -> Vector2i:
 	return spawn_point
 	
 func _on_enemy_killed() -> void:
-	print("ENEMY DEAD")
+	_enemies_alive -= 1
+	print("ENEMY DEAD: enemies remaining " + str(_enemies_alive))
+	if _enemies_alive == 0:
+		if _has_more_waves():
+			var wave = _current_block.waves.pop_front()
+			_spawn_wave(wave)
+			return
+		_block_container.remove_child(_current_block)
+		_current_block = null
+		if _block_container.get_children().is_empty():
+			_finish_stage()
+			return
+		
+		var next_block = _block_container.get_child(0)
+		_set_block(next_block)
+			
+func _finish_stage() -> void:
+	print("TODO: FINISH STAGE")
+		
+func _has_more_waves() -> bool:
+	return not _current_block.waves.is_empty()
 			
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
@@ -70,7 +92,6 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_sub_pixel_follow_camera_right_limit_reached() -> void:
-	print("hep")
-	if not _current_block.waves.is_empty():
-		var wave = _current_block.waves.front()
+	if _has_more_waves():
+		var wave = _current_block.waves.pop_front()
 		_spawn_wave(wave)

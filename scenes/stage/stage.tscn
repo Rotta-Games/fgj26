@@ -59,6 +59,10 @@ shape = SubResource("RectangleShape2D_rwgxs")
 position = Vector2(402, 94)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
 
+[node name="StageBlock2" parent="Blocks" unique_id=1354616595 instance=ExtResource("7_d1yl1")]
+position = Vector2(821, 96)
+waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
+
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1639698908]
 
 [node name="Spawn" type="Node2D" parent="SpawnPoints" unique_id=1526453552]
