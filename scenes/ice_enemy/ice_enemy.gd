@@ -91,17 +91,17 @@ func die() -> void:
 	queue_free()
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
-	if "PlayerHitbox" in area.get_groups():
+	if "PlayerHitbox" in area.get_groups() && state == Types.EnemyState.IDLE:
 		current_target = area.get_parent()
 
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
-	if area.get_parent() == current_target:
+	if area.get_parent() == current_target && state == Types.EnemyState.SEEK:
 		state = Types.EnemyState.ATTACK
 		is_in_hit_area = true
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
-		if area.get_parent() == current_target:
+		if area.get_parent() == current_target && state == Types.EnemyState.ATTACK:
 			state = Types.EnemyState.SEEK
 			is_in_hit_area = false
 
