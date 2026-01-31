@@ -60,6 +60,7 @@ func _move():
 	
 	move_and_slide()
 
+	# keep player inside screen bounds
 	var canvas_transform = get_viewport().get_canvas_transform()
 	var global_screen_left = -canvas_transform.origin.x
 	var global_screen_right = global_screen_left + get_viewport_rect().size.x
