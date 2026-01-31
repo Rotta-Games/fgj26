@@ -61,4 +61,4 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [connection signal="camera_right_limit_changed" from="SubViewportContainer/SubViewport/Stage" to="SubViewportContainer/SubViewport/SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
-[connection signal="right_limit_reached" from="SubViewportContainer/SubViewport/SubPixelFollowCamera" to="SubViewportContainer/SubViewport/Stage" method="_on_sub_pixel_follow_camera_right_limit_reached"]
+[connection signal="checkpoint_reached" from="SubViewportContainer/SubViewport/SubPixelFollowCamera" to="SubViewportContainer/SubViewport/Stage" method="_on_sub_pixel_follow_camera_checkpoint_reached"]
