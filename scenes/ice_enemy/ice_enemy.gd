@@ -15,14 +15,12 @@ const Y_LEVEL_THRESHOLD := 10.0  # Aim to be within this many px of player's y
 var state = Types.EnemyState.IDLE
 var health: int
 var current_target: CharacterBody2D
-var is_in_hit_area: bool
-var x_target_treshold = 20
 
 func _ready() -> void:
 	health = stat.health
 
 func _physics_process(_delta: float) -> void:
-	if current_target && !is_in_hit_area && state == Types.EnemyState.SEEK:
+	if current_target && state == Types.EnemyState.SEEK:
 		var hitbox := current_target.get_node_or_null("HitBox2D") as Area2D
 		if hitbox:
 			var to_player := hitbox.global_position - global_position
@@ -97,13 +95,11 @@ func _on_player_detection_area_area_entered(area: Node2D) -> void:
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
 	if area.get_parent() == current_target && state == Types.EnemyState.SEEK:
 		state = Types.EnemyState.ATTACK
-		is_in_hit_area = true
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
 		if area.get_parent() == current_target && state == Types.EnemyState.ATTACK:
 			state = Types.EnemyState.SEEK
-			is_in_hit_area = false
 
 
 func _on_stunned_timer_timeout():
