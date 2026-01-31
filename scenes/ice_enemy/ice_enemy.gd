@@ -142,7 +142,7 @@ func _disable_all_collisions() -> void:
 	# Disable CharacterBody2D collision
 	collision_layer = 0
 	collision_mask = 0
-	$EnemyCollision.disabled = true
+	$EnemyCollision.set_deferred("disabled", true)
 	
 func _on_player_detection_area_area_entered(area: Node2D) -> void:
 	if "PlayerHitbox" in area.get_groups() && state == Types.EnemyState.IDLE:

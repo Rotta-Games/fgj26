@@ -120,12 +120,12 @@ func _physics_process(_delta: float) -> void:
 				if facing_left:
 					particle_emitter._direction = -1 
 					#particle_emitter.scale = -1.0
-					particle_emitter.position.x = -player_stats.hit_reach + 1
+					particle_emitter.position.x = -player_stats.hit_reach - 3
 					fist_box.position.x = -player_stats.hit_reach
 				else:
 					particle_emitter._direction = 1
 				#	particle_emitter.scale = 1.0
-					particle_emitter.position.x = player_stats.hit_reach - 1
+					particle_emitter.position.x = player_stats.hit_reach + 3
 					fist_box.position.x = player_stats.hit_reach
 		else:
 			state = Types.PlayerState.IDLE
@@ -174,12 +174,12 @@ func _input(event: InputEvent) -> void:
 		combo_count += 1
 		if combo_count > MAX_COMBO:
 			
-			particle_emitter.fire(5, 1.5)
+			particle_emitter.fire(7, 1.5)
 			print("combo reset")
 			combo_count = 0
 			combo_timer.stop()
 		elif combo_count > MAX_COMBO - 1:
-			particle_emitter.fire(2, 1.2)
+			particle_emitter.fire(3, 1.1)
 		elif combo_count > MAX_COMBO - 2:
 			particle_emitter.fire(1)
 

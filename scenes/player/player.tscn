@@ -592,11 +592,11 @@ stream = ExtResource("6_p47bc")
 bus = &"SFX"
 
 [node name="ParticleEmitter" parent="." unique_id=1828585466 instance=ExtResource("6_75vfm")]
-position = Vector2(28, -23)
-min_duration_s = 0.15
-max_duration_s = 0.2
-spawn_radius = 10.0
-spread_angle = 45.0
+position = Vector2(34, -25)
+min_duration_s = 0.05
+max_duration_s = 0.08
+spawn_radius = 7.0
+spread_angle = 40.0
 
 [node name="MaskTimer" type="Timer" parent="." unique_id=2064387442]
 wait_time = 10.0
