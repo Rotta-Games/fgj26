@@ -114,7 +114,6 @@ func _input(event: InputEvent) -> void:
 			sprite.play("left_punch")
 			_play_punch_sound()
 		else:
-			print("KICK")
 			sprite.play("right_kick")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
@@ -144,12 +143,14 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		state = Types.PlayerState.DEAD
 		# sprite.play("dead")
 	else:
-		return
-		#sprite.play("hurt")
+		sprite.play("stunned")
 		stunned_timer.start(player_stats.stunned_time)
 		velocity = Vector2.ZERO
 		state = Types.PlayerState.STUNNED
 		self.fist_collision.disabled = true
+		combo_timer.stop()
+		combo_count = 0
+		attack_hit = false
 		print("Player stunned!")
 
 

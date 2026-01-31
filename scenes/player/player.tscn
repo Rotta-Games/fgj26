@@ -207,16 +207,13 @@ texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
 animation = &"stunned"
-frame_progress = 0.66245776
 frame_progress = 1.0
 
 [node name="PersonalSpace2D" type="CollisionShape2D" parent="." unique_id=1900141297]
-visible = false
 position = Vector2(-0.5, 16)
 shape = SubResource("RectangleShape2D_gee14")
 
 [node name="FistBox2D" type="Area2D" parent="." unique_id=1807308919]
-visible = false
 position = Vector2(23, -29)
 collision_mask = 18
 
@@ -225,7 +222,6 @@ shape = SubResource("RectangleShape2D_gmlin")
 disabled = true
 
 [node name="HitBox2D" type="Area2D" parent="." unique_id=1957341326 groups=["PlayerHitbox"]]
-visible = false
 collision_mask = 2
 
 [node name="HitBoxCullision2D" type="CollisionShape2D" parent="HitBox2D" unique_id=210454895]
@@ -233,6 +229,7 @@ position = Vector2(-0.5, -15.75)
 shape = SubResource("RectangleShape2D_dovo2")
 
 [node name="StunnedTimer" type="Timer" parent="." unique_id=721411037]
+one_shot = true
 
 [node name="AttackSound" type="AudioStreamPlayer2D" parent="." unique_id=1377558879]
 stream = ExtResource("4_lvxji")
