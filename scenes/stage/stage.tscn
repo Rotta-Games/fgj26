@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b8nhfkr0uqoim" path="res://scripts/resource_definitions/enemy_pack.gd" id="4_ljyi0"]
 [ext_resource type="PackedScene" uid="uid://01delvve5im6" path="res://scenes/ice_enemy/ice_enemy.tscn" id="6_pf3bu"]
 [ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
+[ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
 
 [sub_resource type="Resource" id="Resource_pf3bu"]
 script = ExtResource("4_ljyi0")
@@ -58,3 +59,8 @@ position = Vector2(0, 138)
 
 [node name="Spawn4" type="Node2D" parent="SpawnPoints" unique_id=205390155]
 position = Vector2(0, 158)
+
+[node name="StaticObjects" type="Node2D" parent="." unique_id=1091333678]
+
+[node name="Trashcan" parent="StaticObjects" unique_id=2095307770 instance=ExtResource("7_ljyi0")]
+position = Vector2(128, 102)

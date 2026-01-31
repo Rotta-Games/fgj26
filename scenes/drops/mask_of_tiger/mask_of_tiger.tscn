@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dhg0wm7qgbw0r"]
+
+[ext_resource type="Texture2D" uid="uid://bummq0bjsoej2" path="res://assets/gfx/tiger_mask.png" id="1_15a3m"]
+
+[node name="MaskOfTiger" type="Node2D" unique_id=784574251]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=954969201]
+texture = ExtResource("1_15a3m")

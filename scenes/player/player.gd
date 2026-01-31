@@ -154,7 +154,9 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 
 
 func _on_fist_hit_enemy(area: Area2D) -> void:
-	if "EnemyHitbox" in area.get_groups():
+	var groups = area.get_groups()
+
+	if "EnemyHitbox" in groups:
 		var enemy = area.get_parent()
 		attack_hit = true
 
@@ -166,6 +168,19 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		else:
 			enemy.hurt(dmg)
 		print("Dealt %d damage!" % dmg)
+	if "StaticObjectHitbox" in groups:
+		var static_object = area.get_parent()
+		attack_hit = true
+		
+		var dmg = 10 + combo_count * 2
+		if combo_count >= 4:
+			dmg += 10  # bonus damage for 4 hit combo
+			print("Critical Hit on object!")
+			static_object.hurt(dmg)
+		else:
+			static_object.hurt(dmg)
+
+		print("Dealt %d damage to object!" % dmg)
 
 
 func _on_animation_finished() -> void:
