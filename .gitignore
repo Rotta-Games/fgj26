@@ -1,3 +1,7 @@
+.DS_Store
+/build/*
+/.godot/*
+
 # Godot 4+ specific ignores
 .godot/
 /android/
@@ -9,4 +13,3 @@ export/
 
 *.pur
 *.aseprite
-
