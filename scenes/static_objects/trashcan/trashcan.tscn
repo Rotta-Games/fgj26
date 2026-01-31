@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://nqox4cu6unon" path="res://scenes/static_objects/trashcan/trashcan.gd" id="1_m6xt5"]
 [ext_resource type="Texture2D" uid="uid://dcg0c0nq0xwu" path="res://assets/gfx/deeku_sheet.png" id="1_v1c3e"]
-[ext_resource type="Script" uid="uid://dfog41bqdj34f" path="res://scripts/resource_definitions/static_object.gd" id="2_bws4p"]
+[ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="2_bws4p"]
 [ext_resource type="PackedScene" uid="uid://dhg0wm7qgbw0r" path="res://scenes/drops/mask_of_tiger/mask_of_tiger.tscn" id="2_lskl7"]
 
 [sub_resource type="Resource" id="Resource_lskl7"]
@@ -23,6 +23,7 @@ script = ExtResource("1_m6xt5")
 data = SubResource("Resource_lskl7")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1226795684]
+y_sort_enabled = true
 texture = ExtResource("1_v1c3e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1364103392]

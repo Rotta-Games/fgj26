@@ -63,6 +63,7 @@ grow_horizontal = 2
 [node name="Stage" parent="." unique_id=716734679 instance=ExtResource("1_lnu2h")]
 
 [node name="Player" parent="." unique_id=411557437 instance=ExtResource("2_lbhrr")]
+y_sort_enabled = true
 position = Vector2(139, 146.33333)
 collision_mask = 6
 
