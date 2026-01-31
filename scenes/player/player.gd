@@ -174,12 +174,12 @@ func _input(event: InputEvent) -> void:
 		combo_count += 1
 		if combo_count > MAX_COMBO:
 			
-			particle_emitter.fire(7, 1.5)
+			particle_emitter.fire(6, 1.4)
 			print("combo reset")
 			combo_count = 0
 			combo_timer.stop()
 		elif combo_count > MAX_COMBO - 1:
-			particle_emitter.fire(3, 1.1)
+			particle_emitter.fire(2)
 		elif combo_count > MAX_COMBO - 2:
 			particle_emitter.fire(1)
 
