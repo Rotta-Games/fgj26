@@ -280,7 +280,7 @@ func _on_stunned_timer_timeout():
 		state = Types.PlayerState.IDLE
 		
 func _play_punch_sound():
-	attack_sound.pitch_scale = randf_range(0.9, 1.1)
+	attack_sound.pitch_scale = randf_range(0.8, 1.2)
 	attack_sound.play()
 
 
