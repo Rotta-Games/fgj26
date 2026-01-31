@@ -26,6 +26,7 @@ const MAX_COMBO := 3
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
 @onready var particle_emitter = $ParticleEmitter
+@onready var fire_emitter = $FireEmitter
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -53,7 +54,7 @@ var mask_stats = {
 		"mask_texture": preload("res://assets/gfx/tiger_mask.png"),
 	},
 	Types.PlayerMask.FIRE: {
-		"attack_speed": 1.1,
+		"attack_speed": 1.3,
 		"attack_range": 2.0,
 		"damage_multiplier": 1.2,
 		"mask_texture": preload("res://assets/gfx/fire_mask.png"),
@@ -130,13 +131,15 @@ func _physics_process(_delta: float) -> void:
 				sprite.scale.x = -1 if facing_left else 1
 				if facing_left:
 					particle_emitter._direction = -1 
-					#particle_emitter.scale = -1.0
 					particle_emitter.position.x = -player_stats.hit_reach - 3
+					fire_emitter._direction = -1
+					fire_emitter.position.x = -player_stats.hit_reach - 3
 					fist_box.scale.x = -abs(fist_box.scale.x)
 				else:
 					particle_emitter._direction = 1
-					#particle_emitter.scale = 1.0
 					particle_emitter.position.x = player_stats.hit_reach + 3
+					fire_emitter._direction = 1
+					fire_emitter.position.x = player_stats.hit_reach + 3
 					fist_box.scale.x = abs(fist_box.scale.x)
 		else:
 			state = Types.PlayerState.IDLE
@@ -177,10 +180,15 @@ func _input(event: InputEvent) -> void:
 			attack_delay_timer.start()
 			play_animation("left_punch")
 			_play_attack_miss_sound()
+			if player_mask == Types.PlayerMask.FIRE:
+				fire_emitter.fire(3, 1.0)
 		else:
 			attack_delay_timer.wait_time = kick_delay * atk_speed_mult
 			attack_delay_timer.start()
 			play_animation("right_kick")
+			if player_mask == Types.PlayerMask.FIRE:
+				fire_emitter.fire(5, 1.2)
+				play_animation("left_punch")
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
 		attack_hit = false

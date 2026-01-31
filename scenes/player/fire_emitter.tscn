@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://7wly7mjxrkpq"]
+
+[ext_resource type="Script" path="res://scenes/player/particle_emitter.gd" id="1_8xyhn"]
+[ext_resource type="Texture2D" uid="uid://2mj8dv3v2bcm" path="res://assets/gfx/fire_sheet.png" id="2_8tbgg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxf4l"]
+atlas = ExtResource("2_8tbgg")
+region = Rect2(0, 0, 32, 32)
+
+[node name="FireEmitter" type="Node2D" unique_id=354487658]
+script = ExtResource("1_8xyhn")
+horizontal_min = 60.0
+horizontal_max = 80.0
+spread_angle = 5.0
+scale_min = 0.2
+scale_max = 0.3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=310476228]
+position = Vector2(2, 0)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("AtlasTexture_nxf4l")
