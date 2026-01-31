@@ -13,6 +13,7 @@ const MAX_Y : int = 150
 @onready var fist_collision = $FistBox2D/FistBoxCullision2D
 @onready var sprite = $AnimatedSprite2D
 @onready var stunned_timer = $StunnedTimer
+@onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 
 var state: Types.PlayerState = Types.PlayerState.IDLE
 var health: int
@@ -106,6 +107,8 @@ func _input(event):
 		self.fist_collision.disabled = false
 		state = Types.PlayerState.PUNCHING
 		sprite.play("left_punch")
+		_play_punch_sound()
+		
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
 		attack_hit = false
@@ -167,3 +170,7 @@ func _on_animation_finished() -> void:
 func _on_stunned_timer_timeout():
 	if (health > 0):
 		state = Types.PlayerState.IDLE
+		
+func _play_punch_sound():
+	attack_sound.pitch_scale = randf_range(0.9, 1.1)
+	attack_sound.play()
