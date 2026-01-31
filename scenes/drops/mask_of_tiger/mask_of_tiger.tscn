@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dhg0wm7qgbw0r"]
 
-[ext_resource type="Texture2D" uid="uid://bummq0bjsoej2" path="res://assets/gfx/tiger_mask.png" id="1_15a3m"]
-[ext_resource type="Script" uid="uid://cih417gddjohd" path="res://scenes/drops/mask_of_tiger/mask_of_tiger.gd" id="1_u2luc"]
+[ext_resource type="Texture2D" uid="uid://ctp0vnisuq2ce" path="res://assets/gfx/tiger_mask.png" id="1_15a3m"]
+[ext_resource type="Script" path="res://scenes/drops/mask_of_tiger/mask_of_tiger.gd" id="1_u2luc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_15a3m"]
 

@@ -202,6 +202,13 @@ func init_tiger_power() -> void:
 	mask_timer.start()
 
 
+func init_fire_power() -> void:
+	head_attachment.texture = mask_stats[Types.PlayerMask.FIRE]["mask_texture"]
+	head_attachment.visible = true
+	player_mask = Types.PlayerMask.FIRE
+	mask_timer.start()
+
+
 func die() -> void:
 	# dead.emit()
 	# await enemy_death_sound.finished
