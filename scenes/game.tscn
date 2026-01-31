@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://vmne8d3xmidj"]
 
 [ext_resource type="PackedScene" uid="uid://cv71lawq0occ2" path="res://scenes/stage/stage.tscn" id="1_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://b41wbktn5sxny" path="res://scenes/game_ui/arrow.tscn" id="2_iywne"]
+[ext_resource type="Script" uid="uid://dpu8j54yxofbj" path="res://scenes/trojanhoers.gd" id="1_p57ef"]
+[ext_resource type="PackedScene" path="res://scenes/game_ui/arrow.tscn" id="2_iywne"]
 [ext_resource type="PackedScene" uid="uid://ydjpkmtwf4u6" path="res://scenes/player/player.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
@@ -12,6 +13,7 @@
 
 [node name="Node2D" type="Node2D" unique_id=50045772]
 y_sort_enabled = true
+script = ExtResource("1_p57ef")
 
 [node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=983965778]
 script = ExtResource("8_gee14")
