@@ -17,6 +17,7 @@ const MAX_COMBO := 4
 @onready var head_attachment: Sprite2D = sprite.get_node("HeadAttachment")
 @onready var stunned_timer: Timer = $StunnedTimer
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
+@onready var mask_timer: Timer = $MaskTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
@@ -183,6 +184,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 func init_tiger_power() -> void:
 	head_attachment.visible = true
 	player_mask = Types.PlayerMask.TIGER
+	mask_timer.start()
 
 
 func die() -> void:
@@ -248,3 +250,8 @@ func play_animation(anim_name: String) -> void:
 func _play_attack_miss_sound():
 	attack_woosh_sound.pitch_scale = randf_range(0.8, 1.2)
 	attack_woosh_sound.play()
+
+
+func _on_mask_timer_timeout() -> void:
+	player_mask = Types.PlayerMask.NONE
+	head_attachment.visible = false
