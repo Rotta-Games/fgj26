@@ -9,10 +9,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	pass
 	# Generate a random float between 0.0 and 1.0
-	if randf() < TRESHOLD:
-		SignalBus.playerHealthState.emit({
-			"player_id": Types.PlayerId.PLAYER_1,
-			"health": randi_range(1,100)
-		})
-		print("Signal emitted!")
+	#if randf() < TRESHOLD:
+	#	SignalBus.playerHealthState.emit({
+	#		"player_id": Types.PlayerId.PLAYER_1,
+	#		"health": randi_range(1,100)
+	#	})
+	#	print("Signal emitted!")
