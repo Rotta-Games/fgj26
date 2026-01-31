@@ -135,5 +135,10 @@ func _on_player_hit_area_area_exited(area: Node2D) -> void:
 
 func _on_stunned_timer_timeout():
 	if (health > 0):
-		state = Types.EnemyState.SEEK
+		for area in player_hit_area.get_overlapping_areas():
+			if "PlayerHitbox" in area.get_groups():
+				current_target = area.get_parent()
+				state = Types.EnemyState.ATTACK
+			else:
+				state = Types.EnemyState.SEEK
 		sprite.play("default")
