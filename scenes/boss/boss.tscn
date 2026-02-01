@@ -10,9 +10,9 @@
 [sub_resource type="Resource" id="Resource_0xsra"]
 script = ExtResource("2_qrh7f")
 health = 500
-movement_speed = 45.0
-attack_delay = 0.5
-attack_damage = 25
+movement_speed = 60.0
+attack_delay = 0.4
+attack_damage = 40
 score = 10000
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
