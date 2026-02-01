@@ -28,21 +28,26 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_iubdt"]
 
 [node name="Gas" type="Node2D" unique_id=2012247116]
+y_sort_enabled = true
 script = ExtResource("1_b0q43")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=49081776]
+y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_av5bu")
 frame_progress = 0.04393585
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1660418805]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=299921044]
-scale = Vector2(1.5, 1.5)
 shape = SubResource("CircleShape2D_iubdt")
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=1208015427]
 
 [node name="AliveTimer" type="Timer" parent="." unique_id=152818785]
 
+[node name="DisableAttackTimer" type="Timer" parent="." unique_id=1764071025]
+wait_time = 0.7
+
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="AliveTimer" to="." method="_on_alive_timer_timeout"]
+[connection signal="timeout" from="DisableAttackTimer" to="." method="_on_disable_attack_timer_timeout"]
