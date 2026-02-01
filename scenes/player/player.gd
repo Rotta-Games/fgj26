@@ -22,6 +22,7 @@ const MAX_COMBO := 3
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var mask_timer: Timer = $MaskTimer
 @onready var dash_timer: Timer = $DashTimer
+@onready var dash_wait_timer: Timer = $DashTimer/DashWaitTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 @onready var kick_sound: AudioStreamPlayer2D = $KickSound
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
@@ -110,6 +111,10 @@ func _ready() -> void:
 		"player_id": player_id,
 		"health": health,
 	})
+	# tiny delay before dash can be used again
+	dash_timer.timeout.connect(func():
+		dash_wait_timer.start()
+	)
 
 
 func combo_timer_reset() -> void:
@@ -197,7 +202,7 @@ func _input(event: InputEvent) -> void:
 		var atk_speed_mult = get_attack_speed_multiplier()
 
 		state = Types.PlayerState.ATTACKING
-		if combo_count < MAX_COMBO:
+		if combo_count < MAX_COMBO and dash_timer.is_stopped():
 			attack_delay_timer.wait_time = punch_delay * atk_speed_mult
 			attack_delay_timer.start()
 			play_animation("left_punch", 1.0/atk_speed_mult)
@@ -224,7 +229,8 @@ func _input(event: InputEvent) -> void:
 			particle_emitter.fire(1)
 	
 	if event.is_action_pressed(PLAYER_DASH):
-		dash_timer.start()
+		if dash_wait_timer.is_stopped() and dash_timer.is_stopped():
+			dash_timer.start()
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
 		attack_hit = false
@@ -317,7 +323,7 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		var dmg = (BASE_DAMAGE * dmg_mult) + combo_count * 2
 		var given_score
 
-		if combo_count >= MAX_COMBO:
+		if combo_count >= MAX_COMBO or not dash_timer.is_stopped():
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
 			given_score = enemy.hurt(dmg, true, combo_count)

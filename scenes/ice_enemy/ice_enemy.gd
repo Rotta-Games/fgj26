@@ -2,7 +2,8 @@ extends CharacterBody2D
 @export var stat: EnemyStats
 @export var direction = Direction.LEFT
 
-@onready var sprite = $AnimatedSprite2D
+@onready var sprite = $AnimationNode/AnimatedSprite2D
+@onready var animation_node = $AnimationNode
 @onready var animation_target = $AnimationTarget
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
@@ -69,7 +70,7 @@ func _physics_process(_delta: float) -> void:
 				direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
 			
 			var flib = direction != Direction.RIGHT
-			sprite.scale.x = -1 if flib else 1
+			animation_node.scale.x = -1 if flib else 1
 			if flib:
 				player_hit_area.position.x = -40
 			else:
