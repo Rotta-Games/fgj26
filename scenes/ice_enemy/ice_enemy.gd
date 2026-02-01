@@ -137,7 +137,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 func _die(is_max_dead: bool = false) -> void:
 	_disable_all_collisions()
 	state = Types.EnemyState.DEAD
-	sprite.play("default")
+	sprite.play("dead")
 	sprite.stop()
 	if is_max_dead: 
 		animation_player.play("dead_max") 
