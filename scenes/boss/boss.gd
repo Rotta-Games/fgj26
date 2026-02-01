@@ -13,6 +13,7 @@ extends CharacterBody2D
 @onready var bottle_hit_indicator : AnimatedSprite2D = $BottleHitIndicator
 
 @onready var gas_scene : PackedScene = preload("res://scenes/boss/gas.tscn")
+@onready var hey_catch_cound = $HeyCatchSound
 
 signal dead
 
@@ -91,6 +92,7 @@ func _change_state(new_state: Types.BossState):
 	
 	match new_state:
 		Types.BossState.THROWING:
+			hey_catch_cound.play()
 			_throws_remaining = round(randf_bell(float(MIN_THROWS), float(MAX_THROWS)))
 		
 		Types.BossState.SEEK:

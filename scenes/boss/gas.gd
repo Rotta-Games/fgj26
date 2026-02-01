@@ -5,6 +5,7 @@ extends Node2D
 @onready var disable_attack_timer = $DisableAttackTimer
 @onready var alive_timer = $AliveTimer
 @onready var sprite = $AnimatedSprite2D
+@onready var gas_sound = $GasSound
 
 # Props
 var attack_delay: float = 0.6
@@ -18,6 +19,8 @@ var damage_dealt = false
 
 func _ready() -> void:
 	sprite.play("default")
+	gas_sound.pitch_scale = randf_range(0.9,1.1)
+	gas_sound.play()
 	alive_timer.start(alive_time)
 
 func _physics_process(_delta: float) -> void:

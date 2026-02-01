@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://css6vdg0b5gip" path="res://scenes/boss/gas.gd" id="1_b0q43"]
 [ext_resource type="Texture2D" uid="uid://3mpyo7ms87c8" path="res://assets/gfx/smoke_sheet.png" id="1_hduj4"]
+[ext_resource type="AudioStream" uid="uid://dfkmgabwcrtuy" path="res://assets/sfx/fgj26-sounds-smoke-grenade-explosion.mp3" id="3_iubdt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b0q43"]
 atlas = ExtResource("1_hduj4")
@@ -47,6 +48,9 @@ shape = SubResource("CircleShape2D_iubdt")
 
 [node name="DisableAttackTimer" type="Timer" parent="." unique_id=1764071025]
 wait_time = 0.7
+
+[node name="GasSound" type="AudioStreamPlayer2D" parent="." unique_id=403152213]
+stream = ExtResource("3_iubdt")
 
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="AliveTimer" to="." method="_on_alive_timer_timeout"]
