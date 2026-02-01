@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://ckwlv53g82mgp"]
+
+[ext_resource type="Script" uid="uid://bfga5afgjvfhu" path="res://scenes/mainmenu.gd" id="1_3vvtq"]
+[ext_resource type="Texture2D" uid="uid://hw2jjm5h7jc7" path="res://assets/gfx/title.png" id="1_5mbse"]
+[ext_resource type="Texture2D" uid="uid://g616tkir5p1o" path="res://assets/gfx/title_text.png" id="2_natt5"]
+[ext_resource type="FontFile" uid="uid://64ete5afvi40" path="res://assets/fonts/tinypixel.otf" id="3_r3g3c"]
+
+[node name="Control" type="Control" unique_id=9493442]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3vvtq")
+
+[node name="Title" type="Sprite2D" parent="." unique_id=1111387464]
+position = Vector2(160, 90)
+texture = ExtResource("1_5mbse")
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="." unique_id=1254310048]
+layout_mode = 0
+offset_left = 341.0
+offset_top = 29.0
+offset_right = 513.0
+offset_bottom = 169.0
+theme_override_font_sizes/normal_font_size = 12
+text = "Move: Arrows
+Attack: Z
+Dash: X
+
+Player 2 (Controller)
+Move: dpad
+Attack: X
+Dash: A"
+fit_content = true
+
+[node name="TitleText" type="Sprite2D" parent="." unique_id=1636118207]
+position = Vector2(108, 86)
+texture = ExtResource("2_natt5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=474231410]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 74.0
+offset_right = 311.0
+offset_bottom = 114.0
+
+[node name="start_button" type="Button" parent="VBoxContainer" unique_id=35713801]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_r3g3c")
+text = "Start Game"
+
+[node name="help_button" type="Button" parent="VBoxContainer" unique_id=1818664989]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_r3g3c")
+text = "Help"
+
+[node name="quit_button" type="Button" parent="VBoxContainer" unique_id=1897876005]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_r3g3c")
+text = "Quit"
+
+[connection signal="button_up" from="VBoxContainer/start_button" to="." method="_on_start_button_button_up"]
+[connection signal="button_up" from="VBoxContainer/quit_button" to="." method="_on_quit_button_button_up"]
