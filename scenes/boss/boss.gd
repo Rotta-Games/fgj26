@@ -68,7 +68,6 @@ func _ready() -> void:
 func multiply() -> void:
 	
 	pass
->>>>>>> 81cee79504a1914355cb933789f75347c83ded4d
 
 func randf_bell(min_val: float, max_val: float) -> float:
 	var sum = randf() + randf() + randf()
