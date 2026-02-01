@@ -5,10 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://n4w3odt7k2el" path="res://assets/gfx/player_sheet.png" id="3_gmlin"]
 [ext_resource type="AudioStream" uid="uid://cd8e5iqvsj4dj" path="res://assets/sfx/fgj26-punch-01.ogg" id="4_lvxji"]
 [ext_resource type="Texture2D" uid="uid://ctp0vnisuq2ce" path="res://assets/gfx/tiger_mask.png" id="5_mask"]
-[ext_resource type="PackedScene" path="res://scenes/player/particle_emitter.tscn" id="6_75vfm"]
+[ext_resource type="PackedScene" uid="uid://ck6l2fj0111f0" path="res://scenes/player/particle_emitter.tscn" id="6_75vfm"]
 [ext_resource type="AudioStream" uid="uid://bybtc1x2l7x6h" path="res://assets/sfx/fgj26-hit-woosh-classic-vel-630ms.mp3" id="6_p47bc"]
 [ext_resource type="AudioStream" uid="uid://wf03drcpkv6y" path="res://assets/sfx/fgj26-kick-01.mp3" id="8_qek5x"]
 [ext_resource type="PackedScene" uid="uid://7wly7mjxrkpq" path="res://scenes/player/fire_emitter.tscn" id="9_5gtgg"]
+[ext_resource type="AudioStream" uid="uid://j8esyahej5wf" path="res://assets/sfx/fgj26-player-damage-01.ogg" id="10_h17s1"]
+[ext_resource type="AudioStream" uid="uid://dhivwuv2bd10a" path="res://assets/sfx/fgj26-player-death-01.ogg" id="11_je7p5"]
 
 [sub_resource type="Resource" id="Resource_75vfm"]
 script = ExtResource("2_gmlin")
@@ -612,6 +614,14 @@ bus = &"SFX"
 
 [node name="FireEmitter" parent="." unique_id=354487658 instance=ExtResource("9_5gtgg")]
 position = Vector2(32, -30)
+
+[node name="DamageTakenSound" type="AudioStreamPlayer2D" parent="." unique_id=285591984]
+stream = ExtResource("10_h17s1")
+pitch_scale = 0.96
+bus = &"SFX"
+
+[node name="PlayerDeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1944305660]
+stream = ExtResource("11_je7p5")
 
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]
 [connection signal="timeout" from="MaskTimer" to="." method="_on_mask_timer_timeout"]

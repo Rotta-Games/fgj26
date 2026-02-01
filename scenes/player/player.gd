@@ -24,6 +24,8 @@ const MAX_COMBO := 3
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 @onready var kick_sound: AudioStreamPlayer2D = $KickSound
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
+@onready var damage_taken_sound: AudioStreamPlayer2D = $DamageTakenSound
+@onready var player_death_sound: AudioStreamPlayer2D = $PlayerDeathSound
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
 @onready var particle_emitter = $ParticleEmitter
@@ -110,7 +112,7 @@ func combo_timer_reset() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if state == Types.PlayerState.STUNNED:
+	if (state == Types.PlayerState.STUNNED or state == Types.PlayerState.DEAD):
 		return
 
 	var sped = SPEED
@@ -177,6 +179,9 @@ func get_attack_range_multiplier() -> float:
 	return mask_stats[player_mask]["attack_range"]
 
 func _input(event: InputEvent) -> void:
+	if (state == Types.PlayerState.DEAD):
+		return
+		
 	if event.is_action_pressed(PLAYER_ATTACK):
 		if state in [Types.PlayerState.STUNNED, Types.PlayerState.ATTACKING]:
 			return
@@ -217,8 +222,11 @@ func _input(event: InputEvent) -> void:
 
 
 func hurt(amount: int, critical_hit: bool = false) -> void:
+	if (state == Types.PlayerState.DEAD):
+		return
+	
 	health -= amount
-
+	
 	SignalBus.playerHealthState.emit({
 		"player_id": player_id,
 		"health": health,
@@ -226,11 +234,14 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 
 	if (health <= 0):
 		print("Player dead!")
+		_play_player_death_sound()
 		state = Types.PlayerState.DEAD
 		sprite.play("stunned")
 		animation_player.play("dead")
+		
 	else:
 		sprite.play("stunned")
+		_play_player_damage_sound()
 		stunned_timer.start(player_stats.stunned_time)
 		velocity = Vector2.ZERO
 		state = Types.PlayerState.STUNNED
@@ -239,7 +250,6 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		combo_count = 0
 		attack_hit = false
 		print("Player stunned!")
-
 
 func init_power(mask_type: Types.PlayerMask) -> void:
 	player_mask = mask_type
@@ -257,7 +267,7 @@ func init_fire_power() -> void:
 
 func die() -> void:
 	# dead.emit()
-	# await enemy_death_sound.finished
+	await player_death_sound.finished
 	SignalBus.playerStartChange.emit(player_id, false)
 	queue_free()
 
@@ -366,7 +376,13 @@ func play_animation(anim_name: String, speed_scale: float = 1.0) -> void:
 func _play_attack_miss_sound():
 	attack_woosh_sound.pitch_scale = randf_range(0.8, 1.2)
 	attack_woosh_sound.play()
+	
+func _play_player_damage_sound():
+	damage_taken_sound.pitch_scale = randf_range(0.8, 1.2)
+	damage_taken_sound.play()
 
+func _play_player_death_sound():
+	player_death_sound.play()
 
 func _on_mask_timer_timeout() -> void:
 	player_mask = Types.PlayerMask.NONE
