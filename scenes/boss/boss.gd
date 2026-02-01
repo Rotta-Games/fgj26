@@ -51,6 +51,7 @@ var score: int = 10000
 func _ready() -> void:
 	health = stat.health
 	attack_delay = stat.attack_delay
+	SignalBus.musicState.emit(Types.MusicState.BOSS_MUSIC)
 
 	attack_delay_timer.timeout.connect(func():
 		waiting_to_attack = false
