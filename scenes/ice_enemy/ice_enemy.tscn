@@ -190,6 +190,34 @@ tracks/1/keys = {
 "values": [0.0, -0.7086037, -1.5934856]
 }
 
+[sub_resource type="Animation" id="Animation_pp7cr"]
+resource_name = "dead_max"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationNode/AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.10105777, 0.2),
+"transitions": PackedFloat32Array(1, 0.32987696, 0.18946446),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-80, -80), Vector2(-120, 10)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationNode/AnimatedSprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.048773054, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -2.300344, -4.394739056521722, -4.72460628514865]
+}
+
 [sub_resource type="Animation" id="Animation_gh66w"]
 resource_name = "hurt"
 length = 0.1
@@ -222,6 +250,7 @@ tracks/1/keys = {
 _data = {
 &"RESET": SubResource("Animation_qrh7f"),
 &"dead": SubResource("Animation_22hgk"),
+&"dead_max": SubResource("Animation_pp7cr"),
 &"hurt": SubResource("Animation_gh66w")
 }
 

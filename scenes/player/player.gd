@@ -326,12 +326,12 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		if combo_count >= MAX_COMBO or not dash_timer.is_stopped():
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
-			given_score = enemy.hurt(dmg, true, combo_count)
+			given_score = enemy.hurt(dmg, true)
 			#volume *= CRIT_VOLUME
 			_play_kick_sound()
 		else:
 			_play_punch_sound(volume, pitch)
-			given_score= enemy.hurt(dmg, false, combo_count)
+			given_score= enemy.hurt(dmg, false)
 		
 		if given_score:
 			score = score + given_score
