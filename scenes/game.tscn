@@ -196,8 +196,10 @@ layout_mode = 2
 top_level = true
 material = SubResource("CanvasItemMaterial_iywne")
 layout_mode = 1
-offset_right = 400.0
-offset_bottom = 200.0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 404.0
+offset_bottom = 202.0
 
 [node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=222743501]
 layout_mode = 2
@@ -235,9 +237,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -91.0
-offset_right = 309.0
-offset_bottom = 200.0
+offset_left = -105.0
+offset_top = 2.0
+offset_right = 295.0
+offset_bottom = 202.0
 grow_horizontal = 0
 
 [node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=1791985038]
