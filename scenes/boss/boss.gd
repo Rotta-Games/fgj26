@@ -129,7 +129,7 @@ func _physics_process(_delta: float) -> void:
 		seek_duration_remaining -= _delta
 		if current_target && _target_in_hit_area && !waiting_to_attack:
 			_start_attack()
-		elif sprite.animation == "attack" && sprite.frame == 1 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
+		elif sprite.animation == "attack" && sprite.frame == 2 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
 			_deal_damage()
 	elif !current_target:
 		_set_nearest_player_as_target()

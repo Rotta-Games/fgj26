@@ -41,6 +41,11 @@ tracks/1/keys = {
 "values": [true, false]
 }
 
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gym10"]
+_data = {
+&"blink": SubResource("Animation_blink")
+}
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_frame0"]
 atlas = ExtResource("4_mvpi2")
 region = Rect2(0, 0, 100, 7)
@@ -85,19 +90,18 @@ tracks/1/keys = {
 "values": [SubResource("AtlasTexture_frame0"), SubResource("AtlasTexture_frame1"), SubResource("AtlasTexture_frame2"), SubResource("AtlasTexture_frame3"), SubResource("AtlasTexture_frame0")]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_1snxt"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wjf46"]
 _data = {
-&"blink": SubResource("Animation_blink"),
 &"shimmer": SubResource("Animation_shimmer")
 }
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_20u01"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3c460"]
 
 [sub_resource type="FontVariation" id="FontVariation_spaced"]
 base_font = ExtResource("5_gym10")
 spacing_glyph = 2
 
-[sub_resource type="LabelSettings" id="LabelSettings_d45w6"]
+[sub_resource type="LabelSettings" id="LabelSettings_1snxt"]
 font = SubResource("FontVariation_spaced")
 font_size = 10
 font_color = Color(0.47058824, 0.98039216, 0.9019608, 1)
@@ -105,13 +109,13 @@ outline_size = 4
 outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
 shadow_size = 0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5fco0"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_20u01"]
 atlas = ExtResource("4_mvpi2")
 region = Rect2(0, 0, 100, 7)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fm1xx"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d45w6"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_wev40"]
+[sub_resource type="LabelSettings" id="LabelSettings_5fco0"]
 font = SubResource("FontVariation_spaced")
 font_size = 10
 font_color = Color(0.54901963, 1, 0.60784316, 1)
@@ -119,25 +123,25 @@ outline_size = 4
 outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
 shadow_size = 0
 
-[sub_resource type="LabelSettings" id="LabelSettings_tdbjw"]
+[sub_resource type="LabelSettings" id="LabelSettings_fm1xx"]
 font = SubResource("FontVariation_spaced")
 font_size = 10
 outline_size = 4
 outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
 shadow_size = 0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sgsr1"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_wev40"]
 atlas = ExtResource("8_wjf46")
 region = Rect2(100, 0, 100, 7)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_j4k6w"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdbjw"]
 atlas = ExtResource("8_wjf46")
 region = Rect2(0, 0, 100, 7)
 
-[sub_resource type="Theme" id="Theme_iabo0"]
+[sub_resource type="Theme" id="Theme_sgsr1"]
 default_font = ExtResource("5_gym10")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8t8o"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4k6w"]
 bg_color = Color(0.039215688, 0.16470589, 0.2, 1)
 border_width_right = 2
 border_width_bottom = 2
@@ -147,7 +151,7 @@ expand_margin_top = 5.0
 expand_margin_right = 3.0
 expand_margin_bottom = 3.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ql8g"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iabo0"]
 bg_color = Color(0.07774637, 0.2535002, 0.30297935, 1)
 border_width_right = 2
 border_width_bottom = 2
@@ -157,7 +161,7 @@ expand_margin_top = 5.0
 expand_margin_right = 3.0
 expand_margin_bottom = 3.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kx56x"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8t8o"]
 bg_color = Color(0.13076395, 0.37303814, 0.44140387, 1)
 border_width_right = 2
 border_width_bottom = 2
@@ -171,54 +175,59 @@ expand_margin_bottom = 3.0
 y_sort_enabled = true
 script = ExtResource("1_h3xc6")
 
-[node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=1158782168]
+[node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=55209380]
 script = ExtResource("2_s36qc")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1825072930]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1504141302]
 process_mode = 3
 script = ExtResource("3_6qxox")
 
-[node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=156275709]
-libraries/ = SubResource("AnimationLibrary_1snxt")
+[node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=1192010195]
+libraries/ = SubResource("AnimationLibrary_gym10")
 autoplay = &"blink"
 
-[node name="ShimmerTimer" type="Timer" parent="CanvasLayer" unique_id=663812660]
+[node name="ShimmerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=28701583]
+libraries/ = SubResource("AnimationLibrary_wjf46")
+
+[node name="ShimmerTimer" type="Timer" parent="CanvasLayer" unique_id=1360613049]
 wait_time = 3.0
 autostart = true
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1896444849]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=434793083]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer" unique_id=315525406]
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer" unique_id=147246358]
 layout_mode = 2
 
-[node name="Player1Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1780545707]
+[node name="Player1Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=262726591]
 top_level = true
-material = SubResource("CanvasItemMaterial_20u01")
+material = SubResource("CanvasItemMaterial_3c460")
 layout_mode = 1
-offset_right = 400.0
-offset_bottom = 200.0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 404.0
+offset_bottom = 202.0
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=1061818112]
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=1289155746]
 layout_mode = 2
 text = "0"
-label_settings = SubResource("LabelSettings_d45w6")
+label_settings = SubResource("LabelSettings_1snxt")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=1992274563]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=263474251]
 layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("4_gthg3")
-texture_progress = SubResource("AtlasTexture_5fco0")
+texture_progress = SubResource("AtlasTexture_20u01")
 
-[node name="Player1Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=297616989]
+[node name="Player1Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=566288914]
 visible = false
 top_level = true
-material = SubResource("CanvasItemMaterial_20u01")
+material = SubResource("CanvasItemMaterial_3c460")
 layout_mode = 1
 anchors_preset = 0
 offset_left = 4.0
@@ -226,39 +235,40 @@ offset_top = 4.0
 offset_right = 100.0
 offset_bottom = 20.0
 
-[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Start" unique_id=1285425715]
+[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Start" unique_id=1928910781]
 layout_mode = 0
 text = "P1 Press Start"
-label_settings = SubResource("LabelSettings_d45w6")
+label_settings = SubResource("LabelSettings_1snxt")
 
-[node name="Player2Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1267881392]
+[node name="Player2Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=755004272]
 visible = false
 top_level = true
-material = SubResource("CanvasItemMaterial_fm1xx")
+material = SubResource("CanvasItemMaterial_d45w6")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -91.0
-offset_right = 309.0
-offset_bottom = 200.0
+offset_left = -105.0
+offset_top = 2.0
+offset_right = 295.0
+offset_bottom = 202.0
 grow_horizontal = 0
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=416620045]
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=1002084076]
 layout_mode = 2
 text = "0"
-label_settings = SubResource("LabelSettings_d45w6")
+label_settings = SubResource("LabelSettings_1snxt")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=1475708415]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=366559861]
 layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("4_gthg3")
-texture_progress = SubResource("AtlasTexture_5fco0")
+texture_progress = SubResource("AtlasTexture_20u01")
 
-[node name="Player2Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=229117253]
+[node name="Player2Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=1722914055]
 top_level = true
-material = SubResource("CanvasItemMaterial_fm1xx")
+material = SubResource("CanvasItemMaterial_d45w6")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -269,10 +279,10 @@ offset_right = -4.0
 offset_bottom = 20.0
 grow_horizontal = 0
 
-[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Start" unique_id=468424052]
+[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Start" unique_id=356680178]
 layout_mode = 0
 text = "P2 Press Start"
-label_settings = SubResource("LabelSettings_wev40")
+label_settings = SubResource("LabelSettings_5fco0")
 horizontal_alignment = 2
 
 [node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1062248268 instance=ExtResource("6_u0xbq")]
@@ -287,7 +297,7 @@ offset_right = 32.0
 offset_bottom = 46.0
 grow_horizontal = 2
 
-[node name="BossHealthBar" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=597410889]
+[node name="BossHealthBar" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=2141527728]
 visible = false
 layout_mode = 1
 anchors_preset = 7
@@ -302,7 +312,7 @@ offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="BossName" type="Label" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1847383008]
+[node name="BossName" type="Label" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=226072315]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -316,9 +326,9 @@ offset_bottom = 5.5
 grow_horizontal = 0
 grow_vertical = 2
 text = "Gassy Mask"
-label_settings = SubResource("LabelSettings_tdbjw")
+label_settings = SubResource("LabelSettings_fm1xx")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1869772457]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1012739397]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -327,10 +337,10 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
 rounded = true
-texture_under = SubResource("AtlasTexture_sgsr1")
-texture_progress = SubResource("AtlasTexture_j4k6w")
+texture_under = SubResource("AtlasTexture_wev40")
+texture_progress = SubResource("AtlasTexture_tdbjw")
 
-[node name="PauseMenu" type="VBoxContainer" parent="CanvasLayer" unique_id=358954781]
+[node name="PauseMenu" type="VBoxContainer" parent="CanvasLayer" unique_id=592916128]
 visible = false
 offset_left = 128.0
 offset_top = 49.0
@@ -338,22 +348,22 @@ offset_right = 200.0
 offset_bottom = 115.0
 theme_override_constants/separation = 10
 
-[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu" unique_id=1436987611]
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu" unique_id=688172331]
 layout_mode = 2
-theme = SubResource("Theme_iabo0")
-theme_override_styles/normal = SubResource("StyleBoxFlat_h8t8o")
+theme = SubResource("Theme_sgsr1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_j4k6w")
 theme_override_styles/pressed = ExtResource("9_3c460")
-theme_override_styles/hover = SubResource("StyleBoxFlat_6ql8g")
-theme_override_styles/focus = SubResource("StyleBoxFlat_kx56x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iabo0")
+theme_override_styles/focus = SubResource("StyleBoxFlat_h8t8o")
 text = "RESUME"
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu" unique_id=1785954575]
+[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu" unique_id=1105672805]
 layout_mode = 2
-theme = SubResource("Theme_iabo0")
-theme_override_styles/normal = SubResource("StyleBoxFlat_h8t8o")
+theme = SubResource("Theme_sgsr1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_j4k6w")
 theme_override_styles/pressed = ExtResource("9_3c460")
-theme_override_styles/hover = SubResource("StyleBoxFlat_6ql8g")
-theme_override_styles/focus = SubResource("StyleBoxFlat_kx56x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iabo0")
+theme_override_styles/focus = SubResource("StyleBoxFlat_h8t8o")
 text = "QUIT"
 
 [node name="Player" parent="." unique_id=934439360 instance=ExtResource("8_8gixj")]
@@ -363,7 +373,7 @@ collision_mask = 6
 
 [node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("targets") instance=ExtResource("9_hf2sn")]
 position = Vector2(171.5, 80.5)
-targets = [null]
+targets = [NodePath("")]
 
 [node name="Boss" parent="." unique_id=2041128703 instance=ExtResource("9_vpmaa")]
 position = Vector2(292, 136)
