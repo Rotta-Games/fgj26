@@ -68,7 +68,7 @@ var mask_stats = {
 }
 const BASE_DAMAGE := 5
 var punch_delay: float = 0.1
-var kick_delay: float = 0.2
+var kick_delay: float = 0.25
 const AFTER_KICK_DELAY := 0.1
 
 # actions
