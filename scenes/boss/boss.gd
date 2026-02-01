@@ -43,7 +43,7 @@ var throwing_in_progress : bool = false
 var health: int = 1000
 var movement_speed: float = 60.0
 var attack_delay: float = 0.4
-var attack_damage: int = 40
+var attack_damage: int = 20
 var stunned_time: float = 0.05
 var score: int = 10000
 
@@ -81,7 +81,7 @@ func _play_intro():
 	tween.tween_property(self, "scale", scale * 1.15, 0.15).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(self, "scale", scale, 0.15).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
-	_change_state(Types.BossState.THROWING)
+	_change_state(Types.BossState.SEEK)
 	
 func _change_state(new_state: Types.BossState):
 	print("Boss to state " + str(new_state))
@@ -118,7 +118,7 @@ func _physics_process(_delta: float) -> void:
 		seek_duration_remaining -= _delta
 		if current_target && _target_in_hit_area && !waiting_to_attack:
 			_start_attack()
-		elif sprite.animation == "attack" && sprite.frame == 3 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
+		elif sprite.animation == "attack" && sprite.frame == 1 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
 			_deal_damage()
 	elif !current_target:
 		_set_nearest_player_as_target()
@@ -366,8 +366,8 @@ func _deal_damage() -> void:
 			var player := area.get_parent()
 			if "Player" in player.get_groups() && player.has_method("hurt"):
 				print("HURT PLAYER")
+				_damage_dealt_this_round = true
 				player.hurt(attack_damage)
-	_damage_dealt_this_round = true
 	attack_delay_timer.wait_time = attack_delay
 	attack_delay_timer.start()
 
@@ -450,3 +450,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "attack":
 		_damage_dealt_this_round = false
 		waiting_to_attack = false
+
+
+func _on_hit_box_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
