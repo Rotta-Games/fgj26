@@ -8,6 +8,8 @@ extends Node
 @onready var player1_start_text = $MarginContainer/Control/Player1Start
 @onready var player2_data_container = $MarginContainer/Control/Player2Data
 @onready var player2_start_text = $MarginContainer/Control/Player2Start
+@onready var blink_anim_player = $BlinkAnimationPlayer
+@onready var shimmer_timer = $ShimmerTimer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	SignalBus.playerHealthState.connect(_on_player_health_state_emitted)
@@ -37,4 +39,7 @@ func _on_player_start_change_emitted(player: Types.PlayerId, is_in_game: bool) -
 	elif player == 2:
 		player2_data_container.visible = is_in_game
 		player2_start_text.visible = !is_in_game
-	
+
+func _on_shimmer_timer_timeout() -> void:
+	blink_anim_player.play("shimmer")
+	shimmer_timer.wait_time = randf_range(2.0, 5.0)

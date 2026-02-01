@@ -7,9 +7,26 @@
 [ext_resource type="Script" uid="uid://clxrnp58j3lpu" path="res://scenes/game_ui/game_ui.gd" id="3_0tnpc"]
 [ext_resource type="Texture2D" uid="uid://bxdsowhbec838" path="res://assets/gfx/health_bar.png" id="3_gee14"]
 [ext_resource type="Texture2D" uid="uid://cofmbde4r070b" path="res://assets/gfx/health_bar_over.png" id="4_0tnpc"]
+[ext_resource type="Texture2D" uid="uid://pciwefjpo0wq" path="res://assets/gfx/health_bar_over-sheet.png" id="4_sheet"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
 [ext_resource type="FontFile" uid="uid://64ete5afvi40" path="res://assets/fonts/tinypixel.otf" id="9_font"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame0"]
+atlas = ExtResource("4_sheet")
+region = Rect2(0, 0, 100, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame1"]
+atlas = ExtResource("4_sheet")
+region = Rect2(100, 0, 100, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame2"]
+atlas = ExtResource("4_sheet")
+region = Rect2(200, 0, 100, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame3"]
+atlas = ExtResource("4_sheet")
+region = Rect2(300, 0, 100, 7)
 
 [sub_resource type="Animation" id="Animation_blink"]
 resource_name = "blink"
@@ -39,9 +56,38 @@ tracks/1/keys = {
 "values": [true, false]
 }
 
+[sub_resource type="Animation" id="Animation_shimmer"]
+resource_name = "shimmer"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/Control/Player1Data/TextureProgressBar:texture_progress")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_frame0"), SubResource("AtlasTexture_frame1"), SubResource("AtlasTexture_frame2"), SubResource("AtlasTexture_frame3"), SubResource("AtlasTexture_frame0")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer/Control/Player2Data/TextureProgressBar:texture_progress")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_frame0"), SubResource("AtlasTexture_frame1"), SubResource("AtlasTexture_frame2"), SubResource("AtlasTexture_frame3"), SubResource("AtlasTexture_frame0")]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ui"]
 _data = {
-&"blink": SubResource("Animation_blink")
+&"blink": SubResource("Animation_blink"),
+&"shimmer": SubResource("Animation_shimmer")
 }
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iywne"]
@@ -82,6 +128,10 @@ script = ExtResource("3_0tnpc")
 libraries/ = SubResource("AnimationLibrary_ui")
 autoplay = &"blink"
 
+[node name="ShimmerTimer" type="Timer" parent="CanvasLayer"]
+wait_time = 3.0
+autostart = true
+
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=529509391]
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,7 +159,7 @@ layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("3_gee14")
-texture_progress = ExtResource("4_0tnpc")
+texture_progress = SubResource("AtlasTexture_frame0")
 
 [node name="Player1Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=500334320]
 visible = false
@@ -150,7 +200,7 @@ layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("3_gee14")
-texture_progress = ExtResource("4_0tnpc")
+texture_progress = SubResource("AtlasTexture_frame0")
 
 [node name="Player2Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=1878980805]
 top_level = true
@@ -197,3 +247,4 @@ targets = [NodePath("../Player")]
 [connection signal="camera_right_limit_changed" from="Stage" to="CanvasLayer/MarginContainer/Control/Arrow" method="_on_stage_camera_right_limit_changed"]
 [connection signal="camera_right_limit_changed" from="Stage" to="SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
 [connection signal="checkpoint_reached" from="SubPixelFollowCamera" to="Stage" method="_on_sub_pixel_follow_camera_checkpoint_reached"]
+[connection signal="timeout" from="CanvasLayer/ShimmerTimer" to="CanvasLayer" method="_on_shimmer_timer_timeout"]
