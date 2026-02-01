@@ -148,8 +148,8 @@ func _handle_rampage_state() -> void:
 	
 	var direction : Direction = get_direction(desired_x, global_position.x)
 	_handle_direction(direction)
-	animation_player.play("rampage")
-	
+	sprite.play("rampage")
+
 	# Calculate screen bounds
 	var canvas_transform = get_viewport().get_canvas_transform()
 	var global_screen_left = -canvas_transform.origin.x
