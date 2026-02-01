@@ -103,6 +103,10 @@ func _ready() -> void:
 	attack_delay_timer.timeout.connect(func():
 		self.fist_collision.disabled = false
 	)
+	SignalBus.playerHealthState.emit({
+		"player_id": player_id,
+		"health": health,
+	})
 
 
 func combo_timer_reset() -> void:
@@ -309,12 +313,12 @@ func _on_fist_hit_enemy(area: Area2D) -> void:
 		if combo_count >= MAX_COMBO:
 			dmg += 10  # bonus damage for 4 hit combo
 			print("Critical Hit!")
-			given_score = enemy.hurt(dmg, true)
+			given_score = enemy.hurt(dmg, true, combo_count)
 			#volume *= CRIT_VOLUME
 			_play_kick_sound()
 		else:
 			_play_punch_sound(volume, pitch)
-			given_score= enemy.hurt(dmg)
+			given_score= enemy.hurt(dmg, false, combo_count)
 		
 		if given_score:
 			score = score + given_score

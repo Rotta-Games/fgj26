@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var direction = Direction.LEFT
 
 @onready var sprite = $AnimatedSprite2D
+@onready var animation_target = $AnimationTarget
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
@@ -68,7 +69,7 @@ func _physics_process(_delta: float) -> void:
 				direction = Direction.LEFT if desired_x < 0 else Direction.RIGHT
 			
 			var flib = direction != Direction.RIGHT
-			sprite.flip_h = flib
+			sprite.scale.x = -1 if flib else 1
 			if flib:
 				player_hit_area.position.x = -40
 			else:
@@ -140,6 +141,8 @@ func _die() -> void:
 	animation_player.play("dead")
 	enemy_death_sound.pitch_scale = randf_range(0.5, 1.2)
 	enemy_death_sound.play()
+	await animation_player.animation_finished
+	remove_enemy()
 
 func remove_enemy() -> void:
 	dead.emit()
