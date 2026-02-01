@@ -21,6 +21,7 @@ const MAX_COMBO := 3
 @onready var stunned_timer: Timer = $StunnedTimer
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
 @onready var mask_timer: Timer = $MaskTimer
+@onready var dash_timer: Timer = $DashTimer
 @onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 @onready var kick_sound: AudioStreamPlayer2D = $KickSound
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
@@ -75,6 +76,7 @@ var PLAYER_RIGHT: String
 var PLAYER_UP: String
 var PLAYER_DOWN: String
 var PLAYER_ATTACK: String
+var PLAYER_DASH: String
 
 
 func _ready() -> void:
@@ -87,6 +89,7 @@ func _ready() -> void:
 	PLAYER_UP = "player%d_up" % i
 	PLAYER_DOWN = "player%d_down" % i
 	PLAYER_ATTACK = "player%d_attack" % i
+	PLAYER_DASH = "player%d_dash" % i
 	sprite.animation_finished.connect(_on_animation_finished)
 	stunned_timer.timeout.connect(_on_stunned_timer_timeout)
 	default_attack_volume = attack_sound.volume_db
@@ -124,13 +127,14 @@ func _physics_process(_delta: float) -> void:
 		sped = SPEED * 0.5
 
 	direction = Input.get_vector(PLAYER_LEFT, PLAYER_RIGHT, PLAYER_UP, PLAYER_DOWN)
+	var dash_mult = 2.0 if not dash_timer.is_stopped() else 1.0
 	if direction.x:
-		velocity.x = direction.x * sped
+		velocity.x = direction.x * sped * dash_mult
 	else:
 		velocity.x = move_toward(velocity.x, 0, sped)
 
 	if direction.y:
-		velocity.y = direction.y * SPEED
+		velocity.y = direction.y * SPEED * dash_mult
 	else:
 		velocity.y = move_toward(velocity.y, 0, sped)
 
@@ -218,6 +222,9 @@ func _input(event: InputEvent) -> void:
 			particle_emitter.fire(2)
 		elif combo_count > MAX_COMBO - 2:
 			particle_emitter.fire(1)
+	
+	if event.is_action_pressed(PLAYER_DASH):
+		dash_timer.start()
 
 	if event.is_action_released(PLAYER_ATTACK) and attack_hit:
 		attack_hit = false
