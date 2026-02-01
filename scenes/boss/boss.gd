@@ -66,8 +66,7 @@ func _ready() -> void:
 	})
 
 	
-func multiply() -> void:
-	 
+func multiply() -> void:	
 	pass
 
 func randf_bell(min_val: float, max_val: float) -> float:

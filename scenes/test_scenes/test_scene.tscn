@@ -4,95 +4,237 @@
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="2_s36qc"]
 [ext_resource type="Script" uid="uid://clxrnp58j3lpu" path="res://scenes/game_ui/game_ui.gd" id="3_6qxox"]
 [ext_resource type="Texture2D" uid="uid://bxdsowhbec838" path="res://assets/gfx/health_bar.png" id="4_gthg3"]
-[ext_resource type="Texture2D" uid="uid://cofmbde4r070b" path="res://assets/gfx/health_bar_over.png" id="5_ntc4i"]
+[ext_resource type="Texture2D" uid="uid://pciwefjpo0wq" path="res://assets/gfx/health_bar_over-sheet.png" id="4_mvpi2"]
+[ext_resource type="FontFile" uid="uid://64ete5afvi40" path="res://assets/fonts/tinypixel.otf" id="5_gym10"]
 [ext_resource type="PackedScene" uid="uid://b41wbktn5sxny" path="res://scenes/game_ui/arrow.tscn" id="6_u0xbq"]
 [ext_resource type="PackedScene" uid="uid://ydjpkmtwf4u6" path="res://scenes/player/player.tscn" id="8_8gixj"]
+[ext_resource type="Texture2D" uid="uid://h0yjhq57u5g6" path="res://assets/gfx/health_boss_sheet.png" id="8_wjf46"]
+[ext_resource type="StyleBox" uid="uid://ptlah7oxmi1y" path="res://assets/resources/menubutton.tres" id="9_3c460"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="9_hf2sn"]
 [ext_resource type="PackedScene" uid="uid://iqpcl2tt5bmw" path="res://scenes/boss/boss.tscn" id="9_vpmaa"]
-[ext_resource type="Script" uid="uid://d1h18hi41diby" path="res://scripts/resource_definitions/enemy_stats.gd" id="10_yjtru"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iywne"]
+[sub_resource type="Animation" id="Animation_blink"]
+resource_name = "blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/Control/Player1Start/PressStartText:visible")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer/Control/Player2Start/PressStartText:visible")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
-[sub_resource type="LabelSettings" id="LabelSettings_0tnpc"]
-font_size = 7
-font_color = Color(0.09121219, 0.38992056, 0.99999994, 1)
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame0"]
+atlas = ExtResource("4_mvpi2")
+region = Rect2(0, 0, 100, 7)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p57ef"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame1"]
+atlas = ExtResource("4_mvpi2")
+region = Rect2(100, 0, 100, 7)
 
-[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
-font_size = 7
-font_color = Color(0.24956495, 0.53160954, 0.2235527, 1)
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame2"]
+atlas = ExtResource("4_mvpi2")
+region = Rect2(200, 0, 100, 7)
 
-[sub_resource type="Resource" id="Resource_mvpi2"]
-script = ExtResource("10_yjtru")
-health = 500
-movement_speed = 45.0
-attack_delay = 0.1
-attack_damage = 40
-stunned_time = 0.1
-score = 10000
-metadata/_custom_type_script = "uid://d1h18hi41diby"
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame3"]
+atlas = ExtResource("4_mvpi2")
+region = Rect2(300, 0, 100, 7)
+
+[sub_resource type="Animation" id="Animation_shimmer"]
+resource_name = "shimmer"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/Control/Player1Data/TextureProgressBar:texture_progress")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_frame0"), SubResource("AtlasTexture_frame1"), SubResource("AtlasTexture_frame2"), SubResource("AtlasTexture_frame3"), SubResource("AtlasTexture_frame0")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer/Control/Player2Data/TextureProgressBar:texture_progress")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_frame0"), SubResource("AtlasTexture_frame1"), SubResource("AtlasTexture_frame2"), SubResource("AtlasTexture_frame3"), SubResource("AtlasTexture_frame0")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1snxt"]
+_data = {
+&"blink": SubResource("Animation_blink"),
+&"shimmer": SubResource("Animation_shimmer")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_20u01"]
+
+[sub_resource type="FontVariation" id="FontVariation_spaced"]
+base_font = ExtResource("5_gym10")
+spacing_glyph = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_d45w6"]
+font = SubResource("FontVariation_spaced")
+font_size = 10
+font_color = Color(0.47058824, 0.98039216, 0.9019608, 1)
+outline_size = 4
+outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
+shadow_size = 0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5fco0"]
+atlas = ExtResource("4_mvpi2")
+region = Rect2(0, 0, 100, 7)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fm1xx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wev40"]
+font = SubResource("FontVariation_spaced")
+font_size = 10
+font_color = Color(0.54901963, 1, 0.60784316, 1)
+outline_size = 4
+outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_tdbjw"]
+font = SubResource("FontVariation_spaced")
+font_size = 10
+outline_size = 4
+outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
+shadow_size = 0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgsr1"]
+atlas = ExtResource("8_wjf46")
+region = Rect2(100, 0, 100, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j4k6w"]
+atlas = ExtResource("8_wjf46")
+region = Rect2(0, 0, 100, 7)
+
+[sub_resource type="Theme" id="Theme_iabo0"]
+default_font = ExtResource("5_gym10")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8t8o"]
+bg_color = Color(0.039215688, 0.16470589, 0.2, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.009783793, 0.068438016, 0.08828575, 1)
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ql8g"]
+bg_color = Color(0.07774637, 0.2535002, 0.30297935, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.009783793, 0.068438016, 0.08828575, 1)
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kx56x"]
+bg_color = Color(0.13076395, 0.37303814, 0.44140387, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.009783793, 0.068438016, 0.08828575, 1)
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
 
 [node name="TestScene" type="Node2D" unique_id=50045772]
 y_sort_enabled = true
 script = ExtResource("1_h3xc6")
 
-[node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=983965778]
+[node name="PlayerStateTestEmitterNode" type="Node" parent="." unique_id=1158782168]
 script = ExtResource("2_s36qc")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=252661915]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1825072930]
+process_mode = 3
 script = ExtResource("3_6qxox")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=529509391]
+[node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=156275709]
+libraries/ = SubResource("AnimationLibrary_1snxt")
+autoplay = &"blink"
+
+[node name="ShimmerTimer" type="Timer" parent="CanvasLayer" unique_id=663812660]
+wait_time = 3.0
+autostart = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1896444849]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer" unique_id=2118451747]
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer" unique_id=315525406]
 layout_mode = 2
 
-[node name="Player1Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1069601449]
+[node name="Player1Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1780545707]
 top_level = true
-material = SubResource("CanvasItemMaterial_iywne")
+material = SubResource("CanvasItemMaterial_20u01")
 layout_mode = 1
 offset_right = 400.0
 offset_bottom = 200.0
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=222743501]
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=1061818112]
 layout_mode = 2
 text = "0"
-label_settings = SubResource("LabelSettings_0tnpc")
+label_settings = SubResource("LabelSettings_d45w6")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=485851623]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player1Data" unique_id=1992274563]
 layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("4_gthg3")
-texture_progress = ExtResource("5_ntc4i")
+texture_progress = SubResource("AtlasTexture_5fco0")
 
-[node name="Player1Start" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=500334320]
+[node name="Player1Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=297616989]
 visible = false
 top_level = true
-material = SubResource("CanvasItemMaterial_iywne")
+material = SubResource("CanvasItemMaterial_20u01")
 layout_mode = 1
-offset_right = 400.0
-offset_bottom = 200.0
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 100.0
+offset_bottom = 20.0
 
-[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Start" unique_id=1859854054]
-layout_mode = 2
-text = "Player 1 Press Start"
-label_settings = SubResource("LabelSettings_0tnpc")
+[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Start" unique_id=1285425715]
+layout_mode = 0
+text = "P1 Press Start"
+label_settings = SubResource("LabelSettings_d45w6")
 
-[node name="Player2Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1153013427]
+[node name="Player2Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1267881392]
 visible = false
 top_level = true
-material = SubResource("CanvasItemMaterial_p57ef")
+material = SubResource("CanvasItemMaterial_fm1xx")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -102,36 +244,38 @@ offset_right = 309.0
 offset_bottom = 200.0
 grow_horizontal = 0
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=1791985038]
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=416620045]
 layout_mode = 2
 text = "0"
-label_settings = SubResource("LabelSettings_0tnpc")
+label_settings = SubResource("LabelSettings_d45w6")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=588482519]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/Player2Data" unique_id=1475708415]
 layout_mode = 2
 value = 100.0
 rounded = true
 texture_under = ExtResource("4_gthg3")
-texture_progress = ExtResource("5_ntc4i")
+texture_progress = SubResource("AtlasTexture_5fco0")
 
-[node name="Player2Start" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1878980805]
+[node name="Player2Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=229117253]
 top_level = true
-material = SubResource("CanvasItemMaterial_p57ef")
+material = SubResource("CanvasItemMaterial_fm1xx")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -91.0
-offset_right = 309.0
-offset_bottom = 200.0
+offset_left = -120.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = 20.0
 grow_horizontal = 0
 
-[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Start" unique_id=1417491991]
-layout_mode = 2
-text = "Player 2 Press Start"
-label_settings = SubResource("LabelSettings_vtaks")
+[node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Start" unique_id=468424052]
+layout_mode = 0
+text = "P2 Press Start"
+label_settings = SubResource("LabelSettings_wev40")
+horizontal_alignment = 2
 
-[node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1400428008 instance=ExtResource("6_u0xbq")]
+[node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1062248268 instance=ExtResource("6_u0xbq")]
 visible = false
 layout_mode = 1
 anchors_preset = 5
@@ -143,15 +287,87 @@ offset_right = 32.0
 offset_bottom = 46.0
 grow_horizontal = 2
 
-[node name="Player" parent="." unique_id=411557437 instance=ExtResource("8_8gixj")]
+[node name="BossHealthBar" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=597410889]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -9.0
+offset_right = 50.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BossName" type="Label" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1847383008]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 7.0
+offset_top = -6.5
+offset_right = 88.0
+offset_bottom = 5.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "Gassy Mask"
+label_settings = SubResource("LabelSettings_tdbjw")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1869772457]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+rounded = true
+texture_under = SubResource("AtlasTexture_sgsr1")
+texture_progress = SubResource("AtlasTexture_j4k6w")
+
+[node name="PauseMenu" type="VBoxContainer" parent="CanvasLayer" unique_id=358954781]
+visible = false
+offset_left = 128.0
+offset_top = 49.0
+offset_right = 200.0
+offset_bottom = 115.0
+theme_override_constants/separation = 10
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu" unique_id=1436987611]
+layout_mode = 2
+theme = SubResource("Theme_iabo0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_h8t8o")
+theme_override_styles/pressed = ExtResource("9_3c460")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6ql8g")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kx56x")
+text = "RESUME"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu" unique_id=1785954575]
+layout_mode = 2
+theme = SubResource("Theme_iabo0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_h8t8o")
+theme_override_styles/pressed = ExtResource("9_3c460")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6ql8g")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kx56x")
+text = "QUIT"
+
+[node name="Player" parent="." unique_id=934439360 instance=ExtResource("8_8gixj")]
 y_sort_enabled = true
 position = Vector2(139, 146.33333)
 collision_mask = 6
 
 [node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("targets") instance=ExtResource("9_hf2sn")]
 position = Vector2(171.5, 80.5)
-targets = [NodePath("../Player")]
+targets = [NodePath("")]
 
-[node name="Boss" parent="." unique_id=934439360 instance=ExtResource("9_vpmaa")]
-position = Vector2(276, 134)
-stat = SubResource("Resource_mvpi2")
+[node name="Boss" parent="." unique_id=2041128703 instance=ExtResource("9_vpmaa")]
+position = Vector2(292, 136)
+
+[connection signal="timeout" from="CanvasLayer/ShimmerTimer" to="CanvasLayer" method="_on_shimmer_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/PauseMenu/ResumeButton" to="CanvasLayer" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseMenu/QuitButton" to="CanvasLayer" method="_on_quit_button_pressed"]
