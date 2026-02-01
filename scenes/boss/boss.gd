@@ -37,12 +37,13 @@ var _damage_dealt_this_round = false
 var _throwing_position: Vector2 = Vector2.ZERO
 var _throws_remaining : int = 0
 var rampaging : bool = false
+var preparing_rampage : bool = false
 var seek_duration_remaining : float = -1.0
 var throwing_in_progress : bool = false
 
 var health: int = 1000
 var movement_speed: float = 60.0
-var attack_delay: float = 0.4
+var attack_delay: float = 0.5
 var attack_damage: int = 20
 var stunned_time: float = 0.05
 var score: int = 10000
@@ -81,13 +82,15 @@ func _play_intro():
 	tween.tween_property(self, "scale", scale * 1.15, 0.15).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(self, "scale", scale, 0.15).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
-	_change_state(Types.BossState.RAMPAGE)
+	_change_state(Types.BossState.THROWING)
 	
 func _change_state(new_state: Types.BossState):
 	print("Boss to state " + str(new_state))
 	
-	# Reset state flags when changing state
-	rampaging = false
+	# Reset state flags when changing state (except during rampage prep)
+	if new_state != Types.BossState.RAMPAGE:
+		rampaging = false
+		preparing_rampage = false
 	throwing_in_progress = false
 	
 	match new_state:
@@ -100,9 +103,17 @@ func _change_state(new_state: Types.BossState):
 			print("seek duration " + str(seek_duration_remaining))
 
 		Types.BossState.RAMPAGE:
-			print("RAMPAGE")
-	
+			rampaging = false
+			preparing_rampage = true
+			sprite.play("prepare_rampage")
+			print("RAMPAGE - preparing")
+			await sprite.animation_finished
+			preparing_rampage = false
+			print("RAMPAGE - ready to charge")
+			state = new_state
+			return	
 	state = new_state
+	
 	
 		
 func _physics_process(_delta: float) -> void:
@@ -130,10 +141,12 @@ func _return_to_throwing() -> void:
 		_move_towards(_throwing_position)
 
 func _handle_rampage_state() -> void:
-	if rampaging:
+	if rampaging or preparing_rampage:
 		return
 	rampaging = true
 	
+	if not current_target:
+		return
 	var hitbox := current_target.get_node_or_null("HitBox2D") as Area2D
 	if not hitbox:
 		_change_state(Types.BossState.RETURN_TO_THROWING)
@@ -149,7 +162,7 @@ func _handle_rampage_state() -> void:
 	var direction : Direction = get_direction(desired_x, global_position.x)
 	_handle_direction(direction)
 	sprite.play("rampage")
-
+	
 	# Calculate screen bounds
 	var canvas_transform = get_viewport().get_canvas_transform()
 	var global_screen_left = -canvas_transform.origin.x
