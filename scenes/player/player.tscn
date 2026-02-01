@@ -17,6 +17,10 @@ script = ExtResource("2_gmlin")
 hit_reach = 22.0
 metadata/_custom_type_script = "uid://cgqgyvbo2pmr4"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ioxgp"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(288, 320, 96, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]
 atlas = ExtResource("3_gmlin")
 region = Rect2(0, 0, 96, 64)
@@ -99,6 +103,14 @@ region = Rect2(288, 64, 96, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dovo2"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ioxgp")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gmlin")
@@ -546,7 +558,7 @@ player_stats = SubResource("Resource_75vfm")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
-animation = &"right_kick"
+animation = &"dead"
 autoplay = "default"
 
 [node name="HeadAttachment" type="Sprite2D" parent="AnimatedSprite2D" unique_id=277029135]
