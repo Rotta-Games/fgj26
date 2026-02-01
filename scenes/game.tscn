@@ -87,7 +87,11 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ui"]
 _data = {
-&"blink": SubResource("Animation_blink"),
+&"blink": SubResource("Animation_blink")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_shimmer"]
+_data = {
 &"shimmer": SubResource("Animation_shimmer")
 }
 
@@ -177,6 +181,9 @@ script = ExtResource("3_0tnpc")
 [node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=81149380]
 libraries/ = SubResource("AnimationLibrary_ui")
 autoplay = &"blink"
+
+[node name="ShimmerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+libraries/ = SubResource("AnimationLibrary_shimmer")
 
 [node name="ShimmerTimer" type="Timer" parent="CanvasLayer" unique_id=496495539]
 wait_time = 3.0

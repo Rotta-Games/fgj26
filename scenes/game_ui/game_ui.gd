@@ -9,6 +9,7 @@ extends Node
 @onready var player2_data_container = $MarginContainer/Control/Player2Data
 @onready var player2_start_text = $MarginContainer/Control/Player2Start
 @onready var blink_anim_player = $BlinkAnimationPlayer
+@onready var shimmer_anim_player = $ShimmerAnimationPlayer
 @onready var shimmer_timer = $ShimmerTimer
 @onready var pause_menu = $PauseMenu
 @onready var boss_health_bar = $MarginContainer/Control/BossHealthBar
@@ -52,7 +53,7 @@ func _on_player_start_change_emitted(player: Types.PlayerId, is_in_game: bool) -
 		player2_start_text.visible = !is_in_game
 
 func _on_shimmer_timer_timeout() -> void:
-	blink_anim_player.play("shimmer")
+	shimmer_anim_player.play("shimmer")
 	shimmer_timer.wait_time = randf_range(2.0, 5.0)
 
 func _on_boss_health_state_emitted(data: Dictionary) -> void:
