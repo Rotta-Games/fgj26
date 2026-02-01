@@ -27,6 +27,10 @@ region = Rect2(96, 128, 96, 64)
 atlas = ExtResource("3_qrh7f")
 region = Rect2(192, 128, 96, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ffho"]
+atlas = ExtResource("3_qrh7f")
+region = Rect2(0, 256, 96, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_22hgk"]
 atlas = ExtResource("3_qrh7f")
 region = Rect2(0, 0, 96, 64)
@@ -79,6 +83,14 @@ animations = [{
 "loop": false,
 "name": &"attack",
 "speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ffho")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -227,7 +239,7 @@ stat = SubResource("Resource_22hgk")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_oitbj")
-animation = &"attack"
+animation = &"dead"
 autoplay = "default"
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
