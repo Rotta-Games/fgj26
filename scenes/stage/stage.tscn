@@ -52,7 +52,7 @@ metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [sub_resource type="Resource" id="Resource_block5_wave2"]
 script = ExtResource("3_d1yl1")
-enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
@@ -64,7 +64,7 @@ metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [sub_resource type="Resource" id="Resource_block5_wave4"]
 script = ExtResource("3_d1yl1")
-enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
+enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
