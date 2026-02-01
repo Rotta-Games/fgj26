@@ -81,7 +81,7 @@ func _play_intro():
 	tween.tween_property(self, "scale", scale * 1.15, 0.15).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(self, "scale", scale, 0.15).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
-	_change_state(Types.BossState.THROWING)
+	_change_state(Types.BossState.RAMPAGE)
 	
 func _change_state(new_state: Types.BossState):
 	print("Boss to state " + str(new_state))
