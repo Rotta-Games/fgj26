@@ -103,11 +103,7 @@ func _finish_stage() -> void:
 		
 func _has_more_waves() -> bool:
 	return not _current_block.waves.is_empty()
-			
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed:
-		if event.keycode == Key.KEY_ESCAPE:
-			get_tree().quit()
+
 
 func _on_sub_pixel_follow_camera_checkpoint_reached() -> void:
 	if _has_more_waves():
