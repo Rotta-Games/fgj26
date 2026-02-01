@@ -12,7 +12,11 @@ func _process(delta: float) -> void:
 
 
 func _on_quit_button_button_up() -> void:
-	get_tree().quit()
+	if OS.get_name() != "Web":
+		get_tree().quit()
+
+	var quit_button = $VBoxContainer/quit_button
+	quit_button.text += ":D"
 
 
 
