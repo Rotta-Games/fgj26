@@ -42,7 +42,7 @@ var throwing_in_progress : bool = false
 func _ready() -> void:
 	health = stat.health
 	attack_delay = stat.attack_delay
-	
+
 	attack_delay_timer.timeout.connect(func():
 		waiting_to_attack = false
 	)
@@ -51,6 +51,11 @@ func _ready() -> void:
 	bottle.top_level = true
 	_handle_direction(Direction.LEFT)
 	_play_intro()
+	SignalBus.bossHealthState.emit({
+		"health": health,
+		"max_health": stat.health,
+		"visible": true
+	})
 
 func randf_bell(min_val: float, max_val: float) -> float:
 	var sum = randf() + randf() + randf()
@@ -386,9 +391,14 @@ func _on_player_hit_area_area_exited(area: Node2D) -> void:
 func hurt(amount: int, critical_hit: bool = false, combo_count: int = 0) -> void:
 	if state == Types.BossState.DEAD:
 		return
-	
+
 	health -= amount
-	
+	SignalBus.bossHealthState.emit({
+		"health": health,
+		"max_health": stat.health,
+		"visible": true
+	})
+
 	if (health <= 0):
 		_die()
 	else:

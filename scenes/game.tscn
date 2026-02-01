@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
 [ext_resource type="StyleBox" uid="uid://ptlah7oxmi1y" path="res://assets/resources/menubutton.tres" id="8_kvpfn"]
 [ext_resource type="FontFile" uid="uid://64ete5afvi40" path="res://assets/fonts/tinypixel.otf" id="9_font"]
+[ext_resource type="Texture2D" uid="uid://h0yjhq57u5g6" path="res://assets/gfx/health_boss_sheet.png" id="10_boss_hp"]
 
 [sub_resource type="Animation" id="Animation_blink"]
 resource_name = "blink"
@@ -113,6 +114,21 @@ font_color = Color(0.54901963, 1, 0.60784316, 1)
 outline_size = 4
 outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
 shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_boss"]
+font = SubResource("FontVariation_spaced")
+font_size = 10
+outline_size = 4
+outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
+shadow_size = 0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_boss_under"]
+atlas = ExtResource("10_boss_hp")
+region = Rect2(100, 0, 100, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_boss_over"]
+atlas = ExtResource("10_boss_hp")
+region = Rect2(0, 0, 100, 7)
 
 [sub_resource type="Theme" id="Theme_vtaks"]
 default_font = ExtResource("9_font")
@@ -266,6 +282,49 @@ offset_top = 14.0
 offset_right = 32.0
 offset_bottom = 46.0
 grow_horizontal = 2
+
+[node name="BossHealthBar" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=429919633]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -9.0
+offset_right = 50.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BossName" type="Label" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1089629495]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 7.0
+offset_top = -6.5
+offset_right = 88.0
+offset_bottom = 5.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "Gassy Mask"
+label_settings = SubResource("LabelSettings_boss")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/Control/BossHealthBar" unique_id=1141014398]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+rounded = true
+texture_under = SubResource("AtlasTexture_boss_under")
+texture_progress = SubResource("AtlasTexture_boss_over")
 
 [node name="PauseMenu" type="VBoxContainer" parent="CanvasLayer" unique_id=797836034]
 visible = false
