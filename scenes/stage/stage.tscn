@@ -50,11 +50,6 @@ enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"
 enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
-[sub_resource type="Resource" id="Resource_cwi0x"]
-script = ExtResource("8_uutle")
-health = 40
-drop = ExtResource("7_kb6yy")
-
 [sub_resource type="Resource" id="Resource_block4_wave1"]
 script = ExtResource("3_d1yl1")
 enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
@@ -115,6 +110,11 @@ enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"
 enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
+[sub_resource type="Resource" id="Resource_cwi0x"]
+script = ExtResource("8_uutle")
+health = 40
+drop = ExtResource("7_kb6yy")
+
 [node name="Stage" type="Node2D" unique_id=1547251690]
 y_sort_enabled = true
 texture_filter = 1
@@ -148,15 +148,15 @@ waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
 position = Vector2(1739, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_pf3bu"), SubResource("Resource_ljyi0"), SubResource("Resource_uutle")])
 
-[node name="StageBlock4" parent="Blocks" instance=ExtResource("7_d1yl1")]
+[node name="StageBlock4" parent="Blocks" unique_id=1389443032 instance=ExtResource("7_d1yl1")]
 position = Vector2(2200, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block4_wave1"), SubResource("Resource_block4_wave2"), SubResource("Resource_block4_wave3")])
 
-[node name="StageBlock5" parent="Blocks" instance=ExtResource("7_d1yl1")]
+[node name="StageBlock5" parent="Blocks" unique_id=1895804355 instance=ExtResource("7_d1yl1")]
 position = Vector2(2650, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block5_wave1"), SubResource("Resource_block5_wave2"), SubResource("Resource_block5_wave3"), SubResource("Resource_block5_wave4")])
 
-[node name="StageBlock6" parent="Blocks" instance=ExtResource("7_d1yl1")]
+[node name="StageBlock6" parent="Blocks" unique_id=1334836427 instance=ExtResource("7_d1yl1")]
 position = Vector2(3100, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block6_wave1"), SubResource("Resource_block6_wave2"), SubResource("Resource_block6_wave3")])
 
@@ -178,10 +178,31 @@ position = Vector2(0, 138)
 y_sort_enabled = true
 
 [node name="Trashcan" parent="StaticObjects" unique_id=2095307770 instance=ExtResource("7_ljyi0")]
-position = Vector2(128, 102)
+position = Vector2(420, 96)
 
 [node name="Trashcan2" parent="StaticObjects" unique_id=596318278 instance=ExtResource("7_ljyi0")]
-position = Vector2(448, 107)
+position = Vector2(882, 102)
+data = SubResource("Resource_cwi0x")
+
+[node name="Trashcan3" parent="StaticObjects" unique_id=559161309 instance=ExtResource("7_ljyi0")]
+position = Vector2(1128, 106)
+
+[node name="Trashcan4" parent="StaticObjects" unique_id=145030731 instance=ExtResource("7_ljyi0")]
+position = Vector2(1620, 111)
+data = SubResource("Resource_cwi0x")
+
+[node name="Trashcan5" parent="StaticObjects" unique_id=1218717133 instance=ExtResource("7_ljyi0")]
+position = Vector2(2095, 122)
+
+[node name="Trashcan6" parent="StaticObjects" unique_id=1087581459 instance=ExtResource("7_ljyi0")]
+position = Vector2(2574, 108)
+data = SubResource("Resource_cwi0x")
+
+[node name="Trashcan7" parent="StaticObjects" unique_id=1561814426 instance=ExtResource("7_ljyi0")]
+position = Vector2(3040, 113)
+
+[node name="Trashcan8" parent="StaticObjects" unique_id=1108885342 instance=ExtResource("7_ljyi0")]
+position = Vector2(3381, 105)
 data = SubResource("Resource_cwi0x")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1780131126]
