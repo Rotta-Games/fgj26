@@ -253,11 +253,14 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	})
 
 	if (health <= 0):
-		print("Player dead!")
 		_play_player_death_sound()
 		state = Types.PlayerState.DEAD
-		play_animation("dead")
+		# Fix this maybe
+		head_attachment.visible = false
 		animation_player.play("dead")
+		play_animation("dead")
+		await animation_player.animation_finished
+		die()
 		
 	else:
 		sprite.play("stunned")

@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
 [ext_resource type="PackedScene" uid="uid://chrgj2y5ap2ns" path="res://scenes/drops/mask_of_fire/mask_of_fire.tscn" id="7_kb6yy"]
 [ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
-[ext_resource type="Script" uid="uid://dfog41bqdj34f" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
+[ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
+[ext_resource type="PackedScene" uid="uid://iqpcl2tt5bmw" path="res://scenes/boss/boss.tscn" id="9_kb6yy"]
 
 [sub_resource type="Resource" id="Resource_0m8sx"]
 script = ExtResource("3_d1yl1")
@@ -30,24 +31,6 @@ metadata/_custom_type_script = "uid://bf811hxt2q18l"
 script = ExtResource("3_d1yl1")
 enemies_left = Array[PackedScene]([ExtResource("6_pf3bu")])
 enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
-metadata/_custom_type_script = "uid://bf811hxt2q18l"
-
-[sub_resource type="Resource" id="Resource_pf3bu"]
-script = ExtResource("3_d1yl1")
-enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
-enemies_right = Array[PackedScene]([ExtResource("6_pf3bu")])
-metadata/_custom_type_script = "uid://bf811hxt2q18l"
-
-[sub_resource type="Resource" id="Resource_ljyi0"]
-script = ExtResource("3_d1yl1")
-enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
-enemies_right = Array[PackedScene]([ExtResource("6_pf3bu")])
-metadata/_custom_type_script = "uid://bf811hxt2q18l"
-
-[sub_resource type="Resource" id="Resource_uutle"]
-script = ExtResource("3_d1yl1")
-enemies_left = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
-enemies_right = Array[PackedScene]([ExtResource("6_pf3bu"), ExtResource("6_pf3bu"), ExtResource("6_pf3bu")])
 metadata/_custom_type_script = "uid://bf811hxt2q18l"
 
 [sub_resource type="Resource" id="Resource_block4_wave1"]
@@ -146,19 +129,18 @@ waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_qard3")])
 
 [node name="StageBlock3" parent="Blocks" unique_id=1003023851 instance=ExtResource("7_d1yl1")]
 position = Vector2(1739, 95)
-waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_pf3bu"), SubResource("Resource_ljyi0"), SubResource("Resource_uutle")])
-
-[node name="StageBlock4" parent="Blocks" unique_id=1389443032 instance=ExtResource("7_d1yl1")]
-position = Vector2(2200, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block4_wave1"), SubResource("Resource_block4_wave2"), SubResource("Resource_block4_wave3")])
 
-[node name="StageBlock5" parent="Blocks" unique_id=1895804355 instance=ExtResource("7_d1yl1")]
+[node name="StageBlock5" parent="Blocks" unique_id=1140723076 instance=ExtResource("7_d1yl1")]
 position = Vector2(2650, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block5_wave1"), SubResource("Resource_block5_wave2"), SubResource("Resource_block5_wave3"), SubResource("Resource_block5_wave4")])
 
-[node name="StageBlock6" parent="Blocks" unique_id=1334836427 instance=ExtResource("7_d1yl1")]
+[node name="StageBlock6" parent="Blocks" unique_id=339306666 instance=ExtResource("7_d1yl1")]
 position = Vector2(3100, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block6_wave1"), SubResource("Resource_block6_wave2"), SubResource("Resource_block6_wave3")])
+
+[node name="StageBlock7" parent="Blocks" unique_id=260447564 instance=ExtResource("7_d1yl1")]
+position = Vector2(3679, 95)
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1639698908]
 
@@ -207,3 +189,6 @@ data = SubResource("Resource_cwi0x")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1780131126]
 y_sort_enabled = true
+
+[node name="Boss" parent="." unique_id=934439360 instance=ExtResource("9_kb6yy")]
+position = Vector2(2987, 101)
