@@ -4,7 +4,6 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimationNode/AnimatedSprite2D
 @onready var animation_node = $AnimationNode
-@onready var animation_target = $AnimationTarget
 @onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
