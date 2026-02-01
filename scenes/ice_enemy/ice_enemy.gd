@@ -79,7 +79,6 @@ func _physics_process(_delta: float) -> void:
 	elif state == Types.EnemyState.STUNNED:
 		if _knockedback:
 			move_and_slide()
-			_knockedback = false
 	elif current_target && _target_in_hit_area && !waiting_to_attack && state == Types.EnemyState.ATTACK:
 		_start_attack()
 	elif !current_target:
@@ -140,7 +139,7 @@ func hurt(amount: int, critical_hit: bool = false):
 		sprite.play("stunned")
 		if critical_hit:
 			var knockback_dir := (global_position - current_target.global_position).normalized()
-			velocity = knockback_dir * 2500.0
+			velocity = knockback_dir * 50
 			_knockedback = true
 			return
 
@@ -196,6 +195,7 @@ func _on_stunned_timer_timeout():
 	if (health > 0 && state == Types.EnemyState.STUNNED):
 		sprite.play("default")
 		state = Types.EnemyState.SEEK
+		_knockedback = false
 		
 		for area in player_hit_area.get_overlapping_areas():
 			if current_target == area.get_parent():
