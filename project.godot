@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Masks of Mayhem"
-run/main_scene="uid://vmne8d3xmidj"
+run/main_scene="uid://comw3eq41b60p"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
