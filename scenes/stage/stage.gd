@@ -26,12 +26,26 @@ func _ready() -> void:
 	var first_block = _block_container.get_child(0)
 	_set_block(first_block)
 	
-func _set_block(block: StageBlock) -> void:
+func _set_block(block: StageBlock, from_progression: bool = false) -> void:
 	_current_block = block
 	_current_camera_limit = block.global_position.x
 	camera_right_limit_changed.emit(_current_camera_limit)
 
-		
+	# When transitioning from previous block, start a fallback timer
+	# in case camera checkpoint doesn't fire (camera already at position)
+	if from_progression:
+		_start_wave_fallback_check()
+
+func _start_wave_fallback_check() -> void:
+	# Wait a short moment for the camera checkpoint to potentially fire
+	await get_tree().create_timer(0.5).timeout
+
+	# If we still have waves and no enemies/spawning, the checkpoint didn't fire
+	if _current_block and _has_more_waves() and _enemies_alive == 0 and not _spawn_in_progress:
+		print("FALLBACK: Camera checkpoint missed, spawning wave manually")
+		var wave = _current_block.waves.pop_front()
+		_spawn_wave(wave)
+
 func _spawn_wave(wave: EnemyWave) -> void:
 	var coinflip = randi_range(0, 1)
 	var first_wave = wave.enemies_left
@@ -54,6 +68,10 @@ func _spawn_wave(wave: EnemyWave) -> void:
 		await get_tree().create_timer(delay).timeout
 		_spawn_enemy(enemy, second_side)
 	_spawn_in_progress = false
+
+	# Re-check if all enemies died during spawning
+	if _enemies_alive == 0:
+		_check_wave_progression()
 
 func _spawn_enemy(enemy_scene: PackedScene, side: Types.Side) -> void:
 	var enemy = enemy_scene.instantiate()
@@ -85,26 +103,29 @@ func _on_enemy_killed() -> void:
 	if _spawn_in_progress:
 		return
 	if _enemies_alive == 0:
-		if _has_more_waves():
-			print("MORE WAVES!")
-			var wave = _current_block.waves.pop_front()
-			_spawn_wave(wave)
-			return
-		print("NEXT BLOCK")
-		_block_container.remove_child(_current_block)
-		_current_block.queue_free()
-		_current_block = null
-		if _block_container.get_children().is_empty():
-			var boss = _boss_scene.instantiate()
-			# get random spawn point location for boss
-			var spawn_point = _get_random_spawn_point(Types.Side.RIGHT)
-			_enemy_container.add_child(boss)
-			boss.position = spawn_point
-			boss.dead.connect(_finish_stage)
-			return
-		
-		var next_block = _block_container.get_child(0)
-		_set_block(next_block)
+		_check_wave_progression()
+
+func _check_wave_progression() -> void:
+	if _has_more_waves():
+		print("MORE WAVES!")
+		var wave = _current_block.waves.pop_front()
+		_spawn_wave(wave)
+		return
+	print("NEXT BLOCK")
+	_block_container.remove_child(_current_block)
+	_current_block.queue_free()
+	_current_block = null
+	if _block_container.get_children().is_empty():
+		var boss = _boss_scene.instantiate()
+		# get random spawn point location for boss
+		var spawn_point = _get_random_spawn_point(Types.Side.RIGHT)
+		_enemy_container.add_child(boss)
+		boss.position = spawn_point
+		boss.dead.connect(_finish_stage)
+		return
+
+	var next_block = _block_container.get_child(0)
+	_set_block(next_block, true)
 			
 func _finish_stage() -> void:
 	print("TODO: FINISH STAGE")

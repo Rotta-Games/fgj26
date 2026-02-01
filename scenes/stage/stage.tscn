@@ -138,9 +138,6 @@ waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block5_wave1"), Sub
 position = Vector2(3100, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block6_wave1"), SubResource("Resource_block6_wave2"), SubResource("Resource_block6_wave3")])
 
-[node name="StageBlock7" parent="Blocks" unique_id=260447564 instance=ExtResource("7_d1yl1")]
-position = Vector2(3679, 95)
-
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1639698908]
 
 [node name="Spawn" type="Node2D" parent="SpawnPoints" unique_id=1526453552]
