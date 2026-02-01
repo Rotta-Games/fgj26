@@ -365,6 +365,7 @@ func _deal_damage() -> void:
 		if "PlayerHitbox" in area.get_groups():
 			var player := area.get_parent()
 			if "Player" in player.get_groups() && player.has_method("hurt"):
+				print("HURT PLAYER")
 				player.hurt(attack_damage)
 	_damage_dealt_this_round = true
 	attack_delay_timer.wait_time = attack_delay
