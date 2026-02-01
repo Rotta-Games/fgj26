@@ -12,6 +12,7 @@
 [ext_resource type="StyleBox" uid="uid://ptlah7oxmi1y" path="res://assets/resources/menubutton.tres" id="8_kvpfn"]
 [ext_resource type="FontFile" uid="uid://64ete5afvi40" path="res://assets/fonts/tinypixel.otf" id="9_font"]
 [ext_resource type="Texture2D" uid="uid://h0yjhq57u5g6" path="res://assets/gfx/health_boss_sheet.png" id="10_boss_hp"]
+[ext_resource type="Texture2D" uid="uid://g616tkir5p1o" path="res://assets/gfx/title_text.png" id="11_title"]
 
 [sub_resource type="Animation" id="Animation_blink"]
 resource_name = "blink"
@@ -362,6 +363,44 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_dinhu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_kvuet")
 text = "QUIT"
 
+[node name="VictoryScreen" type="Control" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/VictoryScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.1, 0.8)
+
+[node name="TitleText" type="Sprite2D" parent="CanvasLayer/VictoryScreen"]
+position = Vector2(160, 60)
+texture = ExtResource("11_title")
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/VictoryScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -40.0
+offset_top = 100.0
+offset_right = 40.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme = SubResource("Theme_vtaks")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kvpfn")
+theme_override_styles/pressed = ExtResource("8_kvpfn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dinhu")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kvuet")
+text = "RESTART"
+
 [node name="Stage" parent="." unique_id=716734679 instance=ExtResource("1_lnu2h")]
 
 [node name="Player" parent="." unique_id=411557437 instance=ExtResource("2_lbhrr")]
@@ -376,6 +415,7 @@ targets = [NodePath("../Player")]
 [connection signal="timeout" from="CanvasLayer/ShimmerTimer" to="CanvasLayer" method="_on_shimmer_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/ResumeButton" to="CanvasLayer" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/QuitButton" to="CanvasLayer" method="_on_quit_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VictoryScreen/RestartButton" to="CanvasLayer" method="_on_restart_button_pressed"]
 [connection signal="camera_right_limit_changed" from="Stage" to="CanvasLayer/MarginContainer/Control/Arrow" method="_on_stage_camera_right_limit_changed"]
 [connection signal="camera_right_limit_changed" from="Stage" to="SubPixelFollowCamera" method="_on_stage_camera_right_limit_changed"]
 [connection signal="checkpoint_reached" from="SubPixelFollowCamera" to="Stage" method="_on_sub_pixel_follow_camera_checkpoint_reached"]

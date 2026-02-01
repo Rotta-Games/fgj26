@@ -14,6 +14,9 @@ extends Node
 @onready var pause_menu = $PauseMenu
 @onready var boss_health_bar = $MarginContainer/Control/BossHealthBar
 @onready var boss_progressbar = $MarginContainer/Control/BossHealthBar/TextureProgressBar
+@onready var victory_screen = $VictoryScreen
+@onready var victory_title = $VictoryScreen/TitleText
+@onready var restart_button = $VictoryScreen/RestartButton
 
 # Game State :D
 var is_paused: bool = false
@@ -25,6 +28,7 @@ func _ready():
 	SignalBus.playerStartChange.connect(_on_player_start_change_emitted)
 	SignalBus.gamePausedChange.connect(_on_game_pause_changed)
 	SignalBus.bossHealthState.connect(_on_boss_health_state_emitted)
+	SignalBus.boss_killed.connect(_on_boss_killed)
 
 
 func _input(event: InputEvent) -> void:
@@ -79,3 +83,26 @@ func _on_resume_button_pressed():
 func _on_quit_button_pressed():
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
+
+func _on_boss_killed() -> void:
+	# Small delay before showing victory
+	await get_tree().create_timer(1.0).timeout
+
+	# Pause the game
+	get_tree().paused = true
+
+	# Show victory screen and bounce in title
+	victory_screen.visible = true
+	var target_y = victory_title.position.y
+	victory_title.position.y = -100
+
+	var tween = create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.tween_property(victory_title, "position:y", target_y, 0.6).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	await tween.finished
+
+	restart_button.grab_focus()
+
+func _on_restart_button_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
