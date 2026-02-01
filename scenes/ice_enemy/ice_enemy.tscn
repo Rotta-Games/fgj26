@@ -172,10 +172,10 @@ tracks/0/path = NodePath("AnimationNode/AnimatedSprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.2),
+"times": PackedFloat32Array(0, 0.1, 0.16666667),
 "transitions": PackedFloat32Array(1, 0.12500009, 0.21763767),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(-20, -10), Vector2(-60, 10)]
+"values": [Vector2(10, -10), Vector2(-30, -40), Vector2(-60, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -184,10 +184,10 @@ tracks/1/path = NodePath("AnimationNode/AnimatedSprite2D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.033333335, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, -0.7086037, -1.5934856]
+"values": [1.542871058762987, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_pp7cr"]
@@ -201,9 +201,9 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.10105777, 0.2),
-"transitions": PackedFloat32Array(1, 0.32987696, 0.18946446),
+"transitions": PackedFloat32Array(1, 1.0000012, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(-80, -80), Vector2(-120, 10)]
+"values": [Vector2(10, -10), Vector2(-90, -90), Vector2(-160, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -212,10 +212,10 @@ tracks/1/path = NodePath("AnimationNode/AnimatedSprite2D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.048773054, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.048773054, 0.1, 0.16666667, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.0, -2.300344, -4.394739056521722, -4.72460628514865]
+"values": [1.5707963267948966, 0.17453292519943295, -1.7261306302223915, -5.235987755982989, -6.283185307179586]
 }
 
 [sub_resource type="Animation" id="Animation_gh66w"]
