@@ -76,7 +76,8 @@ func _get_random_spawn_point(side: Types.Side) -> Vector2i:
 	return spawn_point
 	
 func _on_enemy_killed() -> void:
-	_enemies_alive -= 1
+	_enemies_alive = max(0, _enemies_alive - 1)
+
 	print("ENEMY DEAD: enemies remaining " + str(_enemies_alive) + ", spawn in progress? " + str(_spawn_in_progress))
 	if _spawn_in_progress:
 		return
