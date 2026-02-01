@@ -119,7 +119,7 @@ func _check_wave_progression() -> void:
 	_block_container.remove_child(_current_block)
 	_current_block.queue_free()
 	_current_block = null
-	if _block_container.get_children().is_empty():
+	if not _block_container.get_children().is_empty():
 		var boss = _boss_scene.instantiate()
 		# get random spawn point location for boss
 		var spawn_point = _get_random_spawn_point(Types.Side.RIGHT)

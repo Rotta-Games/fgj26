@@ -350,7 +350,6 @@ position = Vector2(0, -35)
 
 [node name="BottleHitIndicator" type="AnimatedSprite2D" parent="." unique_id=1127624511]
 visible = false
-z_index = -99
 z_as_relative = false
 y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_wxk8e")
