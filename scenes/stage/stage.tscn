@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://chrgj2y5ap2ns" path="res://scenes/drops/mask_of_fire/mask_of_fire.tscn" id="7_kb6yy"]
 [ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
 [ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
+[ext_resource type="PackedScene" uid="uid://iqpcl2tt5bmw" path="res://scenes/boss/boss.tscn" id="9_kb6yy"]
 
 [sub_resource type="Resource" id="Resource_0m8sx"]
 script = ExtResource("3_d1yl1")
@@ -139,8 +140,7 @@ position = Vector2(3100, 95)
 waves = Array[ExtResource("3_d1yl1")]([SubResource("Resource_block6_wave1"), SubResource("Resource_block6_wave2"), SubResource("Resource_block6_wave3")])
 
 [node name="StageBlock7" parent="Blocks" unique_id=260447564 instance=ExtResource("7_d1yl1")]
-position = Vector2(3518, 95)
-has_boss = true
+position = Vector2(3679, 95)
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1639698908]
 
@@ -189,3 +189,6 @@ data = SubResource("Resource_cwi0x")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1780131126]
 y_sort_enabled = true
+
+[node name="Boss" parent="." unique_id=934439360 instance=ExtResource("9_kb6yy")]
+position = Vector2(2987, 101)

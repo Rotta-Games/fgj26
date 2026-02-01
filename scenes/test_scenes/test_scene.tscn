@@ -363,7 +363,7 @@ collision_mask = 6
 
 [node name="SubPixelFollowCamera" parent="." unique_id=1092510257 node_paths=PackedStringArray("targets") instance=ExtResource("9_hf2sn")]
 position = Vector2(171.5, 80.5)
-targets = [NodePath("")]
+targets = [null]
 
 [node name="Boss" parent="." unique_id=2041128703 instance=ExtResource("9_vpmaa")]
 position = Vector2(292, 136)

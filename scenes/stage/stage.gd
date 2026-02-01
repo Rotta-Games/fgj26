@@ -4,6 +4,8 @@ extends Node2D
 @onready var _spawn_point_container : Node2D = $SpawnPoints
 @onready var _enemy_container : Node2D = $Enemies
 
+@onready var _boss_scene : PackedScene = preload("res://scenes/boss/boss.tscn")
+
 var _current_camera_limit : int = 0
 var _current_block : StageBlock
 var _enemies_alive : int = 0
@@ -28,6 +30,7 @@ func _set_block(block: StageBlock) -> void:
 	_current_block = block
 	_current_camera_limit = block.global_position.x
 	camera_right_limit_changed.emit(_current_camera_limit)
+
 		
 func _spawn_wave(wave: EnemyWave) -> void:
 	var coinflip = randi_range(0, 1)
