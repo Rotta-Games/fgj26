@@ -255,7 +255,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		print("Player dead!")
 		_play_player_death_sound()
 		state = Types.PlayerState.DEAD
-		sprite.play("stunned")
+		play_animation("dead")
 		animation_player.play("dead")
 		
 	else:
