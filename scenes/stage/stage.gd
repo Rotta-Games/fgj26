@@ -95,7 +95,12 @@ func _on_enemy_killed() -> void:
 		_current_block.queue_free()
 		_current_block = null
 		if _block_container.get_children().is_empty():
-			_finish_stage()
+			var boss = _boss_scene.instantiate()
+			# get random spawn point location for boss
+			var spawn_point = _get_random_spawn_point(Types.Side.RIGHT)
+			_enemy_container.add_child(boss)
+			boss.position = spawn_point
+			boss.dead.connect(_finish_stage)
 			return
 		
 		var next_block = _block_container.get_child(0)
