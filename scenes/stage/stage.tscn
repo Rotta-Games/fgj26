@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://chrgj2y5ap2ns" path="res://scenes/drops/mask_of_fire/mask_of_fire.tscn" id="7_kb6yy"]
 [ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
 [ext_resource type="Script" uid="uid://dfog41bqdj34f" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
-[ext_resource type="PackedScene" uid="uid://pxu0sujxbwd2" path="res://scenes/boss/gas.tscn" id="9_kb6yy"]
 
 [sub_resource type="Resource" id="Resource_0m8sx"]
 script = ExtResource("3_d1yl1")
@@ -187,6 +186,3 @@ data = SubResource("Resource_cwi0x")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1780131126]
 y_sort_enabled = true
-
-[node name="Gas" parent="Enemies" unique_id=2012247116 instance=ExtResource("9_kb6yy")]
-position = Vector2(177, 127)
