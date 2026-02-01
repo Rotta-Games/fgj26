@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_22hgk"]
 script = ExtResource("2_qrh7f")
-health = 50
+health = 38
 movement_speed = 40.0
 attack_delay = 2.0
 attack_damage = 10

@@ -17,11 +17,15 @@ attack_damage = 40
 score = 10000
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4gry"]
+atlas = ExtResource("3_0xsra")
+region = Rect2(96, 0, 96, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_2mupd"]
 atlas = ExtResource("3_0xsra")
 region = Rect2(0, 64, 96, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_p4gry"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jghey"]
 atlas = ExtResource("3_0xsra")
 region = Rect2(96, 0, 96, 64)
 
@@ -61,10 +65,13 @@ region = Rect2(96, 64, 96, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_p4gry")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_2mupd")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_p4gry")
+"texture": SubResource("AtlasTexture_jghey")
 }],
 "loop": false,
 "name": &"attack",
@@ -287,7 +294,7 @@ stat = SubResource("Resource_0xsra")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_7kbl1")
-animation = &"prepare_rampage"
+animation = &"attack"
 autoplay = "idle"
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
