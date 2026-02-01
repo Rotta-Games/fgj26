@@ -27,3 +27,8 @@ enum PlayerMask {
 	TIGER,
 	FIRE,
 }
+
+enum MusicState {
+	MAIN_MUSIC,
+	BOSS_MUSIC
+}
