@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var bottle : Sprite2D = $BottleSprite
 @onready var bottle_hit_indicator : AnimatedSprite2D = $BottleHitIndicator
 
+@onready var gas_scene : PackedScene = preload("res://scenes/boss/gas.tscn")
 
 signal dead
 
@@ -303,6 +304,32 @@ func _launch_bottle(launch_pos : Vector2, target_pos : Vector2):
 
 
 func _process_bottle_hit():
+	var center = bottle.global_position
+	var radius = 15  # Distance from center
+
+	var gas1 = gas_scene.instantiate()
+	gas1.top_level = true
+	add_child(gas1)
+	gas1.global_position = center + Vector2(radius, 0)  # Right
+
+	var gas2 = gas_scene.instantiate()
+	gas2.top_level = true
+	add_child(gas2)
+	gas2.global_position = center + Vector2(0, radius)  # Bottom
+
+	var gas3 = gas_scene.instantiate()
+	gas3.top_level = true
+	add_child(gas3)
+	gas3.global_position = center + Vector2(-radius, 0)  # Left
+
+	var gas4 = gas_scene.instantiate()
+	gas4.top_level = true
+	add_child(gas4)
+	gas4.global_position = center + Vector2(0, -radius)  # Top
+	
+	bottle.hide()
+	bottle_hit_indicator.hide()
+	
 	var delay = randf_bell(BOTTLE_THROW_MIN_DELAY_S, BOTTLE_THROW_MAX_DELAY_S)
 	await get_tree().create_timer(delay).timeout
 	waiting_to_attack = false

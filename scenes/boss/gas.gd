@@ -6,9 +6,9 @@ extends Node2D
 @onready var sprite = $AnimatedSprite2D
 
 # Props
-var attack_delay: float = 0.5
+var attack_delay: float = 0.8
 var attack_damage: int = 10
-var alive_time: float = 8.0
+var alive_time: float = 1.0
 
 # States
 var damage_dealt = false

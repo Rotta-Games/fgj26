@@ -26,6 +26,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iubdt"]
+radius = 8.0
 
 [node name="Gas" type="Node2D" unique_id=2012247116]
 script = ExtResource("1_b0q43")
@@ -37,7 +38,6 @@ frame_progress = 0.04393585
 [node name="Area2D" type="Area2D" parent="." unique_id=1660418805]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=299921044]
-scale = Vector2(1.5, 1.5)
 shape = SubResource("CircleShape2D_iubdt")
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=1208015427]
