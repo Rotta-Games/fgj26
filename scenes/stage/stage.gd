@@ -22,11 +22,6 @@ func _ready() -> void:
 		printerr("No blocks defined in Stage")
 		return
 	var first_block = _block_container.get_child(0)
-	#### TODO IME MURSUN PIPPELIÄ SENKIN VAAHTOPÄÄ
-	####      POISTA TÄMÄ KOODI JOS HUOMAAT TÄMÄN TÄSSÄ
-	return
-	###  TODO MUUTEN PELI EI TOIMI LOL :D
-	###	 #########################################
 	_set_block(first_block)
 	
 func _set_block(block: StageBlock) -> void:
