@@ -10,7 +10,6 @@
 [ext_resource type="AudioStream" uid="uid://wf03drcpkv6y" path="res://assets/sfx/fgj26-kick-01.mp3" id="8_qek5x"]
 [ext_resource type="PackedScene" uid="uid://7wly7mjxrkpq" path="res://scenes/player/fire_emitter.tscn" id="9_5gtgg"]
 [ext_resource type="AudioStream" uid="uid://j8esyahej5wf" path="res://assets/sfx/fgj26-player-damage-01.ogg" id="10_h17s1"]
-[ext_resource type="AudioStream" uid="uid://dhivwuv2bd10a" path="res://assets/sfx/fgj26-player-death-01.ogg" id="11_je7p5"]
 
 [sub_resource type="Resource" id="Resource_75vfm"]
 script = ExtResource("2_gmlin")
@@ -630,9 +629,6 @@ position = Vector2(32, -30)
 stream = ExtResource("10_h17s1")
 pitch_scale = 0.96
 bus = &"SFX"
-
-[node name="PlayerDeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1944305660]
-stream = ExtResource("11_je7p5")
 
 [node name="DashTimer" type="Timer" parent="." unique_id=968863876]
 wait_time = 0.2

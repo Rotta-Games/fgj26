@@ -3,18 +3,27 @@ extends CharacterBody2D
 @export var direction = Direction.LEFT
 
 @onready var sprite = $AnimatedSprite2D
-@onready var stunned_timer = $StunnedTimer
 @onready var animation_player = $AnimationPlayer
 @onready var player_hit_area: Area2D = $PlayerHitArea
 @onready var enemy_hitbox: Area2D = $HitBox
 @onready var enemy_death_sound: AudioStreamPlayer2D = $DeathSound
 @onready var attack_delay_timer: Timer = $AttackDelayTimer
+@onready var bottle_launch_pos : Node2D = $BottleLaunchPosition
+@onready var bottle : Sprite2D = $BottleSprite
+@onready var bottle_hit_indicator : AnimatedSprite2D = $BottleHitIndicator
 
 signal dead
 
 enum Direction {LEFT, RIGHT}
-const X_ALIGN_THRESHOLD := 30.0  # When within this many px of player's x, seek to the side
+const X_ALIGN_THRESHOLD := 30.0  # When within this bottlemany px of player's x, seek to the side
 const Y_LEVEL_THRESHOLD := 20.0  # Aim to be within this many px of player's y
+const MAX_THROWS: int = 5
+const MIN_THROWS: int = 1
+const BOTTLE_TRAVEL_DURATION_S : float = 1.0
+const BOTTLE_THROW_MIN_DELAY_S : float = 0.2
+const BOTTLE_THROW_MAX_DELAY_S : float = 1.0
+const SEEK_DURATION_MIN_DELAY_S : float = 1.0
+const SEEK_DURATION_MAX_DELAY_S : float = 3.0
 var rng = RandomNumberGenerator.new()
 
 var state = Types.BossState.IDLE
@@ -24,6 +33,11 @@ var current_target: CharacterBody2D
 var waiting_to_attack: bool = false
 var _target_in_hit_area: bool = false
 var _damage_dealt_this_round = false
+var _throwing_position: Vector2 = Vector2.ZERO
+var _throws_remaining : int = 0
+var rampaging : bool = false
+var seek_duration_remaining : float = -1.0
+var throwing_in_progress : bool = false
 
 func _ready() -> void:
 	health = stat.health
@@ -32,54 +46,181 @@ func _ready() -> void:
 	attack_delay_timer.timeout.connect(func():
 		waiting_to_attack = false
 	)
+	_throwing_position = global_position
+	bottle_hit_indicator.top_level = true
+	bottle.top_level = true
 	_handle_direction(Direction.LEFT)
+	_play_intro()
 
+func randf_bell(min_val: float, max_val: float) -> float:
+	var sum = randf() + randf() + randf()
+	var normalized = sum / 3.0
+	return min_val + normalized * (max_val - min_val)
+	
+func _play_intro():
+	var tween = create_tween()
+	tween.set_loops(4)
+	tween.tween_property(self, "scale", scale * 1.15, 0.15).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(self, "scale", scale, 0.15).set_trans(Tween.TRANS_QUAD)
+	await tween.finished
+	_change_state(Types.BossState.THROWING)
+	
+func _change_state(new_state: Types.BossState):
+	print("Boss to state " + str(new_state))
+	
+	# Reset state flags when changing state
+	rampaging = false
+	throwing_in_progress = false
+	
+	match new_state:
+		Types.BossState.THROWING:
+			_throws_remaining = round(randf_bell(float(MIN_THROWS), float(MAX_THROWS)))
+		
+		Types.BossState.SEEK:
+			seek_duration_remaining = randf_bell(SEEK_DURATION_MIN_DELAY_S, SEEK_DURATION_MAX_DELAY_S)
+			print("seek duration " + str(seek_duration_remaining))
+
+		Types.BossState.RAMPAGE:
+			print("RAMPAGE")
+	
+	state = new_state
+	
+		
 func _physics_process(_delta: float) -> void:
-	if current_target && state == Types.EnemyState.SEEK:
-		_handle_seek_state()
-	elif current_target && _target_in_hit_area && !waiting_to_attack && state == Types.EnemyState.ATTACK:
-		_start_attack()
+	if state == Types.BossState.RETURN_TO_THROWING:
+		_return_to_throwing()
+	elif state == Types.BossState.THROWING:
+		_handle_throw_state()
+	elif state == Types.BossState.RAMPAGE:
+		_handle_rampage_state()
+	elif current_target && state == Types.BossState.SEEK:
+		_handle_seek_state(_delta)
+	elif state == Types.BossState.ATTACK:
+		seek_duration_remaining -= _delta
+		if current_target && _target_in_hit_area && !waiting_to_attack:
+			_start_attack()
+		elif sprite.animation == "attack" && sprite.frame == 3 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
+			_deal_damage()
 	elif !current_target:
 		_set_nearest_player_as_target()
-	elif state == Types.EnemyState.ATTACK && sprite.animation == "attack" && sprite.frame == 3 && waiting_to_attack &&  _target_in_hit_area && !_damage_dealt_this_round:
-		_deal_damage()
 		
-func _handle_seek_state() -> void:
+func _return_to_throwing() -> void:
+	if global_position.distance_to(_throwing_position) < 5.0:
+		_change_state(Types.BossState.THROWING)
+	else:
+		_move_towards(_throwing_position)
+
+
+func _handle_rampage_state() -> void:
+	if rampaging:
+		return
+	rampaging = true
+	
+	var hitbox := current_target.get_node_or_null("HitBox2D") as Area2D
+	if not hitbox:
+		_change_state(Types.BossState.RETURN_TO_THROWING)
+		return
+		
+	var to_player := hitbox.global_position - global_position
+	var desired_x: float
+	if to_player.x >= 0 && abs(to_player.x) >= X_ALIGN_THRESHOLD:
+		desired_x = 1
+	elif to_player.x <= 0 && abs(to_player.x) >= X_ALIGN_THRESHOLD:
+		desired_x = -1
+	
+	var direction : Direction = get_direction(desired_x, global_position.x)
+	_handle_direction(direction)
+	animation_player.play("rampage")
+	
+	# Calculate screen bounds
+	var canvas_transform = get_viewport().get_canvas_transform()
+	var global_screen_left = -canvas_transform.origin.x
+	var global_screen_right = global_screen_left + get_viewport_rect().size.x
+	
+	# Determine target edge based on direction
+	var target_x: float
+	const SPRITE_WIDTH = 64
+	if direction == Direction.RIGHT:
+		target_x = global_screen_right - SPRITE_WIDTH / 2
+	else:
+		target_x = global_screen_left + SPRITE_WIDTH / 2
+	
+	# Calculate rampage duration based on distance
+	var distance = abs(target_x - global_position.x)
+	var rampage_duration = distance / (stat.movement_speed * 4.0)
+	
+	# Tween to the edge
+	var tween = create_tween()
+	tween.tween_property(self, "global_position:x", target_x, rampage_duration).set_trans(Tween.TRANS_LINEAR)
+	await tween.finished
+	
+	# Check if still in rampage state (might have been interrupted)
+	if state == Types.BossState.RAMPAGE:
+		_switch_to_random_next_attack()
+	
+func _switch_to_random_next_attack() -> void:
+	var coinflip : int = randi_range(0, 10)
+	if coinflip <= 3:
+		_change_state(Types.BossState.SEEK)
+	elif coinflip <= 8:
+		_change_state(Types.BossState.THROWING)
+	else:
+		_change_state(Types.BossState.RAMPAGE)
+	
+
+func _handle_throw_state() -> void:
+	if throwing_in_progress:
+		return
+	
+	if _throws_remaining <= 0:
+		_switch_to_random_next_attack()
+		return
+	
+	_perform_throw_attack()
+		
+func _handle_seek_state(_delta: float) -> void:
+	seek_duration_remaining -= _delta
+	if seek_duration_remaining <= 0.0:
+		_switch_to_random_next_attack()
+		return
 	var hitbox := current_target.get_node_or_null("HitBox2D") as Area2D
 	if hitbox:
-		var to_player := hitbox.global_position - global_position
+		_move_towards(hitbox.global_position)
 		
-		# Seek X
-		var desired_x: float
-		if to_player.x >= 0 && abs(to_player.x) >= X_ALIGN_THRESHOLD:
-			desired_x = 1
-		elif to_player.x <= 0 && abs(to_player.x) >= X_ALIGN_THRESHOLD:
-			desired_x = -1
-		
-		# Seek Y
-		var desired_y: float
-		if to_player.y >= 0 && abs(to_player.y) >= Y_LEVEL_THRESHOLD:
-			desired_y = 1 + rng.randf_range(0, 2)
-		elif to_player.y <= 0 && abs(to_player.y) >= Y_LEVEL_THRESHOLD:
-			desired_y = -1 - rng.randf_range(0, 2)
+func _move_towards(pos: Vector2) -> void:
+	var to_player := pos - global_position
+	
+	# Seek X
+	var desired_x: float
+	if to_player.x >= 0 && abs(to_player.x) >= X_ALIGN_THRESHOLD:
+		desired_x = 1
+	elif to_player.x <= 0 && abs(to_player.x) >= X_ALIGN_THRESHOLD:
+		desired_x = -1
+	
+	# Seek Y
+	var desired_y: float
+	if to_player.y >= 0 && abs(to_player.y) >= Y_LEVEL_THRESHOLD:
+		desired_y = 1 + rng.randf_range(0, 2)
+	elif to_player.y <= 0 && abs(to_player.y) >= Y_LEVEL_THRESHOLD:
+		desired_y = -1 - rng.randf_range(0, 2)
 
-		var move_dir := Vector2(desired_x, desired_y)
-		if move_dir.length_squared() < 0.01:
-			velocity = Vector2.ZERO
-		else:
-			velocity = move_dir.normalized() * stat.movement_speed
-		
-		var direction : Direction = get_direction(desired_x, hitbox.global_position.x)
-		_handle_direction(direction)
-		
-		var flib = direction != Direction.RIGHT
-		sprite.flip_h = flib
-		if flib:
-			player_hit_area.position.x = -40
-		else:
-			player_hit_area.position.x = 0
-		move_and_slide()
-		
+	var move_dir := Vector2(desired_x, desired_y)
+	if move_dir.length_squared() < 0.01:
+		velocity = Vector2.ZERO
+	else:
+		velocity = move_dir.normalized() * stat.movement_speed
+	
+	var direction : Direction = get_direction(desired_x, pos.x)
+	_handle_direction(direction)
+	
+	var flib = direction != Direction.RIGHT
+	sprite.flip_h = flib
+	if flib:
+		player_hit_area.position.x = -40
+	else:
+		player_hit_area.position.x = 0
+	move_and_slide()
+			
 func _handle_direction(direction : Direction) -> void:		
 		var flib = direction != Direction.RIGHT
 		sprite.flip_h = flib
@@ -90,7 +231,6 @@ func _handle_direction(direction : Direction) -> void:
 
 		
 func get_direction(desired_x: int, enemy_position_x: float) -> Direction:
-	# Ugly way to determine direction
 	if (desired_x == 0 && global_position.x < enemy_position_x):
 		return Direction.RIGHT
 	elif (desired_x == 0 && global_position.x > enemy_position_x):
@@ -98,10 +238,77 @@ func get_direction(desired_x: int, enemy_position_x: float) -> Direction:
 	else:
 		return Direction.LEFT if desired_x < 0 else Direction.RIGHT
 
-	
-func _start_throw_attack() -> void:
+func _perform_throw_attack() -> void:
+	if waiting_to_attack:
+		return
+	waiting_to_attack = true
+	throwing_in_progress = true
 	sprite.play("throw")
+	await get_tree().create_timer(0.5).timeout
+
+	var target_position = _randomize_bottle_target()
+	_launch_bottle(bottle_launch_pos.global_position, target_position)
 	
+
+func _launch_bottle(launch_pos : Vector2, target_pos : Vector2):
+	bottle.global_position = launch_pos
+	bottle.show()
+	
+	# Position and fade in the hit indicator
+	bottle_hit_indicator.global_position = target_pos
+	bottle_hit_indicator.modulate.a = 0.5
+	bottle_hit_indicator.show()
+	bottle_hit_indicator.play("default")
+	
+	# Fade indicator to full visibility
+	var indicator_tween = create_tween()
+	indicator_tween.tween_property(bottle_hit_indicator, "modulate:a", 1.0, BOTTLE_TRAVEL_DURATION_S)
+	
+	# Calculate high arc peak point (way overhead)
+	var distance = abs(target_pos.x - launch_pos.x)
+	var peak_x = launch_pos.x + (target_pos.x - launch_pos.x) * 0.5
+	var peak_y = min(launch_pos.y, target_pos.y) - distance * 1.2
+	var peak = Vector2(peak_x, peak_y)
+	
+	# Create arc motion for bottle
+	var tween = create_tween()
+	
+	# First half: throw up to peak
+	tween.tween_property(bottle, "global_position", peak, BOTTLE_TRAVEL_DURATION_S * 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	# Second half: fall from peak to target
+	tween.tween_property(bottle, "global_position", target_pos, BOTTLE_TRAVEL_DURATION_S * 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	
+	await tween.finished
+	_throws_remaining -= 1
+	_process_bottle_hit()
+
+
+func _process_bottle_hit():
+	var delay = randf_bell(BOTTLE_THROW_MIN_DELAY_S, BOTTLE_THROW_MAX_DELAY_S)
+	await get_tree().create_timer(delay).timeout
+	waiting_to_attack = false
+	throwing_in_progress = false
+	
+func _randomize_bottle_target() -> Vector2:
+	var players := get_tree().get_nodes_in_group("Player")
+	var target := Vector2.ZERO
+	
+	# 80% chance to target a player, 20% chance random throw
+	if randf() < 0.8 and not players.is_empty():
+		var player = players.pick_random()
+		target = player.global_position
+		target.x += randf_bell(-30, 30)
+		target.y += randf_bell(-20, 20)
+	else:
+		target.x = randf_range(50, self.global_position.x)
+		target.y = randf_range(100, 130)
+	
+	# Clamp to game bounds
+	target.x = clampf(target.x, 50, self.global_position.x)
+	target.y = clampf(target.y, 100, 130)
+	
+	return target
 	
 func _start_attack() -> void:
 	waiting_to_attack = true
@@ -134,12 +341,13 @@ func _set_nearest_player_as_target() -> void:
 
 func _die() -> void:
 	_disable_all_collisions()
-	state = Types.BossState.DEAD
+	_change_state(Types.BossState.DEAD)
 	sprite.play("default")
 	sprite.stop()
 	animation_player.play("dead")
 	enemy_death_sound.pitch_scale = randf_range(0.5, 1.2)
 	enemy_death_sound.play()
+	SignalBus.boss_killed.emit()
 
 func remove_enemy() -> void:
 	dead.emit()
@@ -148,7 +356,6 @@ func remove_enemy() -> void:
 
 
 func _disable_all_collisions() -> void:
-	# Disable CharacterBody2D collision
 	collision_layer = 0
 	collision_mask = 0
 	$EnemyCollision.set_deferred("disabled", true)
@@ -159,31 +366,36 @@ func _on_player_detection_area_area_entered(area: Node2D) -> void:
 		current_target = area.get_parent()
 
 func _on_player_hit_area_area_entered(area: Node2D) -> void:
+	if state != Types.BossState.SEEK:
+		return
 	if "PlayerHitbox" in area.get_groups():
 		if area.get_parent() == current_target:
 			_target_in_hit_area = true
 			if state == Types.BossState.SEEK:
-				state = Types.BossState.ATTACK
+				_change_state(Types.BossState.ATTACK)
 
 
 func _on_player_hit_area_area_exited(area: Node2D) -> void:
 	if state == Types.BossState.ATTACK && "PlayerHitbox" in area.get_groups():
-		if area.get_parent() == current_target:
+		if seek_duration_remaining > 0.0 and area.get_parent() == current_target:
 			_target_in_hit_area = false
 			state = Types.BossState.SEEK
+		elif seek_duration_remaining <= 0.0:
+			_switch_to_random_next_attack()
 
-
-func _on_stunned_timer_timeout():
-	if (health > 0 && state == Types.BossState.STUNNED):
-		sprite.play("idle")
-		
-		for area in player_hit_area.get_overlapping_areas():
-			if current_target == area.get_parent():
-				state = Types.BossState.ATTACK
+func hurt(amount: int, critical_hit: bool = false, combo_count: int = 0) -> void:
+	if state == Types.BossState.DEAD:
+		return
+	
+	health -= amount
+	
+	if (health <= 0):
+		_die()
+	else:
+		animation_player.play("hurt")
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "attack":
 		_damage_dealt_this_round = false
 		waiting_to_attack = false
-		

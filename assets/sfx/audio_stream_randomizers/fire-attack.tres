@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://bbcwmfsqef358"]
+
+[ext_resource type="AudioStream" uid="uid://cyg4otr1jv0rw" path="res://assets/sfx/fgj26-sounds-fire-attack.mp3" id="1_0lvup"]
+
+[resource]
+random_pitch = 1.1697228
+random_volume_offset_db = 2.14
+streams_count = 1
+stream_0/stream = ExtResource("1_0lvup")

@@ -30,6 +30,11 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="Resource" id="Resource_mvpi2"]
 script = ExtResource("10_yjtru")
 health = 500
+movement_speed = 45.0
+attack_delay = 0.1
+attack_damage = 40
+stunned_time = 0.1
+score = 10000
 metadata/_custom_type_script = "uid://d1h18hi41diby"
 
 [node name="TestScene" type="Node2D" unique_id=50045772]
@@ -148,5 +153,5 @@ position = Vector2(171.5, 80.5)
 targets = [NodePath("../Player")]
 
 [node name="Boss" parent="." unique_id=934439360 instance=ExtResource("9_vpmaa")]
-position = Vector2(290, 148)
+position = Vector2(276, 134)
 stat = SubResource("Resource_mvpi2")

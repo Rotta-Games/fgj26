@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://d1h18hi41diby" path="res://scripts/resource_definitions/enemy_stats.gd" id="2_qrh7f"]
 [ext_resource type="Texture2D" uid="uid://b3bqkqiqp6nt3" path="res://assets/gfx/boss_sheet.png" id="3_0xsra"]
 [ext_resource type="AudioStream" uid="uid://cb36louskel5e" path="res://assets/sfx/fgj26-death-01.ogg" id="4_22hgk"]
+[ext_resource type="Texture2D" uid="uid://dbycows1hxoit" path="res://assets/gfx/grenade.png" id="5_iva7r"]
+[ext_resource type="Texture2D" uid="uid://djf5pxumkh4k8" path="res://assets/gfx/target_sheet.png" id="6_i4fbv"]
 
 [sub_resource type="Resource" id="Resource_0xsra"]
 script = ExtResource("2_qrh7f")
@@ -13,6 +15,14 @@ attack_delay = 0.5
 attack_damage = 25
 score = 10000
 metadata/_custom_type_script = "uid://d1h18hi41diby"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mupd"]
+atlas = ExtResource("3_0xsra")
+region = Rect2(0, 64, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4gry"]
+atlas = ExtResource("3_0xsra")
+region = Rect2(96, 0, 96, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iva7r"]
 atlas = ExtResource("3_0xsra")
@@ -42,6 +52,17 @@ region = Rect2(96, 64, 96, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_2mupd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4gry")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_iva7r")
 }, {
 "duration": 1.0,
@@ -60,7 +81,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"rampage",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -69,7 +90,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dlpkd")
 }],
-"loop": true,
+"loop": false,
 "name": &"throw",
 "speed": 2.0
 }]
@@ -176,6 +197,63 @@ _data = {
 &"hurt": SubResource("Animation_gh66w")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdkbu"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(0, 0, 100, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrgoe"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(100, 0, 100, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pxtfd"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(200, 0, 100, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uonfg"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(300, 0, 100, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whqtw"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(400, 0, 100, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1q0wb"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(500, 0, 100, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cw1b"]
+atlas = ExtResource("6_i4fbv")
+region = Rect2(600, 0, 100, 60)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wxk8e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tdkbu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rrgoe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pxtfd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uonfg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whqtw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1q0wb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cw1b")
+}],
+"loop": false,
+"name": &"default",
+"speed": 7.0
+}]
+
 [node name="Boss" type="CharacterBody2D" unique_id=934439360 groups=["Enemy"]]
 y_sort_enabled = true
 texture_filter = 1
@@ -189,7 +267,7 @@ stat = SubResource("Resource_0xsra")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_7kbl1")
-animation = &"idle"
+animation = &"rampage"
 autoplay = "idle"
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1900141297]
@@ -221,9 +299,6 @@ position = Vector2(18, -13)
 scale = Vector2(3, 2)
 shape = SubResource("RectangleShape2D_qrh7f")
 
-[node name="StunnedTimer" type="Timer" parent="." unique_id=1358064073]
-process_callback = 0
-
 [node name="DebugState" type="Label" parent="." unique_id=863047750]
 offset_left = -21.0
 offset_top = -65.0
@@ -238,8 +313,22 @@ stream = ExtResource("4_22hgk")
 
 [node name="AttackDelayTimer" type="Timer" parent="." unique_id=639037329]
 
+[node name="BottleSprite" type="Sprite2D" parent="." unique_id=861569876]
+visible = false
+rotation = -1.5707964
+texture = ExtResource("5_iva7r")
+
+[node name="BottleLaunchPosition" type="Node2D" parent="." unique_id=1385763488]
+position = Vector2(0, -35)
+
+[node name="BottleHitIndicator" type="AnimatedSprite2D" parent="." unique_id=1127624511]
+visible = false
+z_index = -99
+z_as_relative = false
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_wxk8e")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="PlayerDetectionArea" to="." method="_on_player_detection_area_area_entered"]
 [connection signal="area_entered" from="PlayerHitArea" to="." method="_on_player_hit_area_area_entered"]
 [connection signal="area_exited" from="PlayerHitArea" to="." method="_on_player_hit_area_area_exited"]
-[connection signal="timeout" from="StunnedTimer" to="." method="_on_stunned_timer_timeout"]

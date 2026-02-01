@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dj6iyxeowfvht"]
 
 [ext_resource type="Script" uid="uid://nqox4cu6unon" path="res://scenes/static_objects/trashcan/trashcan.gd" id="1_m6xt5"]
-[ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="2_bws4p"]
+[ext_resource type="Script" uid="uid://dfog41bqdj34f" path="res://scripts/resource_definitions/static_object.gd" id="2_bws4p"]
 [ext_resource type="PackedScene" uid="uid://dhg0wm7qgbw0r" path="res://scenes/drops/mask_of_tiger/mask_of_tiger.tscn" id="2_lskl7"]
 [ext_resource type="Texture2D" uid="uid://coesw3k3su8yj" path="res://assets/gfx/trashcan.png" id="4_lskl7"]
 
@@ -16,13 +16,117 @@ metadata/_custom_type_script = "uid://dfog41bqdj34f"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bws4p"]
 size = Vector2(20, 30)
 
+[sub_resource type="Animation" id="Animation_lskl7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationNode/Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationNode/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 16)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationNode/Sprite2D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_pwx7j"]
+resource_name = "dead"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationNode/Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03372986, 0.10659665),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 16), Vector2(-13, 5), Vector2(-27, 20)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationNode/Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.10659665),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.5707963267948966]
+}
+
+[sub_resource type="Animation" id="Animation_p8bct"]
+resource_name = "hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationNode/Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03333334, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(2.7794645, 2.7794645, 2.7794645, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationNode/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.03333333, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 16), Vector2(3, 14), Vector2(0, 16)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pwx7j"]
+_data = {
+&"RESET": SubResource("Animation_lskl7"),
+&"dead": SubResource("Animation_pwx7j"),
+&"hurt": SubResource("Animation_p8bct")
+}
+
 [node name="Trashcan" type="StaticBody2D" unique_id=596318278 groups=["StaticObject"]]
 collision_layer = 16
 collision_mask = 3
 script = ExtResource("1_m6xt5")
 data = SubResource("Resource_lskl7")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1226795684]
+[node name="AnimationNode" type="Node2D" parent="." unique_id=589566712]
+
+[node name="Sprite2D" type="Sprite2D" parent="AnimationNode" unique_id=1226795684]
 y_sort_enabled = true
 position = Vector2(0, 16)
 texture = ExtResource("4_lskl7")
@@ -38,3 +142,6 @@ collision_layer = 17
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=842205749]
 position = Vector2(0, 15)
 shape = SubResource("RectangleShape2D_bws4p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1493141154]
+libraries/ = SubResource("AnimationLibrary_pwx7j")

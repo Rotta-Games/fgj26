@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://comw3eq41b60p"]
 
 [ext_resource type="Script" uid="uid://bhn4hhn71caw1" path="res://scenes/splash.gd" id="1_splash"]
-[ext_resource type="Texture2D" uid="uid://cmbs3hdwj0cqc" path="res://assets/gfx/splash.png" id="2_splash"]
+[ext_resource type="Texture2D" uid="uid://dxhcbl1d5rolv" path="res://assets/gfx/gamee.png" id="2_4rrho"]
 [ext_resource type="AudioStream" uid="uid://f2yfd4w0m11a" path="res://assets/sfx/gamee_boom.mp3" id="3_audio"]
 
 [sub_resource type="Animation" id="Animation_reset"]
@@ -41,23 +41,43 @@ _data = {
 &"fade_inout": SubResource("Animation_fadeinout")
 }
 
-[node name="Splash" type="Node2D" unique_id=3688378]
+[node name="Splash" type="Control" unique_id=1935512312]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -240.0
+offset_bottom = -135.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(4, 4)
 script = ExtResource("1_splash")
 
 [node name="Background" type="ColorRect" parent="." unique_id=393197046]
-offset_right = 480.0
-offset_bottom = 270.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Logo" type="Sprite2D" parent="." unique_id=1228642352]
-texture_filter = 1
-position = Vector2(240, 135)
-scale = Vector2(2, 2)
-texture = ExtResource("2_splash")
+[node name="Logo" type="TextureRect" parent="." unique_id=453859295]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4rrho")
+expand_mode = 1
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=922262151]
-offset_right = 480.0
-offset_bottom = 270.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2044667470]
