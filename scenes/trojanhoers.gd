@@ -11,6 +11,8 @@ func _input(event: InputEvent) -> void:
 		# create new Player2 instance and change player id to PLAYER_2 in the player_stats resource
 		player2_instance = player_scene.instantiate()
 		player2_instance.player_stats.player_id = Types.PlayerId.PLAYER_2
+		# modulate sprite color a bit
+		player2_instance.modulate = Color(0.75, 0.90, 0.95)
 		get_tree().get_current_scene().add_child(player2_instance)
 		SignalBus.playerStartChange.emit(Types.PlayerId.PLAYER_2, true)
 	elif event.is_action_pressed("player2_start") and player2_instance != null:
