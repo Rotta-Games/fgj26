@@ -623,5 +623,9 @@ bus = &"SFX"
 [node name="PlayerDeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1944305660]
 stream = ExtResource("11_je7p5")
 
+[node name="DashTimer" type="Timer" parent="." unique_id=968863876]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]
 [connection signal="timeout" from="MaskTimer" to="." method="_on_mask_timer_timeout"]
