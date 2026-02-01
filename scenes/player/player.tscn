@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://7wly7mjxrkpq" path="res://scenes/player/fire_emitter.tscn" id="9_5gtgg"]
 [ext_resource type="AudioStream" uid="uid://j8esyahej5wf" path="res://assets/sfx/fgj26-player-damage-01.ogg" id="10_h17s1"]
 [ext_resource type="AudioStream" uid="uid://dhivwuv2bd10a" path="res://assets/sfx/fgj26-player-death-01.ogg" id="11_je7p5"]
+[ext_resource type="AudioStream" uid="uid://bbuyoif2akbbv" path="res://assets/sfx/fgj26-sounds-mask-woosh.mp3" id="12_fm80t"]
 
 [sub_resource type="Resource" id="Resource_75vfm"]
 script = ExtResource("2_gmlin")
@@ -641,6 +642,9 @@ one_shot = true
 
 [node name="PlayerDeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1471351221]
 stream = ExtResource("11_je7p5")
+
+[node name="MaskOnSound" type="AudioStreamPlayer2D" parent="." unique_id=578116762]
+stream = ExtResource("12_fm80t")
 
 [connection signal="area_entered" from="FistBox2D" to="." method="_on_fist_hit_enemy"]
 [connection signal="timeout" from="MaskTimer" to="." method="_on_mask_timer_timeout"]

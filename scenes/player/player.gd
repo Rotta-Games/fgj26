@@ -28,6 +28,7 @@ const MAX_COMBO := 3
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var damage_taken_sound: AudioStreamPlayer2D = $DamageTakenSound
 @onready var player_death_sound: AudioStreamPlayer2D = $PlayerDeathSound
+@onready var mask_on_sound: AudioStreamPlayer2D = $MaskOnSound
 @onready var fire_attack_sound: AudioStreamRandomizer = preload("res://assets/sfx/audio_stream_randomizers/fire-attack.tres")
 @onready var tiger_attack_sound: AudioStreamRandomizer = preload("res://assets/sfx/audio_stream_randomizers/tiger-attack.tres")
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
@@ -271,6 +272,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		print("Player stunned!")
 
 func init_power(mask_type: Types.PlayerMask) -> void:
+	mask_on_sound.play()
 	player_mask = mask_type
 	head_attachment.texture = mask_stats[mask_type]["mask_texture"]
 	head_attachment.visible = true
