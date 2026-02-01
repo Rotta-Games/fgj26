@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://bju5pprhta8t2"]
+
+[ext_resource type="AudioStream" uid="uid://bioll15n0qrtd" path="res://assets/sfx/fgj26-sounds-tiger-attack-short.mp3" id="1_u503s"]
+
+[resource]
+random_pitch = 1.1506242
+random_volume_offset_db = 1.9
+streams_count = 1
+stream_0/stream = ExtResource("1_u503s")

@@ -28,6 +28,8 @@ const MAX_COMBO := 3
 @onready var attack_woosh_sound: AudioStreamPlayer2D = $AttackWooshSound
 @onready var damage_taken_sound: AudioStreamPlayer2D = $DamageTakenSound
 @onready var player_death_sound: AudioStreamPlayer2D = $PlayerDeathSound
+@onready var fire_attack_sound: AudioStreamRandomizer = preload("res://assets/sfx/audio_stream_randomizers/fire-attack.tres")
+@onready var tiger_attack_sound: AudioStreamRandomizer = preload("res://assets/sfx/audio_stream_randomizers/tiger-attack.tres")
 @onready var mask_anim_player: AnimationPlayer = $MaskAnimationPlayer
 @onready var animation_player = $AnimationPlayer
 @onready var particle_emitter = $ParticleEmitter
@@ -373,14 +375,40 @@ func _on_stunned_timer_timeout():
 		state = Types.PlayerState.IDLE
 		
 func _play_punch_sound(volume: float, pitch: float):
-	attack_sound.pitch_scale = pitch + randf_range(-0.1, 0.1)
-	attack_sound.volume_db = volume
-	attack_sound.play()
+	if (player_mask == Types.PlayerMask.FIRE):
+		var fire_attack_audio_player = AudioStreamPlayer.new()
+		fire_attack_audio_player.stream = fire_attack_sound
+		get_tree().root.add_child(fire_attack_audio_player)
+		fire_attack_audio_player.play()
+		fire_attack_audio_player.finished.connect(fire_attack_audio_player.queue_free)
+	elif (player_mask == Types.PlayerMask.TIGER):
+		var tiger_attack_audio_player = AudioStreamPlayer.new()
+		tiger_attack_audio_player.stream = tiger_attack_sound
+		get_tree().root.add_child(tiger_attack_audio_player)
+		tiger_attack_audio_player.play()
+		tiger_attack_audio_player.finished.connect(tiger_attack_audio_player.queue_free)
+	else:
+		attack_sound.pitch_scale = pitch + randf_range(-0.1, 0.1)
+		attack_sound.volume_db = volume
+		attack_sound.play()
 
 func _play_kick_sound():
-	kick_sound.pitch_scale = randf_range(0.8, 1.2)
-	# kick_sound.volume_db = volume
-	kick_sound.play()
+	if (player_mask == Types.PlayerMask.FIRE):
+		var fire_attack_audio_player = AudioStreamPlayer.new()
+		fire_attack_audio_player.stream = fire_attack_sound
+		get_tree().root.add_child(fire_attack_audio_player)
+		fire_attack_audio_player.play()
+		fire_attack_audio_player.finished.connect(fire_attack_audio_player.queue_free)
+	elif (player_mask == Types.PlayerMask.TIGER):
+		var tiger_attack_audio_player = AudioStreamPlayer.new()
+		tiger_attack_audio_player.stream = tiger_attack_sound
+		get_tree().root.add_child(tiger_attack_audio_player)
+		tiger_attack_audio_player.play()
+		tiger_attack_audio_player.finished.connect(tiger_attack_audio_player.queue_free)
+	else:
+		kick_sound.pitch_scale = randf_range(0.8, 1.2)
+		# kick_sound.volume_db = volume
+		kick_sound.play()
 
 
 func play_animation(anim_name: String, speed_scale: float = 1.0) -> void:
@@ -391,8 +419,21 @@ func play_animation(anim_name: String, speed_scale: float = 1.0) -> void:
 		mask_anim_player.play(anim_name)
 
 func _play_attack_miss_sound():
-	attack_woosh_sound.pitch_scale = randf_range(0.8, 1.2)
-	attack_woosh_sound.play()
+	if (player_mask == Types.PlayerMask.FIRE):
+		var fire_attack_audio_player = AudioStreamPlayer.new()
+		fire_attack_audio_player.stream = fire_attack_sound
+		get_tree().root.add_child(fire_attack_audio_player)
+		fire_attack_audio_player.play()
+		fire_attack_audio_player.finished.connect(fire_attack_audio_player.queue_free)
+	elif (player_mask == Types.PlayerMask.TIGER):
+		var tiger_attack_audio_player = AudioStreamPlayer.new()
+		tiger_attack_audio_player.stream = tiger_attack_sound
+		get_tree().root.add_child(tiger_attack_audio_player)
+		tiger_attack_audio_player.play()
+		tiger_attack_audio_player.finished.connect(tiger_attack_audio_player.queue_free)
+	else:
+		attack_woosh_sound.pitch_scale = randf_range(0.8, 1.2)
+		attack_woosh_sound.play()
 	
 func _play_player_damage_sound():
 	damage_taken_sound.pitch_scale = randf_range(0.8, 1.2)
