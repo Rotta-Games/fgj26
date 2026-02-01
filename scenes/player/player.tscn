@@ -558,7 +558,6 @@ player_stats = SubResource("Resource_75vfm")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dovo2")
-animation = &"dead"
 autoplay = "default"
 
 [node name="HeadAttachment" type="Sprite2D" parent="AnimatedSprite2D" unique_id=277029135]
