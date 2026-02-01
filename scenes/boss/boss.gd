@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var bottle : Sprite2D = $BottleSprite
 @onready var bottle_hit_indicator : AnimatedSprite2D = $BottleHitIndicator
 
+
 signal dead
 
 enum Direction {LEFT, RIGHT}
@@ -27,8 +28,6 @@ const SEEK_DURATION_MAX_DELAY_S : float = 3.0
 var rng = RandomNumberGenerator.new()
 
 var state = Types.BossState.IDLE
-var health: int
-var attack_delay: float
 var current_target: CharacterBody2D
 var waiting_to_attack: bool = false
 var _target_in_hit_area: bool = false
@@ -38,6 +37,13 @@ var _throws_remaining : int = 0
 var rampaging : bool = false
 var seek_duration_remaining : float = -1.0
 var throwing_in_progress : bool = false
+
+var health: int = 1000
+var movement_speed: float = 60.0
+var attack_delay: float = 0.4
+var attack_damage: int = 40
+var stunned_time: float = 0.05
+var score: int = 10000
 
 func _ready() -> void:
 	health = stat.health
@@ -51,11 +57,18 @@ func _ready() -> void:
 	bottle.top_level = true
 	_handle_direction(Direction.LEFT)
 	_play_intro()
+
 	SignalBus.bossHealthState.emit({
 		"health": health,
 		"max_health": stat.health,
 		"visible": true
 	})
+
+	
+func multiply() -> void:
+	
+	pass
+>>>>>>> 81cee79504a1914355cb933789f75347c83ded4d
 
 func randf_bell(min_val: float, max_val: float) -> float:
 	var sum = randf() + randf() + randf()
@@ -152,7 +165,7 @@ func _handle_rampage_state() -> void:
 	
 	# Calculate rampage duration based on distance
 	var distance = abs(target_x - global_position.x)
-	var rampage_duration = distance / (stat.movement_speed * 4.0)
+	var rampage_duration = distance / (movement_speed * 4.0)
 	
 	# Tween to the edge
 	var tween = create_tween()
@@ -213,7 +226,7 @@ func _move_towards(pos: Vector2) -> void:
 	if move_dir.length_squared() < 0.01:
 		velocity = Vector2.ZERO
 	else:
-		velocity = move_dir.normalized() * stat.movement_speed
+		velocity = move_dir.normalized() * movement_speed
 	
 	var direction : Direction = get_direction(desired_x, pos.x)
 	_handle_direction(direction)
@@ -325,7 +338,7 @@ func _deal_damage() -> void:
 		if "PlayerHitbox" in area.get_groups():
 			var player := area.get_parent()
 			if "Player" in player.get_groups() && player.has_method("hurt"):
-				player.hurt(stat.attack_damage)
+				player.hurt(attack_damage)
 	_damage_dealt_this_round = true
 	attack_delay_timer.wait_time = attack_delay
 	attack_delay_timer.start()

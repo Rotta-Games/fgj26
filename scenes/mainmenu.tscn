@@ -18,23 +18,6 @@ script = ExtResource("1_3vvtq")
 position = Vector2(160, 90)
 texture = ExtResource("1_5mbse")
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="." unique_id=1254310048]
-layout_mode = 0
-offset_left = 341.0
-offset_top = 29.0
-offset_right = 513.0
-offset_bottom = 169.0
-theme_override_font_sizes/normal_font_size = 12
-text = "Move: Arrows
-Attack: Z
-Dash: X
-
-Player 2 (Controller)
-Move: dpad
-Attack: X
-Dash: A"
-fit_content = true
-
 [node name="TitleText" type="Sprite2D" parent="." unique_id=1636118207]
 position = Vector2(108, 86)
 texture = ExtResource("2_natt5")
@@ -61,5 +44,42 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("3_r3g3c")
 text = "Quit"
 
+[node name="HelpCont" type="Control" parent="." unique_id=1910965448]
+anchors_preset = 0
+offset_left = 26.0
+offset_top = 25.0
+offset_right = 182.0
+offset_bottom = 146.0
+
+[node name="ColorRect" type="ColorRect" parent="HelpCont" unique_id=526442960]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5137255, 0.5176471, 0.50980395, 0.8235294)
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="HelpCont" unique_id=1254310048]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("3_r3g3c")
+theme_override_font_sizes/normal_font_size = 12
+text = "Move: Arrows
+Attack: Z
+Dash: X
+
+Player 2 (Controller)
+Move: dpad
+Attack: X
+Dash: A"
+fit_content = true
+
 [connection signal="button_up" from="VBoxContainer/start_button" to="." method="_on_start_button_button_up"]
+[connection signal="button_up" from="VBoxContainer/help_button" to="." method="_on_help_button_button_up"]
 [connection signal="button_up" from="VBoxContainer/quit_button" to="." method="_on_quit_button_button_up"]

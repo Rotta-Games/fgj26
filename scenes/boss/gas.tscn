@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://pxu0sujxbwd2"]
+
+[ext_resource type="Script" uid="uid://css6vdg0b5gip" path="res://scenes/boss/gas.gd" id="1_b0q43"]
+[ext_resource type="Texture2D" uid="uid://3mpyo7ms87c8" path="res://assets/gfx/smoke_sheet.png" id="1_hduj4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0q43"]
+atlas = ExtResource("1_hduj4")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iubdt"]
+atlas = ExtResource("1_hduj4")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_av5bu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0q43")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iubdt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iubdt"]
+
+[node name="Gas" type="Node2D" unique_id=2012247116]
+script = ExtResource("1_b0q43")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=49081776]
+sprite_frames = SubResource("SpriteFrames_av5bu")
+frame_progress = 0.04393585
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1660418805]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=299921044]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("CircleShape2D_iubdt")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1208015427]
+
+[node name="AliveTimer" type="Timer" parent="." unique_id=152818785]
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="AliveTimer" to="." method="_on_alive_timer_timeout"]

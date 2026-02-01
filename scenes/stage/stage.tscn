@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bww7jgfwhug06" path="res://scenes/stage/stage_block.tscn" id="7_d1yl1"]
 [ext_resource type="PackedScene" uid="uid://chrgj2y5ap2ns" path="res://scenes/drops/mask_of_fire/mask_of_fire.tscn" id="7_kb6yy"]
 [ext_resource type="PackedScene" uid="uid://dj6iyxeowfvht" path="res://scenes/static_objects/trashcan/trashcan.tscn" id="7_ljyi0"]
-[ext_resource type="Script" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
+[ext_resource type="Script" uid="uid://dfog41bqdj34f" path="res://scripts/resource_definitions/static_object.gd" id="8_uutle"]
 
 [sub_resource type="Resource" id="Resource_0m8sx"]
 script = ExtResource("3_d1yl1")
