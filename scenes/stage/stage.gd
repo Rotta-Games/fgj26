@@ -45,15 +45,17 @@ func _spawn_wave(wave: EnemyWave) -> void:
 		second_side = Types.Side.LEFT
 		
 	_spawn_in_progress = true
-	for enemy in first_wave:
-		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
-		await get_tree().create_timer(delay).timeout
-		_spawn_enemy(enemy, first_side)
-	for enemy in second_wave:
-		var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
-		await get_tree().create_timer(delay).timeout
-		_spawn_enemy(enemy, second_side)
-	_spawn_in_progress = false
+	var player_count = min(1, len(get_tree().get_nodes_in_group("Player")))
+	for i in range(player_count):
+		for enemy in first_wave:
+			var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
+			await get_tree().create_timer(delay).timeout
+			_spawn_enemy(enemy, first_side)
+		for enemy in second_wave:
+			var delay : float = randf_range(MIN_SPAWN_DELAY_S, MAX_SPAWN_DELAY_S)
+			await get_tree().create_timer(delay).timeout
+			_spawn_enemy(enemy, second_side)
+		_spawn_in_progress = false
 
 func _spawn_enemy(enemy_scene: PackedScene, side: Types.Side) -> void:
 	var enemy = enemy_scene.instantiate()
