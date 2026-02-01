@@ -26,6 +26,7 @@ var current_target: CharacterBody2D
 var waiting_to_attack: bool = false
 var _target_in_hit_area: bool = false
 var _damage_dealt_this_round = false
+var _knockedback := false
 
 func _ready() -> void:
 	health = stat.health
@@ -76,6 +77,10 @@ func _physics_process(_delta: float) -> void:
 			else:
 				player_hit_area.position.x = 0
 			move_and_slide()
+	elif state == Types.EnemyState.STUNNED:
+		if _knockedback:
+			move_and_slide()
+			_knockedback = false
 	elif current_target && _target_in_hit_area && !waiting_to_attack && state == Types.EnemyState.ATTACK:
 		_start_attack()
 	elif !current_target:
@@ -133,6 +138,11 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 		stunned_timer.start(stat.stunned_time)
 		state = Types.EnemyState.STUNNED
 		sprite.play("stunned")
+		if critical_hit:
+			var knockback_dir := (global_position - current_target.global_position).normalized()
+			velocity = knockback_dir * 2500.0
+			_knockedback = true
+
 
 func _die(is_max_dead: bool = false) -> void:
 	_disable_all_collisions()
