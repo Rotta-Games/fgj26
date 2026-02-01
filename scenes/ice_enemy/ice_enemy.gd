@@ -123,7 +123,7 @@ func _set_nearest_player_as_target() -> void:
 	if nearest:
 		current_target = nearest as CharacterBody2D
 
-func hurt(amount: int, critical_hit: bool = false) -> void:
+func hurt(amount: int, critical_hit: bool = false):
 	if state == Types.EnemyState.DEAD:
 		return
 	
@@ -132,6 +132,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 	
 	if (health <= 0):
 		_die(critical_hit)
+		return stat.score
 
 	else:
 		animation_player.play("hurt")
@@ -142,6 +143,7 @@ func hurt(amount: int, critical_hit: bool = false) -> void:
 			var knockback_dir := (global_position - current_target.global_position).normalized()
 			velocity = knockback_dir * 2500.0
 			_knockedback = true
+			return
 
 
 func _die(is_max_dead: bool = false) -> void:
