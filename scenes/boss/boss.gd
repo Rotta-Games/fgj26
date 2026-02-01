@@ -329,7 +329,7 @@ func _launch_bottle(launch_pos : Vector2, target_pos : Vector2):
 
 func _process_bottle_hit():
 	var center = bottle.global_position
-	var radius = 15  # Distance from center
+	var radius = 18  # Distance from center
 
 	var gas1 = gas_scene.instantiate()
 	gas1.top_level = true
