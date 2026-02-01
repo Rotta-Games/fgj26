@@ -268,7 +268,7 @@ stat = SubResource("Resource_0xsra")
 texture_filter = 1
 position = Vector2(-2, -11)
 sprite_frames = SubResource("SpriteFrames_7kbl1")
-animation = &"rampage"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1900141297]

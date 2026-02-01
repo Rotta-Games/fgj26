@@ -81,7 +81,7 @@ func _play_intro():
 	tween.tween_property(self, "scale", scale * 1.15, 0.15).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(self, "scale", scale, 0.15).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
-	_change_state(Types.BossState.SEEK)
+	_change_state(Types.BossState.THROWING)
 	
 func _change_state(new_state: Types.BossState):
 	print("Boss to state " + str(new_state))
@@ -129,7 +129,6 @@ func _return_to_throwing() -> void:
 	else:
 		_move_towards(_throwing_position)
 
-
 func _handle_rampage_state() -> void:
 	if rampaging:
 		return
@@ -168,15 +167,27 @@ func _handle_rampage_state() -> void:
 	var distance = abs(target_x - global_position.x)
 	var rampage_duration = distance / (movement_speed * 4.0)
 	
+	# Track who we've already hit during this rampage
+	var hit_players = []
+	
 	# Tween to the edge
 	var tween = create_tween()
 	tween.tween_property(self, "global_position:x", target_x, rampage_duration).set_trans(Tween.TRANS_LINEAR)
-	await tween.finished
+	
+	# Check for collisions during rampage
+	while tween.is_running():
+		await get_tree().process_frame
+		for area in player_hit_area.get_overlapping_areas():
+			if "PlayerHitbox" in area.get_groups():
+				var player = area.get_parent()
+				if player not in hit_players and "Player" in player.get_groups() and player.has_method("hurt"):
+					player.hurt(attack_damage)
+					hit_players.append(player)
 	
 	# Check if still in rampage state (might have been interrupted)
 	if state == Types.BossState.RAMPAGE:
 		_switch_to_random_next_attack()
-	
+			
 func _switch_to_random_next_attack() -> void:
 	var coinflip : int = randi_range(0, 10)
 	if coinflip <= 3:
