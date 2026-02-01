@@ -9,22 +9,64 @@
 [ext_resource type="Texture2D" uid="uid://cofmbde4r070b" path="res://assets/gfx/health_bar_over.png" id="4_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://cp8irr7yxivaq" path="res://scenes/camera/sub_pixel_follow_camera.tscn" id="5_iywne"]
 [ext_resource type="Script" uid="uid://c04kof1yw8uu1" path="res://scripts/test_utils/player_health_emitter.gd" id="8_gee14"]
+[ext_resource type="FontFile" uid="uid://64ete5afvi40" path="res://assets/fonts/tinypixel.otf" id="9_font"]
+
+[sub_resource type="Animation" id="Animation_blink"]
+resource_name = "blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/Control/Player1Start/PressStartText:visible")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer/Control/Player2Start/PressStartText:visible")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ui"]
+_data = {
+&"blink": SubResource("Animation_blink")
+}
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iywne"]
 
+[sub_resource type="FontVariation" id="FontVariation_spaced"]
+base_font = ExtResource("9_font")
+spacing_glyph = 2
+
 [sub_resource type="LabelSettings" id="LabelSettings_0tnpc"]
-font_size = 7
-font_color = Color(0.09121219, 0.38992056, 0.99999994, 1)
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
+font = SubResource("FontVariation_spaced")
+font_size = 10
+font_color = Color(0.47058824, 0.98039216, 0.9019608, 1)
+outline_size = 4
+outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
+shadow_size = 0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p57ef"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
-font_size = 7
-font_color = Color(0.24956495, 0.53160954, 0.2235527, 1)
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
+font = SubResource("FontVariation_spaced")
+font_size = 10
+font_color = Color(0.54901963, 1, 0.60784316, 1)
+outline_size = 4
+outline_color = Color(0.07058824, 0.09019608, 0.23921569, 1)
+shadow_size = 0
 
 [node name="Node2D" type="Node2D" unique_id=50045772]
 y_sort_enabled = true
@@ -35,6 +77,10 @@ script = ExtResource("8_gee14")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=252661915]
 script = ExtResource("3_0tnpc")
+
+[node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=81149380]
+libraries/ = SubResource("AnimationLibrary_ui")
+autoplay = &"blink"
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=529509391]
 anchors_preset = 15
@@ -65,17 +111,20 @@ rounded = true
 texture_under = ExtResource("3_gee14")
 texture_progress = ExtResource("4_0tnpc")
 
-[node name="Player1Start" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=500334320]
+[node name="Player1Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=500334320]
 visible = false
 top_level = true
 material = SubResource("CanvasItemMaterial_iywne")
 layout_mode = 1
-offset_right = 400.0
-offset_bottom = 200.0
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 100.0
+offset_bottom = 20.0
 
 [node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player1Start" unique_id=1859854054]
-layout_mode = 2
-text = "Player 1 Press Start"
+layout_mode = 0
+text = "P1 Press Start"
 label_settings = SubResource("LabelSettings_0tnpc")
 
 [node name="Player2Data" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1153013427]
@@ -103,22 +152,24 @@ rounded = true
 texture_under = ExtResource("3_gee14")
 texture_progress = ExtResource("4_0tnpc")
 
-[node name="Player2Start" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Control" unique_id=1878980805]
+[node name="Player2Start" type="Control" parent="CanvasLayer/MarginContainer/Control" unique_id=1878980805]
 top_level = true
 material = SubResource("CanvasItemMaterial_p57ef")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -91.0
-offset_right = 309.0
-offset_bottom = 200.0
+offset_left = -120.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = 20.0
 grow_horizontal = 0
 
 [node name="PressStartText" type="Label" parent="CanvasLayer/MarginContainer/Control/Player2Start" unique_id=1417491991]
-layout_mode = 2
-text = "Player 2 Press Start"
+layout_mode = 0
+text = "P2 Press Start"
 label_settings = SubResource("LabelSettings_vtaks")
+horizontal_alignment = 2
 
 [node name="Arrow" parent="CanvasLayer/MarginContainer/Control" unique_id=1400428008 instance=ExtResource("2_iywne")]
 visible = false
