@@ -196,10 +196,12 @@ func _on_stunned_timer_timeout():
 		sprite.play("default")
 		state = Types.EnemyState.SEEK
 		_knockedback = false
+		_target_in_hit_area = false
 		
 		for area in player_hit_area.get_overlapping_areas():
 			if current_target == area.get_parent():
 				state = Types.EnemyState.ATTACK
+				_target_in_hit_area = true
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
